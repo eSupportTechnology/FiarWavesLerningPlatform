@@ -46,13 +46,19 @@
                 <form class="account-form"  action="{{ route('customer.register.submit') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <input type="text" placeholder="Full Name" name="name">
+                        <input type="text" placeholder="Name with initials" name="name" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Email" name="email">
+                        <input type="text" placeholder="First Name" name="fname" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Contact Number" name="contact_number" value="{{ old('contact_number') }}">
+                        <input type="text" placeholder="Last Name" name="lname" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Email" name="email" required>
+                    </div>
+                    <div class="form-group">
+                        <input type="text" placeholder="Telephone Number" name="contact_number" value="{{ old('contact_number') }}">
                         @error('contact_number') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                     <div class="form-group">
@@ -62,24 +68,27 @@
                         <input type="password" placeholder="Confirm Password" name="password_confirmation">
                     </div>
                     <div class="form-group">
+                        <input type="text" placeholder="Sponser Code" name="sponser_code">
+                    </div>
+                    <div class="form-group">
                         <button class="lab-btn"><span>Get Started Now</span></button>
                     </div>
                 </form>
-                
 
-                <span class="d-block cate">Are you an old student? 
+
+                <span class="d-block cate">Are you an old student?
                     <a href="{{ route('customer.old.register') }}" class="text-primary fw-bold">Click Here</a>
                 </span>
 
                 <hr class="my-3">
-                
+
                 <div class="account-bottom">
                     <span class="d-block cate pt-10">Are you a member? <a href="{{ route('customer.login') }}">Login</a></span>
-                    
+
                 </div>
             </div>
         </div>
     </div>
     <!-- Login Section Section Ends Here -->
-     
+
     @endsection

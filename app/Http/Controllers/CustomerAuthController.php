@@ -32,38 +32,48 @@ class CustomerAuthController extends Controller
         //dd($request);
         $request->validate([
             'name' => 'required|string',
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email',
             'contact_number' => 'required|string|unique:customers,contact_number',
             'password' => 'required|min:6|confirmed',
+            'sponser_code' => 'nullable|string|max:255',
         ]);
         //dd($request);
-        $code = rand(100000, 999999);
 
         session([
             'pending_customer' => [
                 'name' => $request->name,
+                'fname' => $request->fname,
+                'lname' => $request->lname,
                 'email' => $request->email,
                 'contact_number' => $request->contact_number,
                 'password' => Hash::make($request->password),
-                'verification_code' => $code,
+                'sponser_code' => $request->sponser_code,
             ]
         ]);
 
-        // Send SMS (Use your Dialog or Richmo function)
-        $this->sendSMS($request->contact_number, "Your DSA Academy verification code is: $code");
+        Customer::create([
+            'name' => $request->name,
+            'fname' => $request->fname,
+            'lname' => $request->lname,
+            'email' => $request->email,
+            'contact_number' => $request->contact_number,
+            'password' => Hash::make($request->password),
+            'status' => 0, // Default status inactive
+            'is_verified' => false, // Default not verified
+            'is_side_selected' => false, // Default side not selected
+            'invite_code' => Str::random(4), // Generate a random invite code
+            'sponsor_id' => $request->sponser_code ? Customer::where('invite_code', $request->sponser_code)->value('user_id') : null,
+        ]);
 
-        return redirect()->route('customer.verify.code.form')->with('success', 'Verification code sent.');
+            return redirect()->route('customer.login')->with('success', 'Registration complete. Please log in.');
 
 
     } catch (\Throwable $e) {
         Log::error('Registration Error: ' . $e->getMessage());
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
-    }
-
-    public function showCodeForm()
-    {
-        return view('emails.verify-code-page');
     }
 
     public function verifyCode(Request $request)
@@ -129,10 +139,11 @@ class CustomerAuthController extends Controller
         }
     }
 
+    public function showCodeForm()
+    {
+        return view('emails.verify-code-page');
+    }
 
-    
-    
-    
 
     // Show Login Page
     public function showLogin()
@@ -143,7 +154,7 @@ class CustomerAuthController extends Controller
     // Handle Login
     public function login(Request $request)
     {
-        
+
         $request->validate([
             'email' => 'required|email|exists:customers,email',
             'password' => 'required',
@@ -202,9 +213,6 @@ class CustomerAuthController extends Controller
                 'student_id' => $request->student_id,
             ]
         ]);
-
-        // Send OTP SMS
-        $this->sendSMS($request->contact_number, "Your DSA Academy verification code is: $code");
 
         return redirect()->route('customer.verify.code.form')->with('success', 'Verification code sent.');
     }

@@ -14,6 +14,8 @@ class Customer extends Authenticatable implements MustVerifyEmail
 
     protected $fillable = [
         'name',
+        'fname',
+        'lname',
         'email',
         'password',
         'address',
@@ -23,13 +25,29 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'is_verified', // boolean
         'stu_id', // unique student id
         'batch_id', // related batch
+        'sponsor_id', // ID of the sponsor
+        'left_child_id', // ID of the left child
+        'right_child_id', // ID of the right child
+        'id_type',
+        'id_number',
+        'street',
+        'city',
+        'district',
+        'postal_code',
+        'bank_name',
+        'bank_branch',
+        'account_name',
+        'account_number',
+        'account_type',
+        'invite_code',
+        'is_side_selected',
     ];
-    
+
     protected $casts = [
         'is_verified' => 'boolean',
         'email_verified_at' => 'datetime',
     ];
-    
+
 
     public function bookings()
     {

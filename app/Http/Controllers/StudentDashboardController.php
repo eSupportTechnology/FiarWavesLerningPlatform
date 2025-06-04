@@ -155,8 +155,21 @@ class StudentDashboardController extends Controller
 
         $validated = $request->validate([
             'name' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email,' . $customerId,
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email,' . $customerId. ',user_id',
             'phone' => 'nullable|string|max:20',
+            'id_type' => 'nullable|string|max:50',
+            'id_number' => 'nullable|string|max:50',
+            'address' => 'nullable|string|max:255',
+            'street' => 'nullable|string|max:255',
+            'city' => 'nullable|string|max:100',
+            'district' => 'nullable|string|max:100',
+            'postal_code' => 'nullable|string|max:20',
+            'bank_name' => 'nullable|string|max:100',
+            'bank_branch' => 'nullable|string|max:100',
+            'account_name' => 'nullable|string|max:100',
+            'account_number' => 'nullable|string|max:50',
         ]);
 
         $customer->update($validated);
@@ -164,7 +177,7 @@ class StudentDashboardController extends Controller
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
 
-    
+
 
     public function updatePassword(Request $request)
     {
