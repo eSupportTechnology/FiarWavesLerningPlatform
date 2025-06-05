@@ -358,6 +358,7 @@ Route::prefix('admin/batches')->name('admin.batches.')->group(function () {
 //-----------------------student dashboard
 
 use App\Http\Controllers\StudentDashboardController;
+use App\Http\Controllers\WithdrawController;
 
 //student dashboard
 
@@ -376,5 +377,5 @@ Route::post('/student/profile', [StudentDashboardController::class, 'updateProfi
 Route::post('/student/profile/password', [StudentDashboardController::class, 'updatePassword'])->name('customer.password.update');
 Route::post('/student/dashboard/invitee', [StudentDashboardController::class, 'inviteeplace'])->name('invitee.place');
 
-
-
+Route::get('/student/withdraw', [WithdrawController::class, 'index'])->name('student.withdraw');
+Route::post('/student/withdraw', [WithdrawController::class, 'submitWithdraw'])->name('student.withdraw.submit');

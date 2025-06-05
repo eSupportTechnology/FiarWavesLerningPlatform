@@ -100,18 +100,34 @@
             <div class="alert alert-success text-center" role="alert">
                 Congratulations! You are eligible for your first withdrawal. Please contact support to proceed.
             </div>
+
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Ready to Withdraw?</h5>
+                    <p class="card-text">You meet the requirements for your first withdrawal. Click below to continue.</p>
+                    <a href="{{ route('student.withdraw') }}" class="btn btn-success">Proceed to Withdraw</a>
+                </div>
+            </div>
         </div>
     @elseif (
         $customer &&
             $customer->is_first_time_withdrawal == 1 &&
-            $customer->left_side_points >= 1 &&
-            $customer->right_side_points >= 1)
+            $customer->left_side_points >= 2 &&
+            $customer->right_side_points >= 2)
         <div class="container-fluid mb-4">
             <div class="alert alert-info text-center" role="alert">
-                You have already made your first withdrawal. Keep up the good work!
+                Congratulations! You are eligible for your withdrawal. Please contact support to proceed.
+            </div>
+
+            <div class="card text-center shadow-sm">
+                <div class="card-body">
+                    <h5 class="card-title">Withdraw Available</h5>
+                    <p class="card-text">You have enough points for your next withdrawal. Click below to continue.</p>
+                    <a href="{{ route('student.withdraw') }}" class="btn btn-primary">Proceed to Withdraw</a>
+                </div>
             </div>
         </div>
-    @elseif ($customer && ($customer->left_side_points < 1 || $customer->right_side_points < 1))
+    @elseif ($customer && $customer->is_first_time_withdrawal == 0 && ($customer->left_side_points < 1 || $customer->right_side_points < 1))
         <div class="container-fluid mb-4">
             <div class="alert alert-warning text-center" role="alert">
                 You need at least 1 point on both sides to make your first withdrawal.
@@ -120,10 +136,11 @@
     @else
         <div class="container-fluid mb-4">
             <div class="alert alert-danger text-center" role="alert">
-                You are not eligible for a withdrawal at this time. Please ensure you have at least 1 points on both sides.
+                You are not eligible for a withdrawal at this time. Please ensure you have at least 2 point on both sides.
             </div>
         </div>
     @endif
+
 
 
     <!-- Invitees Section -->
