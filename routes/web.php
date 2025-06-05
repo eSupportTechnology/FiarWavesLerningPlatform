@@ -374,6 +374,7 @@ Route::get('/student/course/{booking}/zoom-links', [StudentDashboardController::
 Route::get('/student/profile', [StudentDashboardController::class, 'profile'])->name('customer.profile');
 Route::post('/student/profile', [StudentDashboardController::class, 'updateProfile'])->name('customer.profile.update');
 Route::post('/student/profile/password', [StudentDashboardController::class, 'updatePassword'])->name('customer.password.update');
+Route::post('/student/dashboard/invitee', [StudentDashboardController::class, 'inviteeplace'])->name('invitee.place');
 
 
 

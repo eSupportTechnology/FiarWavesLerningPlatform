@@ -9,13 +9,22 @@ use App\Models\CourseFile;
 use App\Models\CourseRecording;
 use App\Models\CourseZoomLink;
 use App\Models\CustomerCourseBatch;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
 
 class StudentDashboardController extends Controller
 {
     public function index()
     {
-        return view('StudentDashboard.home');
+        $customerId = session('customer_id');
+        $customer = Customer::where('user_id', $customerId)
+            ->first();
+        $invitees = Customer::where('sponsor_id', $customerId)
+            ->where('is_side_selected', 0)
+            ->where('status', 1) // Only active invitees
+            ->get();
+        return view('StudentDashboard.home', compact('invitees', 'customer'));
     }
 
     public function bookings()
@@ -71,7 +80,7 @@ class StudentDashboardController extends Controller
         }
 
         // Get course files for that course and batch
-        $files = \DB::table('course_files as cf')
+        $files = DB::table('course_files as cf')
             ->join('course_file_batch as cfb', 'cf.file_id', '=', 'cfb.course_file_id')
             ->where('cf.course_id', $booking->course_id)
             ->where('cfb.batch_id', $customerBatch->batch_id)
@@ -101,7 +110,7 @@ class StudentDashboardController extends Controller
         }
 
         // Get course recordings filtered by course and batch
-        $recordings = \DB::table('course_recordings as cr')
+        $recordings = DB::table('course_recordings as cr')
             ->join('course_recording_batch as crb', 'cr.recording_id', '=', 'crb.course_recording_id')
             ->where('cr.course_id', $booking->course_id)
             ->where('crb.batch_id', $customerBatch->batch_id)
@@ -130,7 +139,7 @@ class StudentDashboardController extends Controller
         }
 
         // Get zoom links filtered by course and batch
-        $zoomLinks = \DB::table('course_zoom_links as czl')
+        $zoomLinks = DB::table('course_zoom_links as czl')
             ->join('course_zoom_link_batch as czlb', 'czl.zoom_link_id', '=', 'czlb.course_zoom_link_id')
             ->where('czl.course_id', $booking->course_id)
             ->where('czlb.batch_id', $customerBatch->batch_id)
@@ -199,6 +208,129 @@ class StudentDashboardController extends Controller
         return back()->with('password_success', 'Password updated successfully!');
     }
 
+    public function inviteeplace(Request $request)
+    {
+        $request->validate([
+            'invitee_id' => 'required|exists:customers,user_id',
+            'side' => 'required|in:left,right',
+        ]);
+        $customerId = session('customer_id');
+        $customer = Customer::where('user_id', $customerId)->first();
+        $invitee = Customer::where('user_id',$request->invitee_id)->first();
+
+        if ($invitee->sponsor_id !== $customerId) {
+            return redirect()->back()->with('error', 'You can only place your own invitees.');
+        }
+        if ($invitee->is_side_selected) {
+            return redirect()->back()->with('error', 'This invitee has already been placed.');
+        }
+        if ($request->side === 'left') {
+            $inviteeId = $invitee->user_id;
+
+            // 1. Traverse downward (left children)
+            $downward = [];
+            $stack = [$customer]; // start from current user
+
+            while (!empty($stack)) {
+                $current = array_pop($stack);
+
+                if ($current->left_child_id) {
+                    $leftChild = Customer::where('user_id', $current->left_child_id)->first();
+                    if ($leftChild) {
+                        $downward[] = $leftChild;
+                        $stack[] = $leftChild; // continue DFS
+                    }
+                }
+            }
+
+            // 2. Traverse upward (sponsors with this user as their left child)
+            $upward = [];
+            $current = $customer;
+            while ($current->sponsor_id) {
+                $sponsor = Customer::where('user_id', $current->sponsor_id)->first();
+                if ($sponsor && $sponsor->left_child_id == $current->user_id) {
+                    $upward[] = $sponsor;
+                    $current = $sponsor;
+                } else {
+                    break;
+                }
+            }
+
+            // 3. Combine all users: upward, current, and downward
+            $allLeftUsers = array_merge($upward, [$customer], $downward);
+
+            // 4. Assign invitee to the last left user
+            $lastLeft = $customer;
+            while ($lastLeft->left_child_id) {
+                $lastLeft = Customer::where('user_id', $lastLeft->left_child_id)->first();
+            }
+            $lastLeft->left_child_id = $inviteeId;
+            $lastLeft->save();
+
+            // 5. Award points to all EXCEPT the invitee and status != 1
+            foreach ($allLeftUsers as $user) {
+                if ($user->user_id != $inviteeId && $user->status == 1) {
+                    $user->left_side_points += 1;
+                    $user->save();
+                }
+            }
+        } else {
+            $inviteeId = $invitee->user_id;
+
+            // 1. Traverse downward (right children)
+            $downward = [];
+            $stack = [$customer]; // start from current user
+
+            while (!empty($stack)) {
+                $current = array_pop($stack);
+
+                if ($current->right_child_id) {
+                    $rightChild = Customer::where('user_id', $current->right_child_id)->first();
+                    if ($rightChild) {
+                        $downward[] = $rightChild;
+                        $stack[] = $rightChild; // continue DFS
+                    }
+                }
+            }
+
+            // 2. Traverse upward (sponsors with this user as their right child)
+            $upward = [];
+            $current = $customer;
+            while ($current->sponsor_id) {
+                $sponsor = Customer::where('user_id', $current->sponsor_id)->first();
+                if ($sponsor && $sponsor->right_child_id == $current->user_id) {
+                    $upward[] = $sponsor;
+                    $current = $sponsor;
+                } else {
+                    break;
+                }
+            }
+
+            // 3. Combine all right side users: upward, current user, downward
+            $allRightUsers = array_merge($upward, [$customer], $downward);
+
+            // 4. Assign invitee to last right user
+            $lastRight = $customer;
+            while ($lastRight->right_child_id) {
+                $lastRight = Customer::where('user_id', $lastRight->right_child_id)->first();
+            }
+            $lastRight->right_child_id = $inviteeId;
+            $lastRight->save();
+
+            // 5. Award points to all EXCEPT the invitee and those with status != 1
+            foreach ($allRightUsers as $user) {
+                if ($user->user_id != $inviteeId && $user->status == 1) {
+                    $user->right_side_points += 1;
+                    $user->save();
+                }
+            }
+        }
+
+        $invitee->is_side_selected = 1;
+        $invitee->save();
+
+        return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
 
 
 

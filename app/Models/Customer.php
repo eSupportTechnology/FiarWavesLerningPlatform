@@ -41,6 +41,9 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'account_type',
         'invite_code',
         'is_side_selected',
+        'left_side_points', // Points on the left side
+        'right_side_points', // Points on the right side
+        'is_first_time_withdrawal', // Flag for first time withdrawal
     ];
 
     protected $casts = [

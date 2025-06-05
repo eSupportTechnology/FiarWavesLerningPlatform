@@ -32,6 +32,9 @@ return new class extends Migration
             $table->string('invite_code')->nullable()->unique()->after('account_type');
             $table->boolean('is_side_selected')->default(false)->after('invite_code'); // New column to track side selection
 
+            $table->integer('left_side_points')->default(0)->after('is_side_selected');
+            $table->integer('right_side_points')->default(0)->after('left_side_points');
+            $table->boolean('is_first_time_withdrawal')->default(false)->after('right_child_id');
         });
     }
 
@@ -56,6 +59,9 @@ return new class extends Migration
                 'account_type',
                 'invite_code',
                 'is_side_selected',
+                'left_side_points',
+                'right_side_points',
+                'is_first_time_withdrawal',
             ]);
         });
     }

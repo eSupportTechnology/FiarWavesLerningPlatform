@@ -159,7 +159,7 @@
                                 Gain real-world skills through online and physical classes.<br>
                                 Start your journey with DSA today!
                             </p>
-                            
+
                         </div>
                     </div>
 
@@ -175,7 +175,7 @@
             </div>
         </div>
 
-        
+
     </section>
     <!-- banner section ending here -->
 
@@ -226,7 +226,7 @@
                             @php
                                 $videoId = getYoutubeVideoId($video->youtube_url);
                                 $thumbnailUrl = $video->thumbnail
-                                    ? asset('storage/app/public/' . $video->thumbnail)
+                                    ? asset('storage/' . $video->thumbnail)
                                     : ($videoId ? 'https://img.youtube.com/vi/' . $videoId . '/hqdefault.jpg' : null);
                             @endphp
 
@@ -261,9 +261,9 @@
             </div>
         </div>
     </div>
-    
-    
-    
+
+
+
     <!-- About DSA Academy Section -->
     <div class="padding-tb section-bg about-dsa-bg" >
         <div class="container" >
@@ -274,7 +274,7 @@
                         <span class="subtitle text-danger">About DSA Academy</span>
                         <h2 class="title" style="color:#1b2954;">Empowering Your Future With Practical Skills</h2>
                         <p class="mt-3">
-                            DSA Academy is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development. 
+                            DSA Academy is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development.
                             We empower individuals through hands-on learning, expert instructors, and industry-recognized certifications—ensuring you're ready for the real world.
                         </p>
                         <a href="{{ route('frontend.Course') }}"  class="lab-btn mt-4"><span>Explore Our Courses</span></a>
@@ -336,7 +336,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>                        
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -360,10 +360,10 @@
                     @foreach($reviews as $review)
                         <div class="swiper-slide">
                             <div class="stu-feed-item p-4 border rounded bg-white shadow-sm text-center h-100 d-flex flex-column justify-content-between">
-                                
+
                                 <!-- Top: Student Image -->
                                 <div class="mb-4">
-                                    <img src="{{ $review->image ? asset('storage/app/public/' . $review->image) : asset('frontend/assets/images/default-user.png') }}"
+                                    <img src="{{ $review->image ? asset('storage/' . $review->image) : asset('frontend/assets/images/default-user.png') }}"
                                         alt="{{ $review->student_name }}"
                                         class="mx-auto d-block shadow rounded"
      style="width: 250px; height: 200px; object-fit: cover;">
@@ -380,7 +380,7 @@
 
                                     </div>
                                 </div>
-                                
+
                             </div>
                         </div>
                     @endforeach
@@ -433,16 +433,16 @@
                         <div class="col">
                             <div class="post-item">
                                 <div class="post-inner">
-                                    
+
                                     <!-- Media (Image or Video) -->
                                     <div class="post-thumb" style="height: 250px; overflow: hidden;">
                                         @if($blog->media_type === 'image' && $blog->media_path)
                                             <a href="#">
-                                                <img src="{{ asset('storage/app/public/' . $blog->media_path) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;">
+                                                <img src="{{ asset('storage/' . $blog->media_path) }}" alt="{{ $blog->title }}" style="width: 100%; height: 100%; object-fit: cover;">
                                             </a>
                                         @elseif($blog->media_type === 'video' && $blog->media_path)
                                             <video width="100%" height="250" controls style="object-fit: cover;">
-                                                <source src="{{ asset('storage/app/public/' . $blog->media_path) }}" type="video/mp4">
+                                                <source src="{{ asset('storage/' . $blog->media_path) }}" type="video/mp4">
                                                 Your browser does not support the video tag.
                                             </video>
                                         @else
@@ -506,7 +506,7 @@
                     @foreach($banners as $banner)
                         <div class="swiper-slide">
                             <div class="banner-item shadow-sm rounded overflow-hidden">
-                                <img src="{{ asset('storage/app/public/' . $banner->image) }}"
+                                <img src="{{ asset('storage/' . $banner->image) }}"
                                     alt="Banner Image"
                                     class="w-100"
                                     style="height: 500px; object-fit: cover;">
@@ -564,7 +564,7 @@
                                 <div class="course-inner">
                                     <div class="course-thumb">
                                         @if ($course->image)
-                                            <img src="{{ asset('public/' . $course->image) }}" alt="{{ $course->name }}" style="height: 350px; width: 100%; object-fit: cover;">
+                                            <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->name }}" style="height: 350px; width: 100%; object-fit: cover;">
                                         @else
                                             <img src="{{ asset('frontend/assets/images/default-course.jpg') }}" alt="No Image" style="height: 350px; width: 100%; object-fit: cover;">
                                         @endif
