@@ -256,6 +256,17 @@ class StudentDashboardController extends Controller
                 }
             }
 
+            $current2 = $customer;
+            while ($current2->user_id) {
+                $user = Customer::where('left_child_id', $current2->user_id)->first();
+                if ($user && $user->left_child_id == $current2->user_id) {
+                    $upward[] = $user;
+                    $current2 = $user;
+                } else {
+                    break;
+                }
+            }
+
             // 3. Combine all users: upward, current, and downward
             $allLeftUsers = array_merge($upward, [$customer], $downward);
 
@@ -301,6 +312,17 @@ class StudentDashboardController extends Controller
                 if ($sponsor && $sponsor->right_child_id == $current->user_id) {
                     $upward[] = $sponsor;
                     $current = $sponsor;
+                } else {
+                    break;
+                }
+            }
+
+            $current2 = $customer;
+            while ($current2->user_id) {
+                $user = Customer::where('right_child_id', $current2->user_id)->first();
+                if ($user && $user->right_child_id == $current2->user_id) {
+                    $upward[] = $user;
+                    $current2 = $user;
                 } else {
                     break;
                 }
