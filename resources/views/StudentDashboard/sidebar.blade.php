@@ -8,10 +8,10 @@
                 <img class="img-fluid for-dark" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
-            
+
         </div>
 
-       
+
 
 
         <nav class="sidebar-main ">
@@ -51,6 +51,19 @@
                     <!-- Settings -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-money"></i>
+                            <span>Withdrawal</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('student.withdraw') }}">Withdraw</a></li>
+                            <li><a href="{{ route('student.allPayments') }}">Payments</a></li>
+
+                        </ul>
+                    </li>
+
+                    <!-- Settings -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
                             <i class="fa fa-cog"></i>
                             <span>Settings</span>
                         </a>
@@ -60,9 +73,9 @@
                     </li>
 
 
-                    
 
-                    
+
+
                 </ul>
             </div>
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

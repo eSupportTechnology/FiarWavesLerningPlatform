@@ -23,7 +23,7 @@
             </div>
         </div>
     </div>
-    <!-- Container-fluid starts-->
+    {{-- <!-- Container-fluid starts-->
     <div class="container-fluid">
         <div class="row widget-grid">
             <div class="col-xxl-4 col-sm-6 box-col-6">
@@ -60,7 +60,7 @@
             </div>
         </div>
     </div>
-    <!-- Container-fluid Ends-->
+    <!-- Container-fluid Ends--> --}}
 
     <div class="container-fluid mb-4">
         <div class="row">

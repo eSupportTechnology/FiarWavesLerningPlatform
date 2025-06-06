@@ -8,7 +8,7 @@
                 <img class="img-fluid for-dark" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
-            
+
         </div>
 
         <div class="logo-icon-wrapper">
@@ -45,6 +45,20 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.customers.index') }}">All Customers</a></li>
+                        </ul>
+                    </li>
+
+                    <!-- Withdrawal -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-money"></i>
+                            <span>Withdrawal</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.withdrawals.pending') }}">Pending Withdrawal</a></li>
+                            <li><a href="{{ route('admin.withdrawals.approved') }}">Approved Withdrawal</a></li>
+                            <li><a href="{{ route('admin.withdrawals.rejected') }}">Rejected Withdrawal</a></li>
+
                         </ul>
                     </li>
 
@@ -205,7 +219,7 @@
                     </li>
 
 
-                    
+
                 </ul>
             </div>
             <div class="right-arrow" id="right-arrow"><i data-feather="arrow-right"></i></div>

@@ -101,4 +101,75 @@ class WithdrawController extends Controller
 
         return redirect()->route('customer.dashboard')->with('success', 'Your withdrawal request has been submitted successfully!');
     }
+
+    public function withdrawHistory()
+    {
+        $customerId = session('customer_id');
+        $withdrawals = Withdrawal::where('customer_id', $customerId)->get();
+        return view('StudentDashboard.withdraw.withdraw_history', compact('withdrawals'));
+    }
+
+    public function adminIndex()
+    {
+        $withdrawals = Withdrawal::all();
+        return view('AdminDashboard.withdraw.withdraw', compact('withdrawals'));
+    }
+
+    public function pendingWithdrawals()
+    {
+        $withdrawals = Withdrawal::where('status', 'pending')->with('customer')->latest()->get();
+        return view('AdminDashboard.withdraw.pending', compact('withdrawals'));
+    }
+
+    public function approvedWithdrawals()
+    {
+        $withdrawals = Withdrawal::where('status', 'approved')->with('customer')->latest()->get();
+        return view('AdminDashboard.withdraw.approved', compact('withdrawals'));
+    }
+
+    public function rejectedWithdrawals()
+    {
+        $withdrawals = Withdrawal::where('status', 'rejected')->with('customer')->latest()->get();
+        return view('AdminDashboard.withdraw.rejected', compact('withdrawals'));
+    }
+
+    // Approve a withdrawal
+    public function approve($id)
+    {
+        $withdrawal = Withdrawal::findOrFail($id);
+
+        if ($withdrawal->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending withdrawals can be approved.');
+        }
+
+        $withdrawal->status = 'approved';
+        $withdrawal->updated_at = now(); // optional timestamp
+        $withdrawal->save();
+
+        return redirect()->back()->with('success', 'Withdrawal approved successfully.');
+    }
+
+    // Reject a withdrawal
+    public function reject($id)
+    {
+        $withdrawal = Withdrawal::findOrFail($id);
+
+        if ($withdrawal->status !== 'pending') {
+            return redirect()->back()->with('error', 'Only pending withdrawals can be rejected.');
+        }
+
+        $withdrawal->status = 'rejected';
+        $withdrawal->updated_at = now(); // optional timestamp
+        $withdrawal->save();
+
+        return redirect()->back()->with('success', 'Withdrawal rejected successfully.');
+    }
+
+    // Show withdrawal details
+    public function show($id)
+    {
+        $withdrawal = Withdrawal::with('customer')->findOrFail($id);
+
+        return view('AdminDashboard.withdraw.withdraw', compact('withdrawal'));
+    }
 }

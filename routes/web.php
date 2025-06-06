@@ -20,6 +20,8 @@ use App\Http\Controllers\VipPackageBookingController;
 use App\Http\Controllers\EmployeeAuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CallCenterController;
+use App\Http\Controllers\WithdrawController;
+
 
 // Verification notice
 Route::get('/email/verify', function () {
@@ -313,6 +315,18 @@ Route::prefix('admin/customers')->name('admin.customers.')->group(function () {
     Route::delete('/{customer}', [BackendTemplateController::class, 'destroy'])->name('destroy');
 });
 
+// Customer Admin Actions
+Route::prefix('admin')->name('admin.')->group(function () {
+
+    Route::get('/withdrawals/pending', [WithdrawController::class, 'pendingWithdrawals'])->name('withdrawals.pending');
+    Route::post('/withdrawals/{id}/approve', [WithdrawController::class, 'approve'])->name('withdrawals.approve');
+    Route::post('/withdrawals/{id}/reject', [WithdrawController::class, 'reject'])->name('withdrawals.reject');
+    Route::get('/withdrawals/{id}', [WithdrawController::class, 'show'])->name('withdrawals.show');
+
+    Route::get('/approved', [WithdrawController::class, 'approvedWithdrawals'])->name('withdrawals.approved');
+    Route::get('/rejected', [WithdrawController::class, 'rejectedWithdrawals'])->name('withdrawals.rejected');
+});
+
 // Order Management
 Route::prefix('admin/orders')->name('admin.orders.')->group(function () {
     Route::get('/pending', [BackendTemplateController::class, 'pendingOrders'])->name('pending');
@@ -358,7 +372,6 @@ Route::prefix('admin/batches')->name('admin.batches.')->group(function () {
 //-----------------------student dashboard
 
 use App\Http\Controllers\StudentDashboardController;
-use App\Http\Controllers\WithdrawController;
 
 //student dashboard
 
@@ -378,4 +391,5 @@ Route::post('/student/profile/password', [StudentDashboardController::class, 'up
 Route::post('/student/dashboard/invitee', [StudentDashboardController::class, 'inviteeplace'])->name('invitee.place');
 
 Route::get('/student/withdraw', [WithdrawController::class, 'index'])->name('student.withdraw');
+Route::get('/student/payment-history', [WithdrawController::class, 'withdrawHistory'])->name('student.allPayments');
 Route::post('/student/withdraw', [WithdrawController::class, 'submitWithdraw'])->name('student.withdraw.submit');
