@@ -1,11 +1,12 @@
 <!-- Page Sidebar Start -->
 <div class="sidebar-wrapper" sidebar-layout="stroke-svg">
     <div>
+
         <!-- Logo Section -->
         <div class="logo-wrapper">
             <a href="{{ route('admin.dashboard') }}">
-                <img class="img-fluid for-light" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo">
-                <img class="img-fluid for-dark" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
+                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo">
+                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
 

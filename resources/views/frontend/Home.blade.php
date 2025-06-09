@@ -151,7 +151,7 @@
                         <div class="banner-content">
                             <h6 class="subtitle text-uppercase fw-medium mt-5" style="color:#ee1831;">Empowering Education</h6>
                             <h2 class="title" style="color:#1b2954;">
-                                <span class="d-lg-block">DSA Academy</span>
+                                <span class="d-lg-block">Fire Waves</span>
                                 Learn The Skills That <span class="d-lg-block">Transform Your Life</span>
                             </h2>
                             <p class="desc">
@@ -186,7 +186,7 @@
             <!-- Stats Top -->
             <div class="section-header text-center">
                 <span class="subtitle" style="color:#ed3532;">START TO SUCCESS</span>
-                <h2 class="title" style="color:#1b2954;">Achieve Your Goals With DSA Academy</h2>
+                <h2 class="title" style="color:#1b2954;">Achieve Your Goals With Fire Waves</h2>
             </div>
 
             <div class="section-wrapper">
@@ -264,17 +264,17 @@
 
 
 
-    <!-- About DSA Academy Section -->
+    <!-- About Fire Waves Section -->
     <div class="padding-tb section-bg about-dsa-bg" >
         <div class="container" >
             <div class="row justify-content-center align-items-center" >
                 <!-- Left Column: About Content -->
                 <div class="col-lg-5 col-12">
                     <div class="section-header mb-4" >
-                        <span class="subtitle text-danger">About DSA Academy</span>
+                        <span class="subtitle text-danger">About Fire Waves</span>
                         <h2 class="title" style="color:#1b2954;">Empowering Your Future With Practical Skills</h2>
                         <p class="mt-3">
-                            DSA Academy is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development.
+                            Fire Waves is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development.
                             We empower individuals through hands-on learning, expert instructors, and industry-recognized certifications—ensuring you're ready for the real world.
                         </p>
                         <a href="{{ route('frontend.Course') }}"  class="lab-btn mt-4"><span>Explore Our Courses</span></a>
@@ -343,7 +343,7 @@
             </div>
         </div>
     </div>
-    <!-- About DSA Academy Section -->
+    <!-- About Fire Waves Section -->
 
 
 
@@ -456,7 +456,7 @@
 
                                         <div class="meta-post">
                                             <ul class="lab-ul">
-                                                <i class="icofont-ui-user p-2" ></i>DSA Academy
+                                                <i class="icofont-ui-user p-2" ></i>Fire Waves
                                                 <i class="icofont-calendar m-3"></i>{{ $blog->created_at->format('F d, Y') }}
                                             </ul>
                                         </div>
@@ -647,7 +647,7 @@
                                     <!-- Footer -->
                                     <div class="course-footer">
                                         <div class="course-author">
-                                            <a href="#">DSA Academy</a>
+                                            <a href="#">Fire Waves</a>
                                         </div>
                                         <div class="course-btn">
                                             <a href="{{ route('frontend.vip.package.show', $package->id) }}" class="lab-btn-text">

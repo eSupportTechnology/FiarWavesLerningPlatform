@@ -1,6 +1,6 @@
 @extends('frontend.master')
 
-@section('title', 'Booking Status - DSA Academy')
+@section('title', 'Booking Status - Fire Waves')
 
 @section('content')
 <div class="pageheader-section">

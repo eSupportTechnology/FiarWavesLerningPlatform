@@ -1,6 +1,6 @@
 @extends('frontend.master')
 
-@section('title', 'Home - DSA Academy')
+@section('title', 'Home - Fire Waves')
 
 @section('content')
 
@@ -44,7 +44,7 @@
                     </div>
                 @endif
 
-                
+
                 <form form class="account-form" action="{{ route('customer.login.submit') }}" method="POST">
                     @csrf
                     <div class="form-group">
@@ -68,7 +68,7 @@
                 </form>
                 <div class="account-bottom">
                     <span class="d-block cate pt-10">Don’t Have any Account?  <a href="{{ route('customer.register') }}">Sign Up</a></span>
-                    
+
                 </div>
             </div>
         </div>

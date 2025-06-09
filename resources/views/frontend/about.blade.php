@@ -123,7 +123,7 @@
                 <div class="about-right">
                     <div class="section-header">
                         <div class="subtitle">
-                            <span class="subtitle" style="color: #ee1831 !important">About Our DSA Academy</span>
+                            <span class="subtitle" style="color: #ee1831 !important">About Our Fire Waves</span>
                         </div>
                         <h2 class="title">Good Qualification Services And Better Skills</h2>
                         <p>We are a body of professionals specialising in the fields of Management, Marketing, Finance, Human Resources, Education, and Visa guidance. Having worked for decades in industries relevant to our fields, we have now collaborated in order to provide you with the best solution for your business & educational needs. In order to remain a forerunner among competitors, it is our belief that continuous transformation, creativity, and innovation provide a competitive edge within the industry.</p>

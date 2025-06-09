@@ -1,4 +1,4 @@
-<!-- header section start here --> 
+<!-- header section start here -->
 
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
 <style>
@@ -10,47 +10,47 @@ a {
 
 }
 .header-top a:hover {
-    color: #ee1831; 
-    text-decoration: underline; 
+    color: #ee1831;
+    text-decoration: underline;
 }
 .signup {
-    border: 1px solid white; 
-    color: white !important; 
-    font-size: 14px; 
-    padding: 5px 20px; 
-    border-radius: 20px; 
+    border: 1px solid white;
+    color: white !important;
+    font-size: 14px;
+    padding: 5px 20px;
+    border-radius: 20px;
     text-transform: uppercase;
     margin-left:10px;
 }
 
 .signup:hover {
     background-color:rgb(4, 40, 75);
-    color: #ee1831 !important;  
-    border: 1px solid #ee1831; 
+    color: #ee1831 !important;
+    border: 1px solid #ee1831;
 }
 
 .login {
-    
-    border: 1px solid white; 
-    color: white !important; 
-    font-size: 14px; 
-    padding: 5px 20px; 
-    border-radius: 20px; 
+
+    border: 1px solid white;
+    color: white !important;
+    font-size: 14px;
+    padding: 5px 20px;
+    border-radius: 20px;
     text-transform: uppercase;
     margin-left:10px;
 }
 .login:hover {
     background-color:rgb(4, 40, 75);
-    color: #ee1831 !important;  
-    border: 1px solid #ee1831; 
+    color: #ee1831 !important;
+    border: 1px solid #ee1831;
 }
 
 .lab-ul li i{
-    color: white !important; 
+    color: white !important;
     font-size:20px!important;
 }
 .lab-ul li i:hover{
-    color:  #ee1831 !important; 
+    color:  #ee1831 !important;
     font-size:20px!important;
 }
 
@@ -75,7 +75,7 @@ a {
 
 
     <header class="header-section">
-        <div class="header-top" style=" background-color:rgb(4, 40, 75); 
+        <div class="header-top" style=" background-color:rgb(4, 40, 75);
     color: #fff; ">
             <div class="container">
                 <div class="header-top-area">
@@ -153,12 +153,12 @@ a {
             <div class="container">
                 <div class="header-wrapper">
                     <div class="logo">
-                        <a href="{{ route('frontend.home') }}"><img src="{{ asset('frontend/assets/images/logo.png') }}" alt="logo"  style="width:200px; height:auto"></a>
-                    </div> 
+                        <a href="{{ route('frontend.home') }}"><img src="{{ asset('frontend/assets/images/logo.png') }}" alt="logo"  style="width:100px; height:auto"></a>
+                    </div>
                     <div class="menu-area">
                         <div class="menu"  >
                             <ul class="lab-ul right" >
-                                
+
                                 <li> <a href="{{ route('frontend.home') }}">Home</a>  </li>
 
                                 <li> <a href="{{route('frontend.Course')}}">courses</a> </li>
@@ -168,7 +168,7 @@ a {
                                 <li> <a href="{{route('frontend.blog_style3')}}">Blog</a> </li>
 
                                 <li> <a href="{{ route('frontend.about') }}">About Us</a> </li>
-                                   
+
                                 <li><a href="{{ route('frontend.contact') }}">Contact</a></li>
 
                             </ul>
@@ -191,4 +191,3 @@ a {
     <!-- header section ending here -->
 
 
-    

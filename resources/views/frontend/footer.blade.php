@@ -35,7 +35,7 @@
                         <div class="footer-item">
                             <div class="footer-inner text-center">
                                 <img src="{{ asset('frontend/assets/images/logo.png') }}" alt="DSA Logo" style="max-width: 150px;">
-                                <p class="mt-3 text-muted">DSA Academy is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.</p>
+                                <p class="mt-3 text-muted">Fire Waves is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.</p>
                             </div>
                         </div>
                     </div>
@@ -48,7 +48,7 @@
                                     <div class="title"><h4>Useful Links</h4></div>
                                     <div class="content">
                                         <ul class="lab-ul">
-                                            
+
                                             <li><a href="{{ route('frontend.Course') }}">Courses</a></li>
                                             <li><a href="{{ route('frontend.vip.packages') }}">VIP Packages</a></li>
                                             <li><a href="{{ route('frontend.blog_style3') }}">Blog</a></li>
@@ -109,7 +109,7 @@
         <div class="footer-bottom style-2">
             <div class="container">
                 <div class="section-wrapper text-center">
-                    <p>&copy; {{ date('Y') }} DSA Academy. Designed by <a href="https://esupporttech.lk" target="_blank">Esupport Technologies</a>.</p>
+                    <p>&copy; {{ date('Y') }} Fire Waves. Designed by <a href="https://esupporttech.lk" target="_blank">Esupport Technologies</a>.</p>
                 </div>
             </div>
         </div>
