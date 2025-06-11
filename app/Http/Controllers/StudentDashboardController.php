@@ -12,6 +12,7 @@ use App\Models\CustomerCourseBatch;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class StudentDashboardController extends Controller
 {
@@ -168,8 +169,8 @@ class StudentDashboardController extends Controller
             'lname' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email,' . $customerId. ',user_id',
             'phone' => 'nullable|string|max:20',
-            'id_type' => 'nullable|string|max:50',
-            'id_number' => 'nullable|string|max:50',
+            'kyc_doc_type' => 'nullable|string|max:50',
+            'kyc_doc_number' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:255',
             'street' => 'nullable|string|max:255',
             'city' => 'nullable|string|max:100',
@@ -184,6 +185,50 @@ class StudentDashboardController extends Controller
         $customer->update($validated);
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
+    }
+
+    public function submitKyc(Request $request)
+    {
+        $customerId = session('customer_id');
+        $customer = Customer::where('user_id', $customerId)->firstOrFail();
+
+        // Prevent update if KYC is already approved
+        if ($customer->kyc_status === 'approved') {
+            return back()->with('error', 'Your KYC is already approved and cannot be updated.');
+        }
+
+        // Validate input
+        $validated = $request->validate([
+            'kyc_doc_type' => 'required|string|in:NIC,Passport,DL',
+            'kyc_doc_number' => 'required|string|max:255',
+            'kyc_doc_front' => $customer->kyc_doc_front ? 'nullable|image|max:2048' : 'required|image|max:2048',
+            'kyc_doc_back' => $customer->kyc_doc_back ? 'nullable|image|max:2048' : 'required|image|max:2048',
+        ]);
+
+        // Upload files if provided
+        if ($request->hasFile('kyc_doc_front')) {
+            if ($customer->kyc_doc_front) {
+                Storage::delete('public/' . $customer->kyc_doc_front);
+            }
+            $frontPath = $request->file('kyc_doc_front')->store('kyc', 'public');
+            $customer->kyc_doc_front = $frontPath;
+        }
+
+        if ($request->hasFile('kyc_doc_back')) {
+            if ($customer->kyc_doc_back) {
+                Storage::delete('public/' . $customer->kyc_doc_back);
+            }
+            $backPath = $request->file('kyc_doc_back')->store('kyc', 'public');
+            $customer->kyc_doc_back = $backPath;
+        }
+
+        // Save the rest of the info
+        $customer->kyc_doc_type = $validated['kyc_doc_type'];
+        $customer->kyc_doc_number = $validated['kyc_doc_number'];
+        $customer->kyc_status = 'pending'; // Set to pending on (re)submission
+        $customer->save();
+
+        return back()->with('success', 'KYC submitted successfully and is pending verification.');
     }
 
 

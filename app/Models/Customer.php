@@ -28,8 +28,6 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'sponsor_id', // ID of the sponsor
         'left_child_id', // ID of the left child
         'right_child_id', // ID of the right child
-        'id_type',
-        'id_number',
         'street',
         'city',
         'district',
@@ -44,6 +42,17 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'left_side_points', // Points on the left side
         'right_side_points', // Points on the right side
         'is_first_time_withdrawal', // Flag for first time withdrawal
+        'kyc_doc_type', // Type of KYC document
+        'kyc_doc_number', // Number of KYC document
+        'kyc_doc_front', // Front image of KYC document
+        'kyc_doc_back', // Back image of KYC document
+        'kyc_status',
+        'total_left_points',
+        'total_right_points',
+        'active_left_points',
+        'active_right_points',
+        'used_left_points',
+        'used_right_points'
     ];
 
     protected $casts = [

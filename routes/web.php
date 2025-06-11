@@ -389,6 +389,8 @@ Route::get('/student/profile', [StudentDashboardController::class, 'profile'])->
 Route::post('/student/profile', [StudentDashboardController::class, 'updateProfile'])->name('customer.profile.update');
 Route::post('/student/profile/password', [StudentDashboardController::class, 'updatePassword'])->name('customer.password.update');
 Route::post('/student/dashboard/invitee', [StudentDashboardController::class, 'inviteeplace'])->name('invitee.place');
+Route::post('/student/kyc-submit', [StudentDashboardController::class, 'submitKyc'])->name('customer.kyc.submit');
+
 
 Route::get('/student/withdraw', [WithdrawController::class, 'index'])->name('student.withdraw');
 Route::get('/student/payment-history', [WithdrawController::class, 'withdrawHistory'])->name('student.allPayments');
