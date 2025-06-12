@@ -25,7 +25,7 @@ class BackendTemplateController extends Controller
     {
         $customers = Customer::with('assignedBatches')->latest()->paginate(10);
         return view('AdminDashboard.customers.index', compact('customers'));
-    }    
+    }
 
     // Toggle status (active/inactive)
     public function toggleStatus($id)
@@ -166,6 +166,25 @@ class BackendTemplateController extends Controller
     {
         $booking = Booking::with(['customer', 'course'])->findOrFail($id);
         return view('AdminDashboard.orders.show', compact('booking'));
+    }
+
+    public function updateKyc(Request $request, Customer $customer)
+    {
+        $action = $request->input('action');
+
+        if ($action === 'approve') {
+            $customer->kyc_status = 'approved';
+            $message = 'KYC approved successfully.';
+        } elseif ($action === 'reject') {
+            $customer->kyc_status = 'rejected';
+            $message = 'KYC rejected successfully.';
+        } else {
+            return redirect()->back()->with('error', 'Invalid action.');
+        }
+
+        $customer->save();
+
+        return redirect()->back()->with('success', $message);
     }
 
 }
