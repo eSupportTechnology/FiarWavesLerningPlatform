@@ -62,29 +62,246 @@
     </div>
     <!-- Container-fluid Ends--> --}}
 
+
+    <!-- Wallet Card Section (Enhanced Full Width) -->
+    <div class="container-fluid mb-4">
+        <div class="row justify-content-center">
+            <div class="col-12">
+                <div class="card shadow-lg border-0"
+                    style="background: linear-gradient(135deg, #4e54c8, #8f94fb); min-height: 130px;">
+                    <div class="card-body text-white">
+                        <div class="d-flex justify-content-between align-items-center flex-wrap">
+                            <!-- Wallet Info -->
+                            <div class="mb-2">
+                                <h3 class="card-title fw-bold mb-1">My Wallet</h3>
+                                <p class="mb-0 small text-light">Available Balance</p>
+                                @php
+                                    $walletBalance = $customer->wallet_balance ?? 0;
+                                @endphp
+                                <h2 class="fw-bold mt-2">LKR {{ number_format($walletBalance, 2) }}</h2>
+                            </div>
+
+                            <!-- Wallet Icon -->
+                            <div class="d-flex align-items-center mb-2">
+                                <svg width="48" height="48" fill="currentColor"
+                                    class="bi bi-wallet2 text-white me-3">
+                                    <use href="{{ asset('backend/assets/svg/icon-sprite.svg#wallet') }}"></use>
+                                </svg>
+                            </div>
+
+                            <!-- Action Buttons -->
+                            <div class="text-end mb-2">
+                                <a href="{{ route('student.wallet.history') }}"
+                                    class="btn btn-outline-light btn-sm me-2 px-3">
+                                    View History
+                                </a>
+                                <a href="{{ route('student.withdraw') }}" class="btn btn-success btn-sm px-3">
+                                    Withdraw
+                                </a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
+    <!-- Daily Income Section -->
+    <div class="container-fluid mb-4">
+        <div class="card bg-dark text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-6">
+                        <h5 class="card-title mb-1">Daily Income (Daily + Active = Daily Income)</h5>
+                        @php
+
+                            $activeLeft = $customer->active_left_points ?? 0;
+                            $activeRight = $customer->active_right_points ?? 0;
+
+                            $dailyLeft = $customer->left_side_points ?? 0;
+                            $dailyRight = $customer->right_side_points ?? 0;
+
+                            $left = $activeLeft + $dailyLeft;
+                            $right = $activeRight + $dailyRight;
+
+                            $minPoints = min($left, $right);
+
+                            if ($customer->is_first_time_withdrawal == 0) {
+                                // Allow minimum 1
+                                if ($minPoints == 1) {
+                                    $dailyPoints = 1;
+                                } else {
+                                    $evenMin = $minPoints % 2 === 0 ? $minPoints : $minPoints - 1;
+                                    $dailyPoints = min($evenMin, 12);
+                                }
+                            } else {
+                                // After first withdrawal, minimum must be 2 and even
+                                if ($minPoints >= 2) {
+                                    $adjusted = $minPoints % 2 == 0 ? $minPoints : $minPoints - 1;
+                                    $dailyPoints = min($adjusted, 12);
+                                } else {
+                                    $dailyPoints = 0;
+                                }
+                            }
+                        @endphp
+
+                        <p class="card-text mb-2">
+                            Daily Income - {{ $dailyPoints }} Points = LKR {{ $dailyPoints * 1000 }}
+                        </p>
+
+
+
+
+                        @php
+                            $dailyIncome = ($dailyPoints ?? 0) * 1000;
+                            $progress = min(($dailyIncome / 12000) * 100, 100); // Assuming max 12 points = 12,000 LKR
+                        @endphp
+
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $progress }}%;"
+                                aria-valuenow="{{ $dailyIncome }}" aria-valuemin="0" aria-valuemax="12000">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-6 text-end">
+                        <h6 class="mb-0">Daily Maxout - {{ number_format(12000) }} LKR</h6>
+                        <p class="mb-0 fs-4 fw-bold">{{ number_format(12000) }} LKR</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Allowance Progress (Circular) -->
+    <div class="container-fluid mb-4">
+        <div class="card bg-dark text-white">
+            <div class="card-body text-center">
+                <h5 class="card-title mb-4">Allowance Progress</h5>
+
+                @php
+                    $earnedPoints = $dailyPoints ?? 0;
+                    $totalPoints = 12;
+                    $clampedPoints = min($earnedPoints, $totalPoints);
+                    $percentage = round(($clampedPoints / $totalPoints) * 100);
+                    $radius = 65;
+                    $circumference = 2 * pi() * $radius;
+                    $offset = $circumference * (1 - $percentage / 100);
+                @endphp
+
+                <div class="d-flex justify-content-center">
+                    <div class="position-relative" style="width: 150px; height: 150px;">
+                        <svg width="150" height="150" class="position-absolute">
+                            <!-- Background circle -->
+                            <circle cx="75" cy="75" r="{{ $radius }}" fill="none" stroke="#495057"
+                                stroke-width="8" />
+                            <!-- Foreground circle (progress) -->
+                            <circle cx="75" cy="75" r="{{ $radius }}" fill="none" stroke="#28a745"
+                                stroke-width="8" stroke-dasharray="{{ $circumference }}"
+                                stroke-dashoffset="{{ $offset }}" stroke-linecap="round"
+                                transform="rotate(-90 75 75)" />
+                        </svg>
+                        <div class="position-absolute top-50 start-50 translate-middle text-white">
+                            <h2 class="mb-0">{{ $percentage }}%</h2>
+                            <small>{{ $clampedPoints }} / {{ $totalPoints }} pts</small>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-md-4">
                 <div class="card text-white bg-primary">
                     <div class="card-body">
-                        <h5 class="card-title">Invitation Code</h5>
-                        <p class="card-text fs-5 fw-bold">{{ $customer->invite_code ?? 'N/A' }}</p>
+                        <h5 class="card-title text-center">Invitation Code</h5>
+                        <p class="card-text fs-5 fw-bold text-center">{{ $customer->invite_code ?? 'N/A' }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card text-white bg-success">
                     <div class="card-body">
-                        <h5 class="card-title">Left Side Points</h5>
-                        <p class="card-text fs-5 fw-bold">{{ $customer->left_side_points ?? 0 }}</p>
+                        <h5 class="card-title text-center">Daily Left Side Points</h5>
+                        <p class="card-text fs-5 fw-bold text-center">{{ $customer->left_side_points ?? 0 }}</p>
                     </div>
                 </div>
             </div>
             <div class="col-md-4">
                 <div class="card text-white bg-info">
                     <div class="card-body">
-                        <h5 class="card-title">Right Side Points</h5>
-                        <p class="card-text fs-5 fw-bold">{{ $customer->right_side_points ?? 0 }}</p>
+                        <h5 class="card-title text-center">Daily Right Side Points</h5>
+                        <p class="card-text fs-5 fw-bold text-center">{{ $customer->right_side_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Total Points Section -->
+    <div class="container-fluid mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card bg-dark text-white">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Left Side Points</h5>
+                        <p class="card-text fs-2 fw-bold text-warning">{{ $customer->total_left_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card bg-dark text-white">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Total Right Side Points</h5>
+                        <p class="card-text fs-2 fw-bold text-warning">{{ $customer->total_right_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Used Points Section -->
+    <div class="container-fluid mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-warning">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Used Left Side Points</h5>
+                        <p class="card-text fs-3 fw-bold">{{ $customer->used_left_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-warning">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Used Right Side Points</h5>
+                        <p class="card-text fs-3 fw-bold">{{ $customer->used_right_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Points Section -->
+    <div class="container-fluid mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Active Left Side Points</h5>
+                        <p class="card-text fs-3 fw-bold">{{ $customer->active_left_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Active Right Side Points</h5>
+                        <p class="card-text fs-3 fw-bold">{{ $customer->active_right_points ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -127,7 +344,10 @@
                 </div>
             </div>
         </div>
-    @elseif ($customer && $customer->is_first_time_withdrawal == 0 && ($customer->left_side_points < 1 || $customer->right_side_points < 1))
+    @elseif (
+        $customer &&
+            $customer->is_first_time_withdrawal == 0 &&
+            ($customer->left_side_points < 1 || $customer->right_side_points < 1))
         <div class="container-fluid mb-4">
             <div class="alert alert-warning text-center" role="alert">
                 You need at least 1 point on both sides to make your first withdrawal.
@@ -171,7 +391,8 @@
     </div>
 
     <!-- Placement Modal -->
-    <div class="modal fade" id="placementModal" tabindex="-1" aria-labelledby="placementModalLabel" aria-hidden="true">
+    <div class="modal fade" id="placementModal" tabindex="-1" aria-labelledby="placementModalLabel"
+        aria-hidden="true">
         <div class="modal-dialog">
             <form method="POST" action="{{ route('invitee.place') }}">
                 @csrf
@@ -201,6 +422,50 @@
             </form>
         </div>
     </div>
+
+    <!-- Section Members (Like in the image) -->
+    {{-- <div class="container-fluid mb-4">
+        <div class="card bg-dark text-white">
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-md-6">
+                        <h5 class="card-title">Section A Members</h5>
+                        <p class="card-text fs-1 fw-bold text-warning">{{ $customer->section_a_members ?? 0 }}</p>
+                    </div>
+                    <div class="col-md-6">
+                        <h5 class="card-title">Section B Members</h5>
+                        <p class="card-text fs-1 fw-bold text-warning">{{ $customer->section_b_members ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
+
+    <!-- Active Packages Section -->
+    {{-- <div class="container-fluid mb-4">
+        <div class="card bg-dark text-white">
+            <div class="card-body">
+                <div class="row align-items-center">
+                    <div class="col-md-8">
+                        <h5 class="card-title mb-1">Active Packages</h5>
+                        <p class="card-text mb-2">{{ $customer->active_package_name ?? 'Gold Plan' }} - {{ $customer->active_package_amount ?? 500 }} USDT (Earned - {{ $customer->package_earned ?? 365 }} USDT)</p>
+                        <div class="progress" style="height: 8px;">
+                            <div class="progress-bar bg-warning" role="progressbar"
+                                 style="width: {{ (($customer->package_earned ?? 365) / ($customer->active_package_amount ?? 500)) * 100 }}%;"
+                                 aria-valuenow="{{ $customer->package_earned ?? 365 }}"
+                                 aria-valuemin="0"
+                                 aria-valuemax="{{ $customer->active_package_amount ?? 500 }}">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-4 text-end">
+                        <h6 class="mb-0">Total Package Maxout - {{ $customer->total_package_maxout ?? 1500 }} USDT</h6>
+                        <p class="mb-0 fs-4 fw-bold">{{ $customer->total_package_maxout ?? 1500 }} USDT</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> --}}
 
 
     <!-- Script to pass invitee ID into modal -->

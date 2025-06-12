@@ -20,6 +20,7 @@ use App\Http\Controllers\VipPackageBookingController;
 use App\Http\Controllers\EmployeeAuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CallCenterController;
+use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WithdrawController;
 
 
@@ -98,6 +99,20 @@ Route::post('/register/old', [CustomerAuthController::class, 'submitOldRegister'
 
 Route::get('/verify-code', [CustomerAuthController::class, 'showCodeForm'])->name('customer.verify.code.form');
 Route::post('/verify-code', [CustomerAuthController::class, 'verifyCode'])->name('customer.verify.code');
+
+
+Route::middleware(['auth', 'verified'])->prefix('student')->name('student.')->group(function () {
+
+    // Wallet History Page
+    Route::get('/wallet/history', [WalletController::class, 'history'])->name('wallet.history');
+
+    // Withdraw Page
+    Route::get('/wallet/withdraw', [WalletController::class, 'withdraw'])->name('withdraw');
+
+    // (Optional) Post Withdraw Request
+    Route::post('/wallet/withdraw', [WalletController::class, 'processWithdraw'])->name('withdraw.submit');
+});
+
 
 //buy course
 Route::middleware('web')->group(function () {

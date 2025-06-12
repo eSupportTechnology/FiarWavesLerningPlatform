@@ -70,5 +70,9 @@ class Customer extends Authenticatable implements MustVerifyEmail
     {
         return $this->hasMany(CustomerCourseBatch::class, 'customer_id', 'user_id')->with(['course', 'batch']);
     }
+    public function wallet()
+    {
+        return $this->hasOne(Wallet::class, 'customer_id', 'user_id');
+    }
 
 }
