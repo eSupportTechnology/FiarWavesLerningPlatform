@@ -9,6 +9,7 @@ use App\Models\CourseFile;
 use App\Models\CourseRecording;
 use App\Models\CourseZoomLink;
 use App\Models\CustomerCourseBatch;
+use App\Models\Wallet;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
@@ -28,7 +29,22 @@ class StudentDashboardController extends Controller
             ->where('is_side_selected', 0)
             ->where('status', 1) // Only active invitees
             ->get();
-        return view('StudentDashboard.home', compact('invitees', 'customer'));
+        $wallet = Wallet::with('transactions')
+            ->where('customer_id', $customerId)
+            ->first();
+        if (!$wallet) {
+            // Create a new wallet if it doesn't exist
+            $wallet = Wallet::create([
+                'customer_id' => $customerId,
+                'balance' => 0,
+                'total_deposited' => 0,
+                'total_withdrawn' => 0,
+                'status' => 'active', // Active
+                'currency' => 'LKR', // Default currency
+            ]);
+        }
+
+        return view('StudentDashboard.home', compact('invitees', 'customer', 'wallet'));
     }
 
     public function bookings()
@@ -330,6 +346,7 @@ class StudentDashboardController extends Controller
             foreach ($allLeftUsers as $user) {
                 if ($user->user_id != $inviteeId && $user->status == 1) {
                     $user->left_side_points += 1;
+                    $user->total_left_points +=1;
                     $user->save();
                 }
             }
@@ -391,6 +408,7 @@ class StudentDashboardController extends Controller
             foreach ($allRightUsers as $user) {
                 if ($user->user_id != $inviteeId && $user->status == 1) {
                     $user->right_side_points += 1;
+                    $user->total_right_points += 1;
                     $user->save();
                 }
             }

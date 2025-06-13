@@ -101,19 +101,6 @@ Route::get('/verify-code', [CustomerAuthController::class, 'showCodeForm'])->nam
 Route::post('/verify-code', [CustomerAuthController::class, 'verifyCode'])->name('customer.verify.code');
 
 
-Route::middleware(['auth', 'verified'])->prefix('student')->name('student.')->group(function () {
-
-    // Wallet History Page
-    Route::get('/wallet/history', [WalletController::class, 'history'])->name('wallet.history');
-
-    // Withdraw Page
-    Route::get('/wallet/withdraw', [WalletController::class, 'withdraw'])->name('withdraw');
-
-    // (Optional) Post Withdraw Request
-    Route::post('/wallet/withdraw', [WalletController::class, 'processWithdraw'])->name('withdraw.submit');
-});
-
-
 //buy course
 Route::middleware('web')->group(function () {
     Route::get('/course/{id}/book', [BookingController::class, 'showForm'])->name('course.booking.form');
@@ -411,3 +398,11 @@ Route::post('/student/kyc-submit', [StudentDashboardController::class, 'submitKy
 Route::get('/student/withdraw', [WithdrawController::class, 'index'])->name('student.withdraw');
 Route::get('/student/payment-history', [WithdrawController::class, 'withdrawHistory'])->name('student.allPayments');
 Route::post('/student/withdraw', [WithdrawController::class, 'submitWithdraw'])->name('student.withdraw.submit');
+
+    // Wallet History Page
+Route::get('/student/wallet-history', [WalletController::class, 'history'])->name('student.wallet.history');
+    // Withdraw Page
+Route::get('/wallet/withdraw', [WalletController::class, 'withdraw'])->name('withdraw');
+    // (Optional) Post Withdraw Request
+Route::post('/wallet/withdraw', [WalletController::class, 'processWithdraw'])->name('withdraw.submit');
+

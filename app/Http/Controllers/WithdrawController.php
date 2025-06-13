@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Wallet;
+use App\Models\WalletTransaction;
 use App\Models\Withdrawal;
 use Illuminate\Http\Request;
 
@@ -17,7 +19,19 @@ class WithdrawController extends Controller
     {
         $customerId = session('customer_id');
         $customer = Customer::where('user_id', $customerId)->first();
-        return view('StudentDashboard.withdraw.withdraw', compact('customer'));
+        $wallet = Wallet::where('customer_id', $customerId)->first();
+        if(!$wallet){
+            // Create a new wallet if it doesn't exist
+            $wallet = Wallet::create([
+                'customer_id' => $customerId,
+                'balance' => 0,
+                'total_deposited' => 0,
+                'total_withdrawn' => 0,
+                'status' => 'active', // Active
+                'currency' => 'LKR', // Default currency
+            ]);
+        }
+        return view('StudentDashboard.withdraw.withdraw', compact('customer','wallet'));
     }
 
     public function submitWithdraw(Request $request)
@@ -29,47 +43,11 @@ class WithdrawController extends Controller
             return redirect()->back()->with('error', 'Customer not found.');
         }
 
-        // First withdrawal
-        if (
-            $customer->is_first_time_withdrawal == 0 &&
-            $customer->left_side_points >= 1 &&
-            $customer->right_side_points >= 1
-        ) {
-            $amount = 1000;
-            $leftPointsUsed = 1;
-            $rightPointsUsed = 1;
-
-            $customer->is_first_time_withdrawal = 1;
-        }
-
-        // Subsequent withdrawals
-        elseif (
-            $customer->is_first_time_withdrawal == 1 &&
-            $customer->left_side_points >= 2 &&
-            $customer->right_side_points >= 2
-        ) {
-            $request->validate([
-                'amount' => 'required|in:2000,4000,6000,8000,10000,12000',
-            ]);
-
-            $amount = (int) $request->amount;
-            $pointsNeeded = $amount / 500 / 2;
-
-            if (
-                $customer->left_side_points < $pointsNeeded ||
-                $customer->right_side_points < $pointsNeeded
-            ) {
-                return redirect()->back()->with('error', 'Insufficient points for the amount.');
-            }
-
-            $leftPointsUsed = $pointsNeeded;
-            $rightPointsUsed = $pointsNeeded;
-        }
-
-        // Not eligible
-        else {
-            return redirect()->back()->with('error', 'You are not eligible to withdraw at this time.');
-        }
+        // Validate the withdrawal request
+        $request->validate([
+            'amount' => 'required|numeric|min:1000',
+        ]);
+        $amount = $request->input('amount');
 
         // Create Withdrawal Record
         Withdrawal::create([
@@ -80,24 +58,32 @@ class WithdrawController extends Controller
             'account_name' => $customer->account_name,
             'account_number' => $customer->account_number,
             'status' => 'pending',
-            'left_points_used' => $leftPointsUsed,
-            'right_points_used' => $rightPointsUsed,
+            'left_points_used' => $amount/1000,
+            'right_points_used' => $amount / 1000,
             'withdrawal_date' => now(),
             'withdrawal_time' => now()->format('H:i:s'),
             'withdrawal_type' => $customer->is_first_time_withdrawal ? 'first_time' : 'subsequent',
         ]);
 
-        if($amount == 12000){
-            // Deduct points
-            $customer->left_side_points = 0;
-            $customer->right_side_points = 0;
-        } else{
-            // Deduct points
-            $customer->left_side_points -= $leftPointsUsed;
-            $customer->right_side_points -= $rightPointsUsed;
+        //update wallet
+        $wallet = Wallet::where('customer_id', $customerId)->first();
+        if ($wallet) {
+            $wallet->balance -= $amount;
+            $wallet->total_withdrawn += $amount;
+            // Create a wallet transaction record
+            $wallet->transactions()->create([
+                'transaction_type' => 'withdrawal',
+                'amount' => $amount,
+                'description' => 'Withdrawal request submitted',
+                'status' => 'pending',
+            ]);
+
+            $wallet->save();
+
+        } else {
+            return redirect()->back()->with('error', 'Wallet not found.');
         }
 
-        $customer->save();
 
         return redirect()->route('customer.dashboard')->with('success', 'Your withdrawal request has been submitted successfully!');
     }
@@ -142,9 +128,29 @@ class WithdrawController extends Controller
             return redirect()->back()->with('error', 'Only pending withdrawals can be approved.');
         }
 
+        // Update the customer's wallet TRansaction
+        $wallet = Wallet::where('customer_id', $withdrawal->customer_id)->first();
+
+        $walletTransaction = WalletTransaction::where('wallet_id', $wallet->id)
+            ->where('transaction_type', 'withdrawal')
+            ->where('status', 'pending')
+            ->where('amount', $withdrawal->amount)
+            // ->where('created_at', $withdrawal->created_at)
+            ->first();
+        if (!$walletTransaction) {
+            return redirect()->back()->with('error', 'Wallet transaction not found for this withdrawal.');
+        }
+
+        $walletTransaction->status = 'completed';
+        $walletTransaction->save();
+
         $withdrawal->status = 'approved';
         $withdrawal->updated_at = now(); // optional timestamp
         $withdrawal->save();
+
+
+
+
 
         return redirect()->back()->with('success', 'Withdrawal approved successfully.');
     }
@@ -157,6 +163,22 @@ class WithdrawController extends Controller
         if ($withdrawal->status !== 'pending') {
             return redirect()->back()->with('error', 'Only pending withdrawals can be rejected.');
         }
+
+        // Update the customer's wallet TRansaction
+        $wallet = Wallet::where('customer_id', $withdrawal->customer_id)->first();
+
+        $walletTransaction = WalletTransaction::where('wallet_id', $wallet->id)
+            ->where('transaction_type', 'withdrawal')
+            ->where('status', 'pending')
+            ->where('amount', $withdrawal->amount)
+            // ->where('created_at', $withdrawal->created_at)
+            ->first();
+        if (!$walletTransaction) {
+            return redirect()->back()->with('error', 'Wallet transaction not found for this withdrawal.');
+        }
+
+        $walletTransaction->status = 'failed';
+        $walletTransaction->save();
 
         $withdrawal->status = 'rejected';
         $withdrawal->updated_at = now(); // optional timestamp

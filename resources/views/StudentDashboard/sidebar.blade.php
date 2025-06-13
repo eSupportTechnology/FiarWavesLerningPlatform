@@ -56,7 +56,8 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('student.withdraw') }}">Withdraw</a></li>
-                            <li><a href="{{ route('student.allPayments') }}">Payments</a></li>
+                            <li><a href="{{ route('student.allPayments') }}">Payments History</a></li>
+                            <li><a href="{{ route('student.wallet.history') }}">Wallet History</a></li>
 
                         </ul>
                     </li>
