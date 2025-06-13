@@ -615,7 +615,7 @@
 
 
 <!-- VIP Packages Section Start -->
-<div class="course-section padding-tb section-bg">
+{{-- <div class="course-section padding-tb section-bg">
     <div class="container">
         <div class="section-header text-center">
             <span class="subtitle" style="color:#ed3532;">DSA Special</span>
@@ -674,7 +674,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --}}
 <!-- VIP Packages Section End -->
 
 

@@ -14,7 +14,7 @@
         <!-- Logo Section -->
         <div class="logo-wrapper text-center">
             <a href="{{ route('customer.dashboard') }}" class="text-decoration-none">
-            <span class="h3 fw-bold text-primary">Batter Way</span>
+            <span class="h3 fw-bold text-primary">Better Way</span>
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
         </div>

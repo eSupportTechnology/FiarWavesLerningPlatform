@@ -15,7 +15,7 @@
         <!-- Logo Section -->
         <div class="logo-wrapper text-center">
             <a href="{{ route('admin.dashboard') }}" class="text-decoration-none">
-            <span class="h3 fw-bold text-primary">Batter Way</span>
+            <span class="h3 fw-bold text-primary">Better Way</span>
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
         </div>
@@ -131,7 +131,7 @@
                         </ul>
                     </li>
 
-                    <!-- Vip Packages -->
+                    {{-- <!-- Vip Packages -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
                         <i class="fa fa-gift"></i> <!-- Corrected Icon -->
@@ -141,7 +141,7 @@
                             <li><a href="{{ route('vip-packages.index') }}">All Packages</a></li>
                             <li><a href="{{ route('vip-packages.create') }}">Add Packages</a></li>
                         </ul>
-                    </li>
+                    </li> --}}
 
                     <!-- You Tube Videos -->
                     <li class="sidebar-list">

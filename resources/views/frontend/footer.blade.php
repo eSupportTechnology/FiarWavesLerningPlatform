@@ -52,7 +52,7 @@
                                         <ul class="lab-ul">
 
                                             <li><a href="{{ route('frontend.Course') }}">Courses</a></li>
-                                            <li><a href="{{ route('frontend.vip.packages') }}">VIP Packages</a></li>
+                                            {{-- <li><a href="{{ route('frontend.vip.packages') }}">VIP Packages</a></li> --}}
                                             <li><a href="{{ route('frontend.blog_style3') }}">Blog</a></li>
                                             <li><a href="{{ route('frontend.contact') }}">Contact Us</a></li>
                                             <li><a href="{{ route('frontend.about') }}">About Us</a></li>

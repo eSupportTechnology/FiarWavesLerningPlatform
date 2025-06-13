@@ -13,8 +13,11 @@ class DialogSMSService
 
     public function __construct()
     {
-        $this->username = 'drops';
-        $this->password = 'Drops.123';
+        // $this->username = 'drops';
+        // $this->password = 'Drops.123';
+
+        $this->username = '123';
+        $this->password = '123';
     }
 
     public function getToken()

@@ -81,10 +81,10 @@ a {
                 <div class="header-top-area">
                     <ul class="lab-ul left">
                         <li>
-                            <i class="fa fa-envelope"></i> <span>dsacademy995@gmail.com</span>
+                            <i class="fa fa-envelope"></i> <span>example@gmail.com</span>
                         </li>
                         <li>
-                            <i class="icofont-ui-call"></i> <span>074 002 0222 / 070 360 0690</span>
+                            <i class="icofont-ui-call"></i> <span>074 xxx xxxx / 070 xxx xxxx</span>
                         </li>
                     </ul>
                     <ul class="lab-ul social-icons d-flex align-items-center">
@@ -165,7 +165,7 @@ a {
 
                                 <li> <a href="{{route('frontend.Course')}}">courses</a> </li>
 
-                                <li> <a href="{{route('frontend.vip.packages')}}">VIP Package</a> </li>
+                                {{-- <li> <a href="{{route('frontend.vip.packages')}}">VIP Package</a> </li> --}}
 
                                 <li> <a href="{{route('frontend.blog_style3')}}">Blog</a> </li>
 

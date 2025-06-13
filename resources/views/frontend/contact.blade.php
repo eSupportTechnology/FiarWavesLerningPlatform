@@ -72,7 +72,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Main Office</h6>
-                            <p>Kirillawela, Kadawatha 11850</p>
+                            <p>xxxx, xxxx xxxxx</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Phone</h6>
-                            <p>074 002 0222 / 070 360 0690</p>
+                            <p>xxx xxx xxxx / xxx xxx xxxx</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -90,7 +90,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Email</h6>
-                            <a href="mailto:dsacademy995@gmail.com">dsacademy995@gmail.com</a>
+                            <a href="mailto:xxx@gmail.com">xxx@gmail.com</a>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -99,7 +99,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Website</h6>
-                            <a href="#">DSA.lk</a>
+                            <a href="#">xxx.lk</a>
                         </div>
                     </div>
                 </div>
@@ -121,8 +121,8 @@
                 <div class="card text-center shadow-sm h-100">
                     <div class="card-body">
                         <i class="fas fa-university fa-2x text-primary mb-3"></i>
-                        <h5 class="card-title">Kadawatha Branch</h5>
-                        <p>NO.446/A/01, RANMUTHUGALA, KADAWATHA </p>
+                        <h5 class="card-title">xxxx Branch</h5>
+                        <p>NO.xxx/A/01, xxx, xxx </p>
                     </div>
                 </div>
             </div>
@@ -131,8 +131,8 @@
                 <div class="card text-center shadow-sm h-100">
                     <div class="card-body">
                         <i class="fas fa-university fa-2x text-primary mb-3"></i>
-                        <h5 class="card-title">Kurunagala Branch</h5>
-                        <p>Near Old Sathosa, Yanthampalawa, Kurunegala</p>
+                        <h5 class="card-title">xxx Branch</h5>
+                        <p>Near Old xxx, xxxx, xxx</p>
                     </div>
                 </div>
             </div>
@@ -141,8 +141,8 @@
                 <div class="card text-center shadow-sm h-100">
                     <div class="card-body">
                         <i class="fas fa-university fa-2x text-primary mb-3"></i>
-                        <h5 class="card-title">Dehiaththakandiya Branch</h5>
-                        <p>Main Road , Dehiaththakandiya</p>
+                        <h5 class="card-title">xxxx Branch</h5>
+                        <p>Main Road , xxxx</p>
                     </div>
                 </div>
             </div>
