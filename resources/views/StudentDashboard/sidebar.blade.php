@@ -2,13 +2,21 @@
 <div class="sidebar-wrapper" sidebar-layout="stroke-svg">
     <div>
         <!-- Logo Section -->
-        <div class="logo-wrapper">
+        {{-- <div class="logo-wrapper">
             <a href="{{ route('customer.dashboard') }}">
                 <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo">
                 <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
 
+        </div> --}}
+
+        <!-- Logo Section -->
+        <div class="logo-wrapper text-center">
+            <a href="{{ route('customer.dashboard') }}" class="text-decoration-none">
+            <span class="h3 fw-bold text-primary">Batter Way</span>
+            </a>
+            <div class="back-btn"><i class="fa fa-angle-left"></i></div>
         </div>
 
 
@@ -59,6 +67,17 @@
                             <li><a href="{{ route('student.allPayments') }}">Payments History</a></li>
                             <li><a href="{{ route('student.wallet.history') }}">Wallet History</a></li>
 
+                        </ul>
+                    </li>
+
+                    <!-- Course Management -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
+                            <i class="fa fa-group"></i> <!-- Corrected Icon -->
+                            <span>Invitees </span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('student.invitees.index') }}">All Invitees</a></li>
                         </ul>
                     </li>
 

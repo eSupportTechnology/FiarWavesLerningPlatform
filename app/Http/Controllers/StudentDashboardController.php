@@ -422,6 +422,17 @@ class StudentDashboardController extends Controller
 
 
 
+    public function allInvitees(){
+        $customerId = session('customer_id');
+        if ($customerId === null) {
+            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+        }
+        $customer = Customer::where('user_id', $customerId)
+            ->first();
+        $invitees = Customer::where('sponsor_id', $customerId)->paginate(10);
+
+        return view('StudentDashboard.invitees.index', compact('invitees', 'customer'));
+    }
 
 
 }

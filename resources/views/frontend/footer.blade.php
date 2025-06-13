@@ -34,8 +34,10 @@
                     <div class="col pr-5">
                         <div class="footer-item">
                             <div class="footer-inner text-center">
-                                <img src="{{ asset('frontend/assets/images/logo.png') }}" alt="DSA Logo" style="max-width: 150px;">
-                                <p class="mt-3 text-muted">Fire Waves is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.</p>
+                                <div style="font-size: 2rem; font-weight: bold; letter-spacing: 2px; color: #ee1831; font-family: 'Montserrat', Arial, sans-serif;">
+                                    Better <span style="color: #06f84f;">Way</span>
+                                </div>
+                                <p class="mt-3 text-muted">Better Way is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.</p>
                             </div>
                         </div>
                     </div>
@@ -109,7 +111,7 @@
         <div class="footer-bottom style-2">
             <div class="container">
                 <div class="section-wrapper text-center">
-                    <p>&copy; {{ date('Y') }} Fire Waves. Designed by <a href="https://esupporttech.lk" target="_blank">Esupport Technologies</a>.</p>
+                    <p>&copy; {{ date('Y') }} Better Way. Designed by <a href="https://esupporttech.lk" target="_blank">Esupport Technologies</a>.</p>
                 </div>
             </div>
         </div>

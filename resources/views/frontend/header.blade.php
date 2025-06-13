@@ -152,8 +152,10 @@ a {
         <div class="header-bottom">
             <div class="container">
                 <div class="header-wrapper">
-                    <div class="logo">
-                        <a href="{{ route('frontend.home') }}"><img src="{{ asset('frontend/assets/images/logo.png') }}" alt="logo"  style="width:100px; height:auto"></a>
+                    <div class="logo" style="font-family: 'Segoe UI', Arial, sans-serif; font-weight: bold; font-size: 2rem; letter-spacing: 2px; color: #ee1831; text-shadow: 1px 1px 4px rgba(4,40,75,0.2);">
+                        <a href="{{ route('frontend.home') }}" style="color: #ee1831; text-decoration: none;">
+                            Better <span style="color: #04284b;">Way</span>
+                        </a>
                     </div>
                     <div class="menu-area">
                         <div class="menu"  >

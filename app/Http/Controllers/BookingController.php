@@ -149,6 +149,20 @@ class BookingController extends Controller
         $booking = Booking::where('reference', $reference)->first();
 
         if ($booking && $booking->status === 'Confirmed') {
+            $customer = Customer::where('user_id', $$booking->customer_id)->first();
+            if (!$customer) {
+                Log::error('Customer not found for booking reference: ' . $reference);
+                return view('frontend.callback')->with([
+                    'status'    => 'unknown',
+                    'message'   => 'We could not find your customer details. Please contact support.',
+                    'reference' => $reference,
+                ]);
+            }
+            if ($customer->status === '0') {
+                $customer->status = '1'; // Activate customer if not active
+                $customer->save();
+                Log::info('Customer activated for booking reference: ' . $reference);
+            }
             return view('frontend.callback')->with([
                 'status'    => 'success',
                 'message'   => 'Your payment was successful! Thank you for booking with us.',
@@ -213,7 +227,7 @@ class BookingController extends Controller
         return response()->json(['message' => 'Payment failed or canceled'], 200);
     }
 
-    
+
     public function pending()
     {
         $bookings = Booking::with('customer', 'course')
