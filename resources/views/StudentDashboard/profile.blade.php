@@ -255,12 +255,13 @@
                                 <li class="list-group-item">
                                     <strong>Front Image:</strong><br>
                                     <img src="{{ asset('storage/' . $customer->kyc_doc_front) }}" alt="Front Image"
-                                        class="img-thumbnail" style="max-width:200px;">
+                                        class="img-thumbnail" style="width: 150px; height: 150px; object-fit: fill;">
+
                                 </li>
                                 <li class="list-group-item">
                                     <strong>Back Image:</strong><br>
                                     <img src="{{ asset('storage/' . $customer->kyc_doc_back) }}" alt="Back Image"
-                                        class="img-thumbnail" style="max-width:200px;">
+                                        class="img-thumbnail" style="width: 150px; height: 150px; object-fit: fill;">
                                 </li>
                             </ul>
                         @else
