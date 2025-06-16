@@ -3,21 +3,13 @@
     <div>
 
         <!-- Logo Section -->
-        {{-- <div class="logo-wrapper">
+        <div class="logo-wrapper">
             <a href="{{ route('admin.dashboard') }}">
-                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo">
-                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/logo.png') }}" alt="Logo Dark">
+                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="Logo">
+                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
 
-        </div> --}}
-
-        <!-- Logo Section -->
-        <div class="logo-wrapper text-center">
-            <a href="{{ route('admin.dashboard') }}" class="text-decoration-none">
-            <span class="h3 fw-bold text-primary">Better Way</span>
-            </a>
-            <div class="back-btn"><i class="fa fa-angle-left"></i></div>
         </div>
 
         <div class="logo-icon-wrapper">

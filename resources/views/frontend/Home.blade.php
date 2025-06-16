@@ -163,20 +163,13 @@
                         </div>
                     </div>
 
-                    <!-- Text Logo Area -->
-                    <div class="col-xxl-6 col-xl-5 d-none d-xl-flex align-items-center justify-content-center">
-                        <div class="card shadow-lg border-0" style="min-width: 320px; min-height: 180px; background: linear-gradient(135deg, #1b2954 80%, #ed3532 100%); display: flex; align-items: center; justify-content: center;">
-                            <div class="card-body text-center">
-                                <h1 class="mb-0" style="font-family: 'Montserrat', sans-serif; font-weight: 800; color: #fff; letter-spacing: 2px; font-size: 2.5rem;">
-                                    Better <span style="color: #ed3532;">Way</span>
-                                </h1>
-                                <div style="height: 4px; width: 60px; background: #ed3532; margin: 16px auto 0 auto; border-radius: 2px;"></div>
-                                <p class="mt-3 mb-0" style="color: #fff; opacity: 0.85; font-size: 1.1rem; letter-spacing: 1px;">
-                                    Your Path to Success
-                                </p>
-                            </div>
-                        </div>
-                    </div>
+                    <!-- Image Area -->
+                    <div class="col-xxl-6 col-xl-5 d-none d-xl-block"
+                    style="background-image: url('{{ asset('frontend/assets/images/newlogo.png') }}');
+                        background-size: contain;
+                        background-repeat: no-repeat;
+                        background-position: center;
+                        min-height: 500px;">
                 </div>
             </div>
         </div>

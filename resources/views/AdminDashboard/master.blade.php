@@ -7,8 +7,8 @@
     <meta name="description" content="Cuba admin is super flexible, powerful, clean &amp; modern responsive bootstrap 5 admin template with unlimited possibilities.">
     <meta name="keywords" content="admin template, Cuba admin template, dashboard template, flat admin template, responsive admin template, web app">
     <meta name="author" content="pixelstrap">
-    <link rel="icon" href="{{asset('backend/assets/images/favicon.png')}}" type="image/x-icon">
-    <link rel="shortcut icon" href="{{asset('backend/assets/images/favicon.png')}}" type="image/x-icon">
+    <link rel="icon" href="{{asset('frontend/assets/images/newlogo.png')}}" type="image/x-icon">
+    <link rel="shortcut icon" href="{{asset('frontend/assets/images/newlogo.png')}}" type="image/x-icon">
 
     <title>Better Way</title>
 
