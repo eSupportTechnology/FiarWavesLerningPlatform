@@ -35,7 +35,7 @@
                         <div class="footer-item">
                             <div class="footer-inner text-center">
                                 <img src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="DSA Logo" style="max-width: 150px;">
-                                <p class="mt-3 text-muted">Fire Waves is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.</p>
+                                <p class="mt-3 text-muted">Better Way is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.</p>
                             </div>
                         </div>
                     </div>
