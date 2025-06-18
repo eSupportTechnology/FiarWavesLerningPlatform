@@ -64,14 +64,14 @@
 
                     <div class="card mb-4">
                         <div class="card-body">
-                            <div class="mb-3">
+                            {{-- <div class="mb-3">
                                 <label for="name" class="form-label fw-semibold">Full Name</label>
                                 <input type="text" class="form-control" id="name" name="name"
                                     value="{{ old('name', $customer->name) }}" required>
                                 @error('name')
                                     <small class="text-danger">{{ $message }}</small>
                                 @enderror
-                            </div>
+                            </div> --}}
 
                             {{-- <div class="mb-3">
             <label for="kyc_doc_type" class="form-label fw-semibold">Identify Document Type</label>

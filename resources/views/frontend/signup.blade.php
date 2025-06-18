@@ -1,6 +1,6 @@
 @extends('frontend.master')
 
-@section('title', 'Home - DSA Academy')
+@section('title', 'Home - Better Way')
 
 @section('content')
 
@@ -45,9 +45,9 @@
                 @endif
                 <form class="account-form"  action="{{ route('customer.register.submit') }}" method="POST">
                     @csrf
-                    <div class="form-group">
+                    {{-- <div class="form-group">
                         <input type="text" placeholder="Name with initials" name="name" required>
-                    </div>
+                    </div> --}}
                     <div class="form-group">
                         <input type="text" placeholder="First Name" name="fname" required>
                     </div>

@@ -144,13 +144,13 @@
                                     $dailyPoints = 1;
                                 } else {
                                     $evenMin = $minPoints % 2 === 0 ? $minPoints : $minPoints - 1;
-                                    $dailyPoints = min($evenMin, 12);
+                                    $dailyPoints = min($evenMin, 10);
                                 }
                             } else {
                                 // After first withdrawal, minimum must be 2 and even
                                 if ($minPoints >= 2) {
                                     $adjusted = $minPoints % 2 == 0 ? $minPoints : $minPoints - 1;
-                                    $dailyPoints = min($adjusted, 12);
+                                    $dailyPoints = min($adjusted, 10);
                                 } else {
                                     $dailyPoints = 0;
                                 }
@@ -166,19 +166,19 @@
 
                         @php
                             $dailyIncome = ($dailyPoints ?? 0) * 1000;
-                            $progress = min(($dailyIncome / 12000) * 100, 100); // Assuming max 12 points = 12,000 LKR
+                            $progress = min(($dailyIncome / 10000) * 100, 100); // Assuming max 10 points = 10,000 LKR
                         @endphp
 
                         <div class="progress" style="height: 8px;">
                             <div class="progress-bar bg-success" role="progressbar" style="width: {{ $progress }}%;"
-                                aria-valuenow="{{ $dailyIncome }}" aria-valuemin="0" aria-valuemax="12000">
+                                aria-valuenow="{{ $dailyIncome }}" aria-valuemin="0" aria-valuemax="10000">
                             </div>
                         </div>
 
                     </div>
                     <div class="col-md-6 text-end">
-                        <h6 class="mb-0">Daily Maxout - {{ number_format(12000) }} LKR</h6>
-                        <p class="mb-0 fs-4 fw-bold">{{ number_format(12000) }} LKR</p>
+                        <h6 class="mb-0">Daily Maxout - {{ number_format(10000) }} LKR</h6>
+                        <p class="mb-0 fs-4 fw-bold">{{ number_format(10000) }} LKR</p>
                     </div>
                 </div>
             </div>
@@ -193,7 +193,7 @@
 
                 @php
                     $earnedPoints = $dailyPoints ?? 0;
-                    $totalPoints = 12;
+                    $totalPoints = 10;
                     $clampedPoints = min($earnedPoints, $totalPoints);
                     $percentage = round(($clampedPoints / $totalPoints) * 100);
                     $radius = 65;

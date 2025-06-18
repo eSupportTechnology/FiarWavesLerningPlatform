@@ -61,13 +61,13 @@ class DailyIncomeService
                 $dailyPoints = 1;
             } else {
                 $evenMin = $minPoints % 2 === 0 ? $minPoints : $minPoints - 1;
-                $dailyPoints = min($evenMin, 12);
+                $dailyPoints = min($evenMin, 10);
             }
         } else {
             // After first withdrawal, minimum must be 2 and even
             if ($minPoints >= 2) {
                 $adjusted = $minPoints % 2 == 0 ? $minPoints : $minPoints - 1;
-                $dailyPoints = min($adjusted, 12);
+                $dailyPoints = min($adjusted, 10);
             } else {
                 $dailyPoints = 0;
             }
@@ -85,7 +85,7 @@ class DailyIncomeService
         $customer->used_left_points += $dailyPoints;
         $customer->used_right_points += $dailyPoints;
 
-        if ($dailyPoints == 12) {
+        if ($dailyPoints == 10) {
             // Deduct points
             $customer->left_side_points = 0;
             $customer->right_side_points = 0;

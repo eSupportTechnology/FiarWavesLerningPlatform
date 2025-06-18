@@ -31,7 +31,7 @@ class CustomerAuthController extends Controller
         try{
         //dd($request);
         $request->validate([
-            'name' => 'required|string',
+            // 'name' => 'required|string',
             'fname' => 'required|string|max:255',
             'lname' => 'required|string|max:255',
             'email' => 'required|email|unique:customers,email',
@@ -43,7 +43,7 @@ class CustomerAuthController extends Controller
 
         session([
             'pending_customer' => [
-                'name' => $request->name,
+                // 'name' => $request->name,
                 'fname' => $request->fname,
                 'lname' => $request->lname,
                 'email' => $request->email,
@@ -54,7 +54,7 @@ class CustomerAuthController extends Controller
         ]);
 
         Customer::create([
-            'name' => $request->name,
+            'name' => $request->fname . ' ' . $request->lname,
             'fname' => $request->fname,
             'lname' => $request->lname,
             'email' => $request->email,
