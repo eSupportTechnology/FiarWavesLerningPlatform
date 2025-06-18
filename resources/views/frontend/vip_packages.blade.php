@@ -63,14 +63,14 @@
                                     <!-- Price + Rating -->
                                     <div class="course-category d-flex justify-content-between align-items-center">
                                             <div class="course " style="backgroud-color:#000;">
-                                                
+
                                             </div>
                                             <!-- Price and Rating Row -->
                                             <div class="course-category d-flex justify-content-between align-items-center">
                                                 <div class="course-price-box">
                                                     Rs. {{ number_format($package->price, 2) }}
                                                 </div>
-                                                
+
                                             </div>
                                         </div>
 
@@ -83,7 +83,7 @@
                                     <!-- Footer -->
                                     <div class="course-footer">
                                         <div class="course-author">
-                                            <a href="#">DSA Academy</a>
+                                            <a href="#">Better Way</a>
                                         </div>
                                         <div class="course-btn">
                                             <a href="{{ route('frontend.vip.package.show', $package->id) }}" class="lab-btn-text">

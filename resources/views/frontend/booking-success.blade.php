@@ -1,6 +1,6 @@
 @extends('frontend.master')
 
-@section('title', 'Booking Successful - DSA Academy')
+@section('title', 'Booking Successful - Better Way')
 
 @section('content')
 
