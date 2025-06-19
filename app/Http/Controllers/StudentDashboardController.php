@@ -183,10 +183,9 @@ class StudentDashboardController extends Controller
         $customer = Customer::findOrFail($customerId);
 
         $validated = $request->validate([
-            'name' => 'required|string|max:255',
             'fname' => 'required|string|max:255',
             'lname' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email,' . $customerId. ',user_id',
+            'email' => 'required|email|unique:customers,email,' . $customerId . ',user_id',
             'phone' => 'nullable|string|max:20',
             'kyc_doc_type' => 'nullable|string|max:50',
             'kyc_doc_number' => 'nullable|string|max:50',
@@ -203,8 +202,39 @@ class StudentDashboardController extends Controller
 
         $customer->update($validated);
 
+        $request->validate([
+            'bank_front_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            'bank_back_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+        ]);
+
+        if ($request->hasFile('bank_front_image')) {
+            if ($customer->bank_front_image) {
+                Storage::delete('public/' . $customer->bank_front_image);
+            }
+            if ($customer->bank_front_image && Storage::disk('public')->exists($customer->bank_front_image)) {
+                Storage::disk('public')->delete($customer->bank_front_image);
+            }
+            $frontPath = $request->file('bank_front_image')->store('bank', 'public');
+            $customer->bank_front_image = $frontPath;
+        }
+
+        if ($request->hasFile('bank_back_image')) {
+            if ($customer->bank_back_image) {
+                Storage::delete('public/' . $customer->bank_back_image);
+            }
+            if ($customer->bank_back_image && Storage::disk('public')->exists($customer->bank_back_image)) {
+                Storage::disk('public')->delete($customer->bank_back_image);
+            }
+            $backPath = $request->file('bank_back_image')->store('bank', 'public');
+            $customer->bank_back_image = $backPath;
+        }
+
+        $customer->bank_status = 'pending';
+        $customer->save();
+
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }
+
 
     public function submitKyc(Request $request)
     {
@@ -229,6 +259,9 @@ class StudentDashboardController extends Controller
             if ($customer->kyc_doc_front) {
                 Storage::delete('public/' . $customer->kyc_doc_front);
             }
+            if ($customer->kyc_doc_front && Storage::disk('public')->exists($customer->kyc_doc_front)) {
+                Storage::disk('public')->delete($customer->kyc_doc_front);
+            }
             $frontPath = $request->file('kyc_doc_front')->store('kyc', 'public');
             $customer->kyc_doc_front = $frontPath;
         }
@@ -236,6 +269,9 @@ class StudentDashboardController extends Controller
         if ($request->hasFile('kyc_doc_back')) {
             if ($customer->kyc_doc_back) {
                 Storage::delete('public/' . $customer->kyc_doc_back);
+            }
+            if ($customer->kyc_doc_back && Storage::disk('public')->exists($customer->kyc_doc_back)) {
+                Storage::disk('public')->delete($customer->kyc_doc_back);
             }
             $backPath = $request->file('kyc_doc_back')->store('kyc', 'public');
             $customer->kyc_doc_back = $backPath;

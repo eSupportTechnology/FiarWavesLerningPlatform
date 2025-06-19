@@ -229,24 +229,81 @@
             <div class="col-md-4">
                 <div class="card text-white bg-primary">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Invitation Code</h5>
+                        <h5 class="card-title text-center">Referral  Code</h5>
                         <p class="card-text fs-5 fw-bold text-center">{{ $customer->invite_code ?? 'N/A' }}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-8">
                 <div class="card text-white bg-success">
-                    <div class="card-body">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Referral Link</h5>
+
+                        @php
+                            $referralLink = url('/customer/register') . '?ref=' . ($customer->invite_code ?? '');
+                        @endphp
+
+                        <div class="input-group">
+                            <input type="text" id="referralLink" class="form-control text-center" value="{{ $referralLink }}" readonly>
+                            <button class="btn btn-dark" onclick="copyReferral()">Copy</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <script>
+                function copyReferral() {
+                    const copyText = document.getElementById("referralLink");
+                    copyText.select();
+                    copyText.setSelectionRange(0, 99999); // For mobile
+                    navigator.clipboard.writeText(copyText.value).then(function () {
+                        alert("Referral link copied to clipboard!");
+                    });
+                }
+            </script>
+
+
+        </div>
+    </div>
+
+    <!-- Daily Points Section -->
+    <div class="container-fluid mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-info">
+                    <div class="card-body text-center">
                         <h5 class="card-title text-center">Daily Left Side Points</h5>
                         <p class="card-text fs-5 fw-bold text-center">{{ $customer->left_side_points ?? 0 }}</p>
                     </div>
                 </div>
             </div>
-            <div class="col-md-4">
+            <div class="col-md-6">
                 <div class="card text-white bg-info">
-                    <div class="card-body">
+                    <div class="card-body text-center">
                         <h5 class="card-title text-center">Daily Right Side Points</h5>
                         <p class="card-text fs-5 fw-bold text-center">{{ $customer->right_side_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Points Section -->
+    <div class="container-fluid mb-4">
+        <div class="row">
+            <div class="col-md-6">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Active Left Side Points</h5>
+                        <p class="card-text fs-3 fw-bold">{{ $customer->active_left_points ?? 0 }}</p>
+                    </div>
+                </div>
+            </div>
+            <div class="col-md-6">
+                <div class="card text-white bg-success">
+                    <div class="card-body text-center">
+                        <h5 class="card-title">Active Right Side Points</h5>
+                        <p class="card-text fs-3 fw-bold">{{ $customer->active_right_points ?? 0 }}</p>
                     </div>
                 </div>
             </div>
@@ -296,30 +353,6 @@
             </div>
         </div>
     </div>
-
-    <!-- Active Points Section -->
-    <div class="container-fluid mb-4">
-        <div class="row">
-            <div class="col-md-6">
-                <div class="card text-white bg-success">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Active Left Side Points</h5>
-                        <p class="card-text fs-3 fw-bold">{{ $customer->active_left_points ?? 0 }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-6">
-                <div class="card text-white bg-success">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Active Right Side Points</h5>
-                        <p class="card-text fs-3 fw-bold">{{ $customer->active_right_points ?? 0 }}</p>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
-
 
     <!-- Invitees Section -->
     <div class="container-fluid mb-4">

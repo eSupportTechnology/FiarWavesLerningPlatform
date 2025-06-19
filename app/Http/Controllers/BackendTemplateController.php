@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Booking;
 use App\Models\CustomerCourseBatch;
 use App\Services\DialogSMSService;
+use Illuminate\Support\Facades\Log;
 
 class BackendTemplateController extends Controller
 {
@@ -153,7 +154,7 @@ class BackendTemplateController extends Controller
 
             $smsService->sendSMS($customer->contact_number, $message);
         } catch (\Exception $e) {
-            \Log::error("Failed to send SMS to customer: " . $e->getMessage());
+            Log::error("Failed to send SMS to customer: " . $e->getMessage());
             // Optional: you can flash a warning if needed
         }
 
@@ -187,4 +188,22 @@ class BackendTemplateController extends Controller
         return redirect()->back()->with('success', $message);
     }
 
+    public function updateBank(Request $request, Customer $customer)
+    {
+        $action = $request->input('action');
+
+        if ($action === 'approve') {
+            $customer->bank_status = 'approved';
+            $message = 'Bank approved successfully.';
+        } elseif ($action === 'reject') {
+            $customer->bank_status = 'rejected';
+            $message = 'Bank rejected successfully.';
+        } else {
+            return redirect()->back()->with('error', 'Invalid action.');
+        }
+
+        $customer->save();
+
+        return redirect()->back()->with('success', $message);
+    }
 }

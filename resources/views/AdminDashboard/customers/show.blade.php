@@ -82,22 +82,7 @@
                         <td>{{ $customer->postal_code ?? 'Not Provided' }}</td>
                     </tr>
 
-                    <tr>
-                        <th>Bank name</th>
-                        <td>{{ $customer->bank_name ?? 'Not Provided' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Bank Branch</th>
-                        <td>{{ $customer->bank_branch ?? 'Not Provided' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Account Name</th>
-                        <td>{{ $customer->account_name ?? 'Not Provided' }}</td>
-                    </tr>
-                    <tr>
-                        <th>Account Number</th>
-                        <td>{{ $customer->account_number ?? 'Not Provided' }}</td>
-                    </tr>
+
 
                     {{-- <tr><th>Email Verified</th>
                     <td>
@@ -113,6 +98,81 @@
                         <td>{{ $customer->created_at->format('Y-m-d H:i') }}</td>
                     </tr>
                 </table>
+
+                @if ($customer->account_name && $customer->account_number)
+                    <hr>
+                    <h5 class="mb-3">Bank Details</h5>
+                    <table class="table table-bordered">
+                        <tr>
+                            <th>Bank name</th>
+                            <td>{{ $customer->bank_name ?? 'Not Provided' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Bank Branch</th>
+                            <td>{{ $customer->bank_branch ?? 'Not Provided' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Account Name</th>
+                            <td>{{ $customer->account_name ?? 'Not Provided' }}</td>
+                        </tr>
+                        <tr>
+                            <th>Account Number</th>
+                            <td>{{ $customer->account_number ?? 'Not Provided' }}</td>
+                        </tr>
+
+                        @if($customer->bank_front_image)
+                        <tr>
+                            <th>Bank Front</th>
+                            <td>
+                                <a href="{{ asset('storage/' . $customer->bank_front_image) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $customer->bank_front_image) }}" alt="Front"
+                                        style="max-width:120px;max-height:80px;">
+                                </a>
+                            </td>
+                        </tr>
+                        @endif
+                        @if($customer->bank_back_image)
+                        <tr>
+                            <th>Bank Back</th>
+                            <td>
+                                <a href="{{ asset('storage/' . $customer->bank_back_image) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $customer->bank_back_image) }}" alt="Back"
+                                        style="max-width:120px;max-height:80px;">
+                                </a>
+                            </td>
+                        </tr>
+                        @endif
+                        <tr>
+                            <th>Current Bank Status</th>
+                            <td>
+                                @if (is_null($customer->bank_status))
+                                    <span class="badge bg-secondary">Not Applied</span>
+                                @elseif ($customer->bank_status == 'approved')
+                                    <span class="badge bg-success">Approved</span>
+                                @elseif ($customer->bank_status == 'rejected')
+                                    <span class="badge bg-danger">Rejected</span>
+                                @else
+                                    <span class="badge bg-warning">Pending</span>
+                                @endif
+                            </td>
+                        </tr>
+                    </table>
+                    @if ($customer->bank_status !== 'approved' && $customer->bank_status !== 'rejected' && !is_null($customer->bank_status))
+                        <form action="{{ route('admin.customers.bank.update', $customer) }}" method="POST"
+                            class="d-flex gap-2">
+                            @csrf
+                            @method('PATCH')
+                            <button type="submit" name="action" value="approve" class="btn btn-success btn-sm"
+                                onclick="return confirm('Are you sure you want to approve this Bank?')">Approve</button>
+                            <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm"
+                                onclick="return confirm('Are you sure you want to reject this Bank?')">Reject</button>
+                        </form>
+                    @endif
+                @else
+                    <div class="alert alert-secondary mt-3 mb-0">
+                        No Bank details submitted.
+                    </div>
+                @endif
 
                 @if ($customer->kyc_doc_type && $customer->kyc_doc_number)
                     <hr>

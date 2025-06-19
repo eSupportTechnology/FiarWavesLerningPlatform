@@ -316,6 +316,7 @@ Route::prefix('admin/customers')->name('admin.customers.')->group(function () {
     Route::post('/{customer}/toggle-status', [BackendTemplateController::class, 'toggleStatus'])->name('toggleStatus');
     Route::delete('/{customer}', [BackendTemplateController::class, 'destroy'])->name('destroy');
     Route::patch('/{customer}/kyc', [BackendTemplateController::class, 'updateKyc'])->name('kyc.update');
+    Route::patch('/{customer}/bank', [BackendTemplateController::class, 'updateBank'])->name('bank.update');
 });
 
 // Customer Admin Actions

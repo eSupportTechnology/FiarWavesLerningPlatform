@@ -28,6 +28,10 @@ return new class extends Migration
             $table->string('account_name')->nullable()->after('bank_branch');
             $table->string('account_number')->nullable()->after('account_name');
             $table->string('account_type')->nullable()->after('account_number');
+            $table->string('bank_front_image')->nullable()->after('account_type'); // New column for bank front image
+            $table->string('bank_back_image')->nullable()->after('bank_front_image'); // New column for bank back image
+            $table->enum('bank_status', ['pending', 'approved', 'rejected'])->nullable()->after('bank_back_image'); // New column for bank status
+
 
             $table->string('invite_code')->nullable()->unique()->after('account_type');
             $table->boolean('is_side_selected')->default(false)->after('invite_code'); // New column to track side selection
@@ -84,7 +88,10 @@ return new class extends Migration
                 'active_left_points',
                 'active_right_points',
                 'used_left_points',
-                'used_right_points'
+                'used_right_points',
+                'bank_front_image',
+                'bank_back_image',
+                'bank_status',
             ]);
         });
     }

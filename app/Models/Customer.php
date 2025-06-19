@@ -52,7 +52,10 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'active_left_points',
         'active_right_points',
         'used_left_points',
-        'used_right_points'
+        'used_right_points',
+        'bank_front_image', // New column for bank front image
+        'bank_back_image', // New column for bank back image
+        'bank_status', // New column for bank status
     ];
 
     protected $casts = [

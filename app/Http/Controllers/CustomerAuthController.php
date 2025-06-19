@@ -20,9 +20,10 @@ use App\Services\DialogSMSService;
 class CustomerAuthController extends Controller
 {
     // Show Registration Page
-    public function showRegister()
+    public function showRegister(Request $request)
     {
-        return view('frontend.signup');
+        $refCode = $request->query('ref');
+        return view('frontend.signup', compact('refCode'));
     }
 
     // Handle Registration
@@ -53,6 +54,13 @@ class CustomerAuthController extends Controller
             ]
         ]);
 
+            // Get the latest customer (or whatever model you're using)
+            $latestCustomer = Customer::orderBy('user_id', 'desc')->first();
+            $nextNumber = $latestCustomer ? $latestCustomer->user_id + 1 : 1;
+            // Format as BW0001, BW0002, etc.
+            $inviteCode = 'BW' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
+
+
         Customer::create([
             'name' => $request->fname . ' ' . $request->lname,
             'fname' => $request->fname,
@@ -63,7 +71,7 @@ class CustomerAuthController extends Controller
             'status' => 0, // Default status inactive
             'is_verified' => false, // Default not verified
             'is_side_selected' => false, // Default side not selected
-            'invite_code' => Str::random(4), // Generate a random invite code
+            'invite_code' => $inviteCode,
             'sponsor_id' => $request->sponser_code ? Customer::where('invite_code', $request->sponser_code)->value('user_id') : null,
         ]);
 

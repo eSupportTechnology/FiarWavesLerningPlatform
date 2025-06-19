@@ -37,6 +37,7 @@
                                 <th>Contact</th>
                                 <th>Status</th>
                                 <th>KYC Status</th>
+                                <th>Bank Status</th>
                                 <th>Actions</th>
                             </tr>
                         </thead>
@@ -60,6 +61,21 @@
                                             @elseif ($customer->kyc_status == 'approved')
                                                 Approved
                                             @elseif ($customer->kyc_status == 'rejected')
+                                                Rejected
+                                            @else
+                                                Pending
+                                            @endif
+
+                                        </span>
+                                    </td>
+
+                                    <td>
+                                        <span class="badge bg-{{ $customer->bank_status ? 'success' : 'warning' }}">
+                                            @if (is_null($customer->bank_status))
+                                                Not Applied
+                                            @elseif ($customer->bank_status == 'approved')
+                                                Approved
+                                            @elseif ($customer->bank_status == 'rejected')
                                                 Rejected
                                             @else
                                                 Pending

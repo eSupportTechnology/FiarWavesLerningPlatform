@@ -68,7 +68,7 @@
                         <input type="password" placeholder="Confirm Password" name="password_confirmation">
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Sponser Code" name="sponser_code">
+                        <input type="text" placeholder="Sponser Code" name="sponser_code" value="{{ old('sponser_code', $refCode ?? '') }}">
                     </div>
                     <div class="form-group">
                         <button class="lab-btn"><span>Get Started Now</span></button>

@@ -59,36 +59,11 @@
                 @endif
 
                 {{-- Profile form --}}
-                <form action="{{ route('customer.profile.update') }}" method="POST">
-                    @csrf
+                <form action="{{ route('customer.profile.update') }}" method="POST" enctype="multipart/form-data">
+                @csrf
 
                     <div class="card mb-4">
                         <div class="card-body">
-                            {{-- <div class="mb-3">
-                                <label for="name" class="form-label fw-semibold">Full Name</label>
-                                <input type="text" class="form-control" id="name" name="name"
-                                    value="{{ old('name', $customer->name) }}" required>
-                                @error('name')
-                                    <small class="text-danger">{{ $message }}</small>
-                                @enderror
-                            </div> --}}
-
-                            {{-- <div class="mb-3">
-            <label for="kyc_doc_type" class="form-label fw-semibold">Identify Document Type</label>
-                <select class="form-control" name="kyc_doc_type" id="kyc_doc_type">
-                    <option value="" >Select</option>
-                    <option value="NIC" {{ old('kyc_doc_type', $customer->kyc_doc_type) == 'NIC' ? 'selected' : '' }}>National Identity Card (NIC)</option>
-                    <option value="Passport" {{ old('kyc_doc_type', $customer->kyc_doc_type) == 'Passport' ? 'selected' : '' }}>Passport</option>
-                    <option value="Driving License" {{ old('kyc_doc_type', $customer->kyc_doc_type) == 'DL' ? 'selected' : '' }}>Driving License</option>
-                </select>
-            @error('kyc_doc_type') <small class="text-danger">{{ $message }}</small> @enderror
-        </div>
-
-        <div class="mb-3" id="kyc_doc_number_container" style="display: none;">
-            <label for="kyc_doc_number" class="form-label fw-semibold">Document Number</label>
-            <input type="text" class="form-control" id="kyc_doc_number" name="kyc_doc_number" value="{{ old('kyc_doc_number', $customer->kyc_doc_number) }}" required>
-            @error('kyc_doc_number') <small class="text-danger">{{ $message }}</small> @enderror
-        </div> --}}
 
                             <div class="mb-3">
                                 <div class="row">
@@ -226,6 +201,47 @@
 
                                 </div>
                             </div>
+
+                            <h6 class="text-primary mb-3">Bank Book Images</h6>
+                            <div class="mb-3">
+                                <div class="row">
+                                    <div class="col-sm-12 col-md-12 col-lg-6">
+                                        <label for="bank_front_image" class="form-label fw-semibold">Bank Book Front Image</label>
+                                        <input type="file" class="form-control" id="bank_front_image" name="bank_front_image" accept="image/*">
+                                        @if ($customer->bank_front_image)
+                                            <div class="mt-2">
+                                                <img src="{{ asset('storage/' . $customer->bank_front_image) }}" alt="Bank Book Front" class="img-thumbnail" style="max-width:150px;">
+                                            </div>
+                                        @endif
+                                        @error('bank_front_image')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                    <div class="col-sm-12 col-md-12 col-lg-6">
+                                        <label for="bank_back_image" class="form-label fw-semibold">Bank Book Back Image</label>
+                                        <input type="file" class="form-control" id="bank_back_image" name="bank_back_image" accept="image/*">
+                                        @if ($customer->bank_back_image)
+                                            <div class="mt-2">
+                                                <img src="{{ asset('storage/' . $customer->bank_back_image) }}" alt="Bank Book Back" class="img-thumbnail" style="max-width:150px;">
+                                            </div>
+                                        @endif
+                                        @error('bank_back_image')
+                                            <small class="text-danger">{{ $message }}</small>
+                                        @enderror
+                                    </div>
+                                </div>
+                            </div>
+                            @if ($customer->bank_status)
+                                <div class="mb-3">
+                                    @if ($customer->bank_status === 'approved')
+                                        <span class="badge bg-success"><i class="bi bi-patch-check-fill"></i> Bank Verified</span>
+                                    @elseif ($customer->bank_status === 'pending')
+                                        <span class="badge bg-warning text-dark"><i class="bi bi-hourglass-split"></i> Bank Verification Pending</span>
+                                    @elseif ($customer->bank_status === 'rejected')
+                                        <span class="badge bg-danger"><i class="bi bi-x-circle-fill"></i> Bank Verification Rejected</span>
+                                    @endif
+                                </div>
+                            @endif
 
                             <button type="submit" class="btn btn-primary">
                                 <i class="bi bi-save"></i> Save Changes
