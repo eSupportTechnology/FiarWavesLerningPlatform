@@ -96,6 +96,9 @@ Route::post('/customer/logout', [CustomerAuthController::class, 'logout'])->name
 Route::get('/register/old', [CustomerAuthController::class, 'showOldRegisterForm'])->name('customer.old.register');
 Route::post('/register/old', [CustomerAuthController::class, 'submitOldRegister'])->name('customer.old.register.submit');
 
+Route::get('/verify-email/{token}', [CustomerAuthController::class, 'verifyEmail'])->name('customer.verify.email');
+
+
 
 Route::get('/verify-code', [CustomerAuthController::class, 'showCodeForm'])->name('customer.verify.code.form');
 Route::post('/verify-code', [CustomerAuthController::class, 'verifyCode'])->name('customer.verify.code');
@@ -396,6 +399,14 @@ Route::post('/student/dashboard/invitee', [StudentDashboardController::class, 'i
 Route::post('/student/kyc-submit', [StudentDashboardController::class, 'submitKyc'])->name('customer.kyc.submit');
 
 Route::get('/student/invitees', [StudentDashboardController::class, 'allInvitees'])->name('student.invitees.index');
+
+Route::post('/student/send-email-verification-code', [StudentDashboardController::class, 'sendEmailVerificationCode'])->name('customer.email.sendCode');
+Route::post('/student/update-email', [StudentDashboardController::class, 'updateEmail'])->name('customer.email.update');
+
+Route::post('/student/send-phone-verification-code', [StudentDashboardController::class, 'sendPhoneVerificationCode'])->name('customer.phone.sendCode');
+Route::post('/student/update-phone', [StudentDashboardController::class, 'updatePhone'])->name('customer.phone.update');
+
+
 
 
 Route::get('/student/withdraw', [WithdrawController::class, 'index'])->name('student.withdraw');

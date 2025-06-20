@@ -16,8 +16,8 @@ class DialogSMSService
         // $this->username = 'drops';
         // $this->password = 'Drops.123';
 
-        $this->username = '123';
-        $this->password = '123';
+        $this->username = env('SMS_USERNAME');
+        $this->password = env('SMS_PASSWORD');
     }
 
     public function getToken()
@@ -45,7 +45,7 @@ class DialogSMSService
             "msisdn" => [
                 ["mobile" => ltrim($mobile, '0')] // should be 7XXXXXXXX
             ],
-            "sourceAddress" => "DSA academy", // use your mask here or leave blank
+            "sourceAddress" => env('SMS_SOURCE_ADDRESS'), // use your mask here or leave blank
             "message" => $message,
             "transaction_id" => $transactionId
         ];

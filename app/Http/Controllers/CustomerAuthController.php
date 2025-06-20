@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Notifications\InviteCodeNotification;
+use App\Notifications\VerifyEmailNotification;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
@@ -61,7 +63,7 @@ class CustomerAuthController extends Controller
             $inviteCode = 'BW' . str_pad($nextNumber, 4, '0', STR_PAD_LEFT);
 
 
-        Customer::create([
+        $customer = Customer::create([
             'name' => $request->fname . ' ' . $request->lname,
             'fname' => $request->fname,
             'lname' => $request->lname,
@@ -75,7 +77,18 @@ class CustomerAuthController extends Controller
             'sponsor_id' => $request->sponser_code ? Customer::where('invite_code', $request->sponser_code)->value('user_id') : null,
         ]);
 
-            return redirect()->route('customer.login')->with('success', 'Registration complete. Please log in.');
+            // Generate a simple token or signed URL for verification
+            $token = sha1($customer->email . time());
+            $customer->email_verification_token = $token;
+            $customer->save();
+
+            // Send Email Verification Link
+            $customer->notify(new VerifyEmailNotification($token));
+
+            // Send Invite Code to Email
+            $customer->notify(new InviteCodeNotification($inviteCode));
+
+            return redirect()->route('customer.login')->with('success', 'Registration complete. Please please comfirm your email.');
 
 
     } catch (\Throwable $e) {
@@ -83,6 +96,23 @@ class CustomerAuthController extends Controller
         return back()->with('error', 'Something went wrong: ' . $e->getMessage());
     }
     }
+
+    public function verifyEmail($token)
+    {
+        $customer = Customer::where('email_verification_token', $token)->first();
+
+        if (!$customer) {
+            return redirect()->route('customer.login')->with('error', 'Invalid verification token.');
+        }
+
+        $customer->is_verified = true;
+        $customer->email_verification_token = null;
+        $customer->email_verified_at = now(); // Set the email verified timestamp
+        $customer->save();
+
+        return redirect()->route('customer.login')->with('success', 'Email verified successfully. You can now log in.');
+    }
+
 
     public function verifyCode(Request $request)
     {
@@ -164,12 +194,12 @@ class CustomerAuthController extends Controller
     {
 
         $request->validate([
-            'email' => 'required|email|exists:customers,email',
+            'invite_code' => 'required|exists:customers,invite_code',
             'password' => 'required',
         ]);
         //dd($request);
 
-        $customer = Customer::where('email', $request->email)->first();
+        $customer = Customer::where('invite_code', $request->invite_code)->first();
 
         if ($customer && Hash::check($request->password, $customer->password)) {
             // Custom session

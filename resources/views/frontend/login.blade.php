@@ -48,7 +48,7 @@
                 <form form class="account-form" action="{{ route('customer.login.submit') }}" method="POST">
                     @csrf
                     <div class="form-group">
-                        <input type="text" placeholder="Email" name="email">
+                        <input type="text" placeholder="User Id" name="invite_code">
                     </div>
                     <div class="form-group">
                         <input type="password" placeholder="Password" name="password">

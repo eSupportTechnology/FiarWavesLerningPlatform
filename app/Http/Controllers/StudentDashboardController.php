@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Mail\EmailVerificationCodeMail;
+use App\Services\DialogSMSService;
 use Illuminate\Http\Request;
 use App\Models\Customer;
 use App\Models\Booking;
@@ -10,10 +12,13 @@ use App\Models\CourseRecording;
 use App\Models\CourseZoomLink;
 use App\Models\CustomerCourseBatch;
 use App\Models\Wallet;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Support\Facades\Mail;
 
 class StudentDashboardController extends Controller
 {
@@ -185,8 +190,6 @@ class StudentDashboardController extends Controller
         $validated = $request->validate([
             'fname' => 'required|string|max:255',
             'lname' => 'required|string|max:255',
-            'email' => 'required|email|unique:customers,email,' . $customerId . ',user_id',
-            'phone' => 'nullable|string|max:20',
             'kyc_doc_type' => 'nullable|string|max:50',
             'kyc_doc_number' => 'nullable|string|max:50',
             'address' => 'nullable|string|max:255',
@@ -470,5 +473,163 @@ class StudentDashboardController extends Controller
         return view('StudentDashboard.invitees.index', compact('invitees', 'customer'));
     }
 
+    public function sendEmailVerificationCode(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|email'
+        ]);
 
+        $customerId = session('customer_id');
+        if ($customerId === null) {
+            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+        }
+        $customer = Customer::where('user_id', $customerId)
+            ->first();
+
+        // Check if email already exists
+        if (Customer::where('email', $request->email)->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This email is already in use. Please enter a different one.'
+            ]);
+        }
+
+        $verificationCode = rand(100000, 999999);
+
+        $customer->email_verification_code = $verificationCode;
+        $customer->save();
+
+        // Store in session for temporary check
+        Session::put('email_change_code', $verificationCode);
+        Session::put('email_change_target', $request->email);
+
+        // Send Email
+        Mail::to($request->email)->send(new EmailVerificationCodeMail($verificationCode));
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updateEmail(Request $request)
+    {
+        $request->validate([
+            'new_email' => 'required|email',
+            'email_verification_code' => 'required'
+        ]);
+
+        $code = Session::get('email_change_code');
+        $targetEmail = Session::get('email_change_target');
+
+        if (!$code || !$targetEmail) {
+            return back()->with('error', 'No verification request found.');
+        }
+
+        if ($request->email_verification_code != $code || $request->new_email != $targetEmail) {
+            return back()->with('error', 'Invalid verification code or email mismatch.');
+        }
+
+         $customerId = session('customer_id');
+        if ($customerId === null) {
+            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+        }
+        $customer = Customer::where('user_id', $customerId)
+            ->first();
+        if($customer->email_verification_code == $request->email_verification_code){
+            $customer->email = $request->new_email;
+            $customer->save();
+        }
+        // Clear session
+        Session::forget(['email_change_code', 'email_change_target']);
+
+        return back()->with('success', 'Email updated successfully.');
+    }
+
+    public function sendPhoneVerificationCode(Request $request)
+    {
+        $request->validate([
+            'phone' => 'required|string|digits:10'
+        ]);
+
+        // Prevent sending to already existing phone numbers
+        if (Customer::where('contact_number', $request->phone)->exists()) {
+            return response()->json([
+                'success' => false,
+                'message' => 'This phone number is already in use.'
+            ]);
+        }
+
+        $customerId = session('customer_id');
+        if ($customerId === null) {
+            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+        }
+        $customer = Customer::where('user_id', $customerId)
+            ->first();
+
+        $verificationCode = rand(100000, 999999);
+
+        // Store code & phone in session
+        Session::put('phone_change_code', $verificationCode);
+        Session::put('phone_change_target', $request->phone);
+
+        $customer->verification_code = $verificationCode;
+        $customer->save();
+
+        // Send SMS
+        try {
+            $message = "Your verification code is: $verificationCode";
+            $this->sendSMS($request->phone, $message);
+        } catch (\Exception $e) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Failed to send SMS. ' . $e->getMessage()
+            ]);
+        }
+
+        return response()->json(['success' => true]);
+    }
+
+    public function updatePhone(Request $request)
+    {
+        $request->validate([
+            'new_phone' => 'required|string|digits:10',
+            'phone_verification_code' => 'required'
+        ]);
+
+        $code = Session::get('phone_change_code');
+        $targetPhone = Session::get('phone_change_target');
+
+        if (!$code || !$targetPhone) {
+            return back()->with('error', 'No verification request found.');
+        }
+
+        if ($request->phone_verification_code != $code || $request->new_phone != $targetPhone) {
+            return back()->with('error', 'Invalid code or phone mismatch.');
+        }
+
+        $customerId = session('customer_id');
+        if ($customerId === null) {
+            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+        }
+        $customer = Customer::where('user_id', $customerId)
+            ->first();
+        if ($customer->verification_code == $request->phone_verification_code) {
+            $customer->contact_number = $request->new_phone;
+            $customer->save();
+        }
+
+        Session::forget(['phone_change_code', 'phone_change_target']);
+
+        return back()->with('success', 'Phone number updated successfully.');
+    }
+
+
+    public function sendSMS($mobile, $message)
+    {
+        try {
+            $dialog = new DialogSMSService();
+            $dialog->sendSMS($mobile, $message);
+        } catch (\Exception $e) {
+            Log::error("Dialog SMS Error: " . $e->getMessage());
+            throw new \Exception("SMS sending failed.");
+        }
+    }
 }

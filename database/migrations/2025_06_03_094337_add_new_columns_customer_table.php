@@ -53,6 +53,9 @@ return new class extends Migration
 
             $table->integer('used_left_points')->default(0)->after('active_right_points');
             $table->integer('used_right_points')->default(0)->after('used_left_points');
+
+            $table->string('email_verification_token')->nullable()->after('email');
+            $table->string('email_verification_code')->nullable()->after('email_verification_token');
         });
     }
 
@@ -92,6 +95,8 @@ return new class extends Migration
                 'bank_front_image',
                 'bank_back_image',
                 'bank_status',
+                'email_verification_token',
+                'email_verification_code',
             ]);
         });
     }
