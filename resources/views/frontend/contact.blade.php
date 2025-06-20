@@ -58,7 +58,7 @@
             <div class="col-xl-8 col-lg-7 col-12">
                 <div class="map-area">
                     <div class="maps">
-                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63319.92695043451!2d79.91882435000002!3d6.9776795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae256634982c6f7%3A0x4018010c1909b6aa!2sKadawatha!5e0!3m2!1sen!2slk!4v1711828854992" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
+                        <iframe src="{{$landingPageContent ? $landingPageContent->location_link : " https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d63319.92695043451!2d79.91882435000002!3d6.9776795!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ae256634982c6f7%3A0x4018010c1909b6aa!2sKadawatha!5e0!3m2!1sen!2slk!4v1711828854992" }}" width="100%" height="400" style="border:0;" allowfullscreen="" loading="lazy"></iframe>
                     </div>
                 </div>
             </div>
@@ -72,7 +72,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Main Office</h6>
-                            <p>xxxx, xxxx xxxxx</p>
+                            <p>{{$landingPageContent ? $landingPageContent->address : "xxxx, xxxx xxxxx" }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -81,7 +81,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Phone</h6>
-                            <p>xxx xxx xxxx / xxx xxx xxxx</p>
+                            <p>{{$landingPageContent ? $landingPageContent->number_1 : " 074 xxx xxxx" }} / {{$landingPageContent ? $landingPageContent->number_2 : " 070 xxx xxxx" }}</p>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -90,7 +90,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Email</h6>
-                            <a href="mailto:xxx@gmail.com">xxx@gmail.com</a>
+                            <a href="mailto:xxx@gmail.com">{{$landingPageContent ? $landingPageContent->email : "xxx@gmail.com" }}</a>
                         </div>
                     </div>
                     <div class="contact-item">
@@ -99,7 +99,7 @@
                         </div>
                         <div class="contact-content">
                             <h6 class="title">Website</h6>
-                            <a href="#">xxx.lk</a>
+                            <a href="#">{{$landingPageContent ? $landingPageContent->website : "xxx.lk" }}</a>
                         </div>
                     </div>
                 </div>
