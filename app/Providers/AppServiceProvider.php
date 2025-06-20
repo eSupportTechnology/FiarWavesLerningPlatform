@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Models\LandingPageContent;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
+use Illuminate\Support\Facades\View;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -23,5 +25,9 @@ class AppServiceProvider extends ServiceProvider
         Route::prefix('api')
         ->middleware('api')
         ->group(base_path('routes/api.php'));
+
+        View::composer('*', function ($view) {
+            $view->with('landingPageContent', LandingPageContent::first());
+        });
     }
 }

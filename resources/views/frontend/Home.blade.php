@@ -149,15 +149,14 @@
                     <!-- Text Area -->
                     <div class="col-xxl-6 col-xl-7 col-lg-11">
                         <div class="banner-content">
-                            <h6 class="subtitle text-uppercase fw-medium mt-5" style="color:#ee1831;">Empowering Education</h6>
+                            <h6 class="subtitle text-uppercase fw-medium mt-5" style="color:#ee1831;">{{$landingPageContent ? $landingPageContent->red_title : "Empowering Education" }}</h6>
                             <h2 class="title" style="color:#1b2954;">
-                                <span class="d-lg-block">Better Way</span>
-                                Learn The Skills That <span class="d-lg-block">Transform Your Life</span>
+                                <span class="d-lg-block">{{$landingPageContent ? $landingPageContent->main_title : "Better Way Learn The Skills That Transform Your Life" }}</span>
                             </h2>
-                            <p class="desc">
-                                Join 10,000+ students across Sri Lanka.<br>
+                            <p class="desc">{{$landingPageContent ? $landingPageContent->title_description : "Join 10,000+ students across Sri Lanka.<br>
                                 Gain real-world skills through online and physical classes.<br>
-                                Start your journey with DSA today!
+                                Start your journey with Better way today!" }}
+
                             </p>
 
                         </div>
@@ -271,10 +270,9 @@
                 <div class="col-lg-5 col-12">
                     <div class="section-header mb-4" >
                         <span class="subtitle text-danger">About Better Way</span>
-                        <h2 class="title" style="color:#1b2954;">Empowering Your Future With Practical Skills</h2>
-                        <p class="mt-3">
-                            Better Way is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development.
-                            We empower individuals through hands-on learning, expert instructors, and industry-recognized certifications—ensuring you're ready for the real world.
+                        <h2 class="title" style="color:#1b2954;">{{$landingPageContent ? $landingPageContent->middle_title : "Empowering Your Future With Practical Skills" }}</h2>
+                        <p class="mt-3">{{$landingPageContent ? $landingPageContent->middle_title_description : "Better Way is a leading education provider focused on delivering high-quality, practical training in IT, business, and professional development.
+                            We empower individuals through hands-on learning, expert instructors, and industry-recognized certifications—ensuring you're ready for the real world." }}
                         </p>
                         <a href="{{ route('frontend.Course') }}"  class="lab-btn mt-4"><span>Explore Our Courses</span></a>
                     </div>

@@ -301,6 +301,7 @@ Route::prefix('admin/settings/banners')->name('admin.banners.')->group(function 
 
 
 use App\Http\Controllers\BlogController;
+use App\Http\Controllers\LandingPageController;
 
 Route::prefix('admin/blogs')->name('admin.blogs.')->group(function () {
     Route::get('/', [BlogController::class, 'index'])->name('index');
@@ -345,6 +346,10 @@ Route::prefix('admin/orders')->name('admin.orders.')->group(function () {
     Route::put('/admin/orders/update-booking/{id}', [BackendTemplateController::class, 'updateBooking'])->name('updateBooking');
 
 });
+
+Route::get('/admin/landing/edit', [LandingPageController::class, 'edit'])->name('admin.landing.edit');
+Route::put('/admin/landing/update/{id}', [LandingPageController::class, 'update'])->name('admin.landing.update');
+
 
 
 use App\Http\Controllers\AdBannerController;

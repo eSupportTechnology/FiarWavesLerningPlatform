@@ -123,10 +123,10 @@
                 <div class="about-right">
                     <div class="section-header">
                         <div class="subtitle">
-                            <span class="subtitle" style="color: #ee1831 !important">About Our Fire Waves</span>
+                            <span class="subtitle" style="color: #ee1831 !important">About Our Better Way</span>
                         </div>
-                        <h2 class="title">Good Qualification Services And Better Skills</h2>
-                        <p>We are a body of professionals specialising in the fields of Management, Marketing, Finance, Human Resources, Education, and Visa guidance. Having worked for decades in industries relevant to our fields, we have now collaborated in order to provide you with the best solution for your business & educational needs. In order to remain a forerunner among competitors, it is our belief that continuous transformation, creativity, and innovation provide a competitive edge within the industry.</p>
+                        <h2 class="title">{{$landingPageContent ? $landingPageContent->about_title : "Good Qualification Services And Better Skills" }}</h2>
+                        <p>{{$landingPageContent ? $landingPageContent->about_title_description : "We are a body of professionals specialising in the fields of Management, Marketing, Finance, Human Resources, Education, and Visa guidance. Having worked for decades in industries relevant to our fields, we have now collaborated in order to provide you with the best solution for your business & educational needs. In order to remain a forerunner among competitors, it is our belief that continuous transformation, creativity, and innovation provide a competitive edge within the industry." }}</p>
                     </div>
                     <div class="section-wrapper">
                         <ul class="lab-ul">
@@ -171,15 +171,15 @@
     <div class="vis-content-box" style="color: white;">
         <h2 style="color: white;">Our Vision</h2>
         <span class="quote">“</span>
-        <p style="color:white">
-            We aspire to cultivate a dynamic learning environment that nurtures creativity, critical thinking, and entrepreneurial mindset to our graduates and aim to inspire our students to become catalysts for change, instilling in them a deep understanding of ethical business practices and social responsibility.
+        <p style="color:white">{{$landingPageContent ? $landingPageContent->vision : "We aspire to cultivate a dynamic learning environment that nurtures creativity, critical thinking, and entrepreneurial mindset to our graduates and aim to inspire our students to become catalysts for change, instilling in them a deep understanding of ethical business practices and social responsibility." }}
+
         </p>
     </div>
     <div class="vis-content-box" style="color: white;">
         <h2 style="color: white;">Our Mission</h2>
         <span class="quote">“</span>
-        <p style="color:white">
-            Our mission at Imperial College of Business Studies is to empower individuals with knowledge, skills, positive attitude and values that drive business excellence and societal impact. We are dedicated to delivering world-class education, coupled with cutting-edge learning tools, and aim to foster a vibrant community of diverse and innovative thinkers who will become successful business leaders.
+        <p style="color:white">{{$landingPageContent ? $landingPageContent->mission : "Our mission at Imperial College of Business Studies is to empower individuals with knowledge, skills, positive attitude and values that drive business excellence and societal impact. We are dedicated to delivering world-class education, coupled with cutting-edge learning tools, and aim to foster a vibrant community of diverse and innovative thinkers who will become successful business leaders." }}
+
         </p>
     </div>
 </div>

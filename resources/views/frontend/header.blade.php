@@ -81,10 +81,10 @@ a {
                 <div class="header-top-area">
                     <ul class="lab-ul left">
                         <li>
-                            <i class="fa fa-envelope"></i> <span>example@gmail.com</span>
+                            <i class="fa fa-envelope"></i> <span>{{$landingPageContent ? $landingPageContent->email : "example@gmail.com" }}</span>
                         </li>
                         <li>
-                            <i class="icofont-ui-call"></i> <span>074 xxx xxxx / 070 xxx xxxx</span>
+                            <i class="icofont-ui-call"></i> <span>{{$landingPageContent ? $landingPageContent->number_1 : " 074 xxx xxxx" }} / {{$landingPageContent ? $landingPageContent->number_2 : " 070 xxx xxxx" }}</span>
                         </li>
                     </ul>
                     <ul class="lab-ul social-icons d-flex align-items-center">
