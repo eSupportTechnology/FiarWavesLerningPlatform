@@ -54,13 +54,13 @@
                   <div class="form-group">
                     <label>Password</label>
                     <div class="form-input position-relative">
-                      <input class="form-control" type="password" name="password" required placeholder="********">
-                      <div class="show-hide"><span class="show"></span></div>
+                      <input class="form-control" type="password" name="password" id="password-input" required placeholder="********">
+                      <div class="show-hide" onclick="togglePassword()"><span class="show"></span></div>
                     </div>
                   </div>
 
                   <div class="form-group mb-0">
-                    
+
                     <button class="btn btn-primary w-100 mt-3" type="submit">Sign in</button>
                   </div>
 
@@ -79,6 +79,19 @@
       <script src="{{ asset('backend/assets/js/icons/feather-icon/feather-icon.js') }}"></script>
       <script src="{{ asset('backend/assets/js/config.js') }}"></script>
       <script src="{{ asset('backend/assets/js/script.js') }}"></script>
+      <script>
+        function togglePassword() {
+          const input = document.getElementById('password-input');
+          const showHide = document.querySelector('.show-hide .show');
+          if (input.type === 'password') {
+            input.type = 'text';
+            showHide.classList.add('active');
+          } else {
+            input.type = 'password';
+            showHide.classList.remove('active');
+          }
+        }
+      </script>
     </div>
   </body>
 </html>

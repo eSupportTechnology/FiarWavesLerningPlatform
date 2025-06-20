@@ -8,6 +8,7 @@ use App\Models\Booking;
 use App\Models\CustomerCourseBatch;
 use App\Services\DialogSMSService;
 use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Storage;
 
 class BackendTemplateController extends Controller
 {
@@ -205,5 +206,107 @@ class BackendTemplateController extends Controller
         $customer->save();
 
         return redirect()->back()->with('success', $message);
+    }
+
+    public function customerUpdate(Request $request, $user_id)
+    {
+        $customer = Customer::findOrFail($user_id);
+
+        $validated = $request->validate([
+            'fname' => 'required|string|max:255',
+            'lname' => 'required|string|max:255',
+            'email' => 'required|email|unique:customers,email,' . $customer->user_id . ',user_id',
+            'contact_number' => 'required|string|unique:customers,contact_number,' . $customer->user_id . ',user_id',
+
+            // Optional fields
+            'address' => 'nullable|string',
+            'street' => 'nullable|string',
+            'city' => 'nullable|string',
+            'district' => 'nullable|string',
+            'postal_code' => 'nullable|string',
+            'bank_name' => 'nullable|string',
+            'bank_branch' => 'nullable|string',
+            'account_name' => 'nullable|string',
+            'account_number' => 'nullable|string',
+            'account_type' => 'nullable|string',
+
+            'kyc_doc_type' => 'nullable|in:NIC,DL,Passport',
+            'kyc_doc_number' => 'nullable|string',
+            'kyc_status' => 'nullable|in:pending,approved,rejected',
+            'bank_status' => 'nullable|in:pending,approved,rejected',
+            'status' => 'required|boolean',
+
+            'kyc_doc_front' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'kyc_doc_back' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'bank_front_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+            'bank_back_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+        ]);
+
+        // Assign standard fields
+        $customer->fname = $validated['fname'];
+        $customer->lname = $validated['lname'];
+        $customer->email = $validated['email'];
+        $customer->contact_number = $validated['contact_number'];
+        $customer->address = $validated['address'] ?? null;
+
+        // Assign optional fields
+        $customer->street = $validated['street'] ?? null;
+        $customer->city = $validated['city'] ?? null;
+        $customer->district = $validated['district'] ?? null;
+        $customer->postal_code = $validated['postal_code'] ?? null;
+
+        $customer->bank_name = $validated['bank_name'] ?? null;
+        $customer->bank_branch = $validated['bank_branch'] ?? null;
+        $customer->account_name = $validated['account_name'] ?? null;
+        $customer->account_number = $validated['account_number'] ?? null;
+        $customer->account_type = $validated['account_type'] ?? null;
+
+        $customer->kyc_doc_type = $validated['kyc_doc_type'] ?? null;
+        $customer->kyc_doc_number = $validated['kyc_doc_number'] ?? null;
+        $customer->kyc_status = $validated['kyc_status'] ?? null;
+        $customer->bank_status = $validated['bank_status'] ?? null;
+        $customer->status = $validated['status'];
+
+        // Handle file uploads (with optional existing image cleanup if needed)
+        if ($request->hasFile('kyc_doc_front')) {
+            if ($customer->kyc_doc_front) {
+                Storage::delete('public/' . $customer->kyc_doc_front);
+            }
+            if ($customer->kyc_doc_front && Storage::disk('public')->exists($customer->kyc_doc_front)) {
+                Storage::disk('public')->delete($customer->kyc_doc_front);
+            }
+            $customer->kyc_doc_front = $request->file('kyc_doc_front')->store('kyc', 'public');
+        }
+        if ($request->hasFile('kyc_doc_back')) {
+            if ($customer->kyc_doc_back) {
+                Storage::delete('public/' . $customer->kyc_doc_back);
+            }
+            if ($customer->kyc_doc_back && Storage::disk('public')->exists($customer->kyc_doc_back)) {
+                Storage::disk('public')->delete($customer->kyc_doc_back);
+            }
+            $customer->kyc_doc_back = $request->file('kyc_doc_back')->store('kyc', 'public');
+        }
+        if ($request->hasFile('bank_front_image')) {
+            if ($customer->bank_front_image) {
+                Storage::delete('public/' . $customer->bank_front_image);
+            }
+            if ($customer->bank_front_image && Storage::disk('public')->exists($customer->bank_front_image)) {
+                Storage::disk('public')->delete($customer->bank_front_image);
+            }
+            $customer->bank_front_image = $request->file('bank_front_image')->store('bank', 'public');
+        }
+        if ($request->hasFile('bank_back_image')) {
+            if ($customer->bank_back_image) {
+                Storage::delete('public/' . $customer->bank_back_image);
+            }
+            if ($customer->bank_back_image && Storage::disk('public')->exists($customer->bank_back_image)) {
+                Storage::disk('public')->delete($customer->bank_back_image);
+            }
+            $customer->bank_back_image = $request->file('bank_back_image')->store('bank', 'public');
+        }
+
+        $customer->save();
+
+        return back()->with('success', 'Customer updated successfully.');
     }
 }

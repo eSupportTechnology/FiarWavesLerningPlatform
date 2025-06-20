@@ -320,6 +320,7 @@ Route::prefix('admin/customers')->name('admin.customers.')->group(function () {
     Route::delete('/{customer}', [BackendTemplateController::class, 'destroy'])->name('destroy');
     Route::patch('/{customer}/kyc', [BackendTemplateController::class, 'updateKyc'])->name('kyc.update');
     Route::patch('/{customer}/bank', [BackendTemplateController::class, 'updateBank'])->name('bank.update');
+    Route::put('/{user_id}', [BackendTemplateController::class, 'customerUpdate'])->name('update');
 });
 
 // Customer Admin Actions
