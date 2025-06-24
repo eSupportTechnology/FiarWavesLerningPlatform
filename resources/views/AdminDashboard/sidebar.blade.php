@@ -204,6 +204,17 @@
                         </ul>
                     </li>
 
+                    <!-- Popup Leads -->
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-inbox"></i>
+                            <span>Landing Page</span>
+                        </a>
+                        <ul class="sidebar-submenu">
+                            <li><a href="{{ route('admin.landing.edit') }}">Updates</a></li>
+                        </ul>
+                    </li>
+
 
 
 

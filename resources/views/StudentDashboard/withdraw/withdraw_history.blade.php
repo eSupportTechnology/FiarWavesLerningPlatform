@@ -10,6 +10,19 @@
         </div>
     @else
         <div class="table-responsive">
+            <form method="GET" action="{{ route('student.allPayments') }}" class="mb-3">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-4">
+                        <input type="text" name="search" class="form-control" placeholder="Search by amount, status or date (YYYY-MM-DD)"
+                               value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{{ route('student.allPayments') }}" class="btn btn-secondary">Reset</a>
+                    </div>
+                </div>
+            </form>
+
             <table class="table table-bordered table-hover align-middle">
                 <thead class="table-dark">
                     <tr>
@@ -22,7 +35,7 @@
                 <tbody>
                     @foreach ($withdrawals as $index => $withdrawal)
                         <tr>
-                            <td>{{ $index + 1 }}</td>
+                            <td>{{ $withdrawals->firstItem() + $index }}</td>
                             <td>{{ number_format($withdrawal->amount, 2) }}</td>
 
                             <td>{{ $withdrawal->created_at->format('Y-m-d H:i A') }}</td>
@@ -41,6 +54,24 @@
                     @endforeach
                 </tbody>
             </table>
+
+            <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+                <div>
+                    <small>
+                        Showing
+                        @if ($withdrawals->total() > 0)
+                            {{ $withdrawals->firstItem() }} to {{ $withdrawals->lastItem() }} of
+                            {{ $withdrawals->total() }} entries
+                        @else
+                            0 entries
+                        @endif
+                    </small>
+                </div>
+                <div>
+                    {{ $withdrawals->links('pagination::bootstrap-5') }}
+                </div>
+            </div>
+
         </div>
     @endif
 </div>

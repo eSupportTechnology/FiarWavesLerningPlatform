@@ -15,6 +15,20 @@
         </div>
 
         <div class="card-body">
+            <form method="GET" action="{{ route('student.invitees.index') }}" class="mb-3">
+                <div class="row g-2 align-items-center">
+                    <div class="col-md-4">
+                        <input type="text" name="search" class="form-control" placeholder="Search by name, email, contact or invite code"
+                               value="{{ request('search') }}">
+                    </div>
+                    <div class="col-md-auto">
+                        <button type="submit" class="btn btn-primary">Search</button>
+                        <a href="{{ route('student.invitees.index') }}" class="btn btn-secondary">Reset</a>
+                    </div>
+                </div>
+            </form>
+
+
             <div class="table-responsive">
                 <table class="table table-bordered table-hover text-center">
                     <thead class="table-light">
@@ -66,9 +80,23 @@
                     </tbody>
                 </table>
 
-                <div class="mt-3">
-                    {{ $invitees->links() }}
+                <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+                    <div>
+                        <small>
+                            Showing
+                            @if ($invitees->total() > 0)
+                                {{ $invitees->firstItem() }} to {{ $invitees->lastItem() }} of
+                                {{ $invitees->total() }} entries
+                            @else
+                                0 entries
+                            @endif
+                        </small>
+                    </div>
+                    <div>
+                        {{ $invitees->links('pagination::bootstrap-5') }}
+                    </div>
                 </div>
+
             </div>
         </div>
     </div>

@@ -28,7 +28,20 @@ class WalletController extends Controller
                 'currency' => 'LKR', // Default currency
             ]);
         }
-        $walletTransaction = WalletTransaction::where('wallet_id', $wallet->id)->get();
+        $search = $request->input('search');
+
+        $walletTransaction = WalletTransaction::where('wallet_id', $wallet->id)
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('amount', 'like', "%{$search}%")
+                        ->orWhere('transaction_type', 'like', "%{$search}%")
+                        ->orWhere('status', 'like', "%{$search}%")
+                        ->orWhereDate('transaction_date', $search);
+                });
+            })
+            ->orderByDesc('transaction_date')
+            ->paginate(10)
+            ->appends(['search' => $search]);
         return view('StudentDashboard..withdraw.wallet-history', [
             'wallet' => $wallet,
             'walletTransaction' => $walletTransaction,

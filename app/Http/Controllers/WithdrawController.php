@@ -88,12 +88,26 @@ class WithdrawController extends Controller
         return redirect()->route('customer.dashboard')->with('success', 'Your withdrawal request has been submitted successfully!');
     }
 
-    public function withdrawHistory()
+    public function withdrawHistory(Request $request)
     {
         $customerId = session('customer_id');
-        $withdrawals = Withdrawal::where('customer_id', $customerId)->get();
+        $search = $request->input('search');
+
+        $withdrawals = Withdrawal::where('customer_id', $customerId)
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('amount', 'like', "%{$search}%")
+                        ->orWhere('status', 'like', "%{$search}%")
+                        ->orWhereDate('created_at', $search);
+                });
+            })
+            ->orderByDesc('created_at')
+            ->paginate(10)
+            ->appends(['search' => $search]);
+
         return view('StudentDashboard.withdraw.withdraw_history', compact('withdrawals'));
     }
+
 
     public function adminIndex()
     {

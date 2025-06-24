@@ -33,7 +33,7 @@
                             use Carbon\Carbon;
 
                             $currentDay = Carbon::now()->format('l'); // Full day name, e.g., 'Monday'
-                            $allowedDays = ['Thursday', 'Friday', 'Saturday'];
+                            $allowedDays = ['Tuesday','Thursday', 'Friday', 'Saturday'];
                             $isWithdrawDay = in_array($currentDay, $allowedDays);
                         @endphp
                         @if ($isWithdrawDay  && $wallet->balance > 0)

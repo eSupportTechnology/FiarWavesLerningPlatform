@@ -311,7 +311,7 @@
     </div>
 
     <!-- Total Points Section -->
-    <div class="container-fluid mb-4">
+    {{-- <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-md-6">
                 <div class="card bg-dark text-white">
@@ -352,7 +352,7 @@
                 </div>
             </div>
         </div>
-    </div>
+    </div> --}}
 
     <!-- Invitees Section -->
     <div class="container-fluid mb-4">

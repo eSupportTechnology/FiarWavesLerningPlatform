@@ -52,7 +52,7 @@ class StudentDashboardController extends Controller
         return view('StudentDashboard.home', compact('invitees', 'customer', 'wallet'));
     }
 
-    public function bookings()
+    public function bookings(Request $request)
     {
         $customerId = session('customer_id');
 
@@ -65,10 +65,18 @@ class StudentDashboardController extends Controller
             return redirect()->back()->with('error', 'Access denied or customer inactive.');
         }
 
+        $search = $request->input('search');
+
         $bookings = $customer->bookings()
-            ->with('course')
             ->whereIn('status', ['Confirmed', 'Half'])
-            ->get();
+            ->whereHas('course', function ($query) use ($search) {
+                if ($search) {
+                    $query->where('name', 'like', "%{$search}%");
+                }
+            })
+            ->with('course.files', 'course.recordings', 'course.zoomLinks')
+            ->paginate(6)
+            ->appends(['search' => $search]);
 
         return view('StudentDashboard.course.main', compact('bookings'));
     }
@@ -461,14 +469,26 @@ class StudentDashboardController extends Controller
 
 
 
-    public function allInvitees(){
+    public function allInvitees(Request $request){
         $customerId = session('customer_id');
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
         }
+        $search = $request->input('search');
         $customer = Customer::where('user_id', $customerId)
             ->first();
-        $invitees = Customer::where('sponsor_id', $customerId)->paginate(10);
+        // $invitees = Customer::where('sponsor_id', $customerId)->paginate(10);
+        $invitees = Customer::where('sponsor_id', $customerId)
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('contact_number', 'like', "%{$search}%")
+                        ->orWhere('invite_code', 'like', "%{$search}%");
+                });
+            })
+            ->paginate(10)
+            ->appends(['search' => $search]); // maintain search query on pagination links
 
         return view('StudentDashboard.invitees.index', compact('invitees', 'customer'));
     }
