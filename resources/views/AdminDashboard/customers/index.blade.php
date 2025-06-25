@@ -26,6 +26,19 @@
             </div>
 
             <div class="card-body">
+                <form method="GET" action="{{ route('admin.customers.index') }}" class="mb-3">
+                    <div class="row g-2 align-items-center">
+                        <div class="col-md-4">
+                            <input type="text" name="search" class="form-control" placeholder="Search by name, email, contact or invite code"
+                                   value="{{ request('search') }}">
+                        </div>
+                        <div class="col-md-auto">
+                            <button type="submit" class="btn btn-primary">Search</button>
+                            <a href="{{ route('admin.customers.index') }}" class="btn btn-secondary">Reset</a>
+                        </div>
+                    </div>
+                </form>
+
                 <div class="table-responsive">
                     <table class="table table-bordered table-hover text-center">
                         <thead class="table-light">
@@ -44,7 +57,7 @@
                         <tbody>
                             @forelse($customers as $index => $customer)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $customers->firstItem() + $index }}</td>
                                     <td>{{ $customer->invite_code }}</td>
                                     <td>{{ $customer->name }}</td>
                                     <td>{{ $customer->email }}</td>

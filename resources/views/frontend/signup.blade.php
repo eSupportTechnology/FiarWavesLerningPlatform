@@ -62,13 +62,13 @@
                         @error('contact_number') <small class="text-danger">{{ $message }}</small> @enderror
                     </div>
                     <div class="form-group">
-                        <input type="password" placeholder="Password" name="password">
+                        <input type="password" placeholder="Password" name="password" required>
                     </div>
                     <div class="form-group">
-                        <input type="password" placeholder="Confirm Password" name="password_confirmation">
+                        <input type="password" placeholder="Confirm Password" name="password_confirmation" required>
                     </div>
                     <div class="form-group">
-                        <input type="text" placeholder="Sponser Code" name="sponser_code" value="{{ old('sponser_code', $refCode ?? '') }}">
+                        <input type="text" placeholder="Sponser Code" name="sponser_code" required value="{{ old('sponser_code', $refCode ?? '') }}">
                     </div>
                     <div class="form-group">
                         <button class="lab-btn"><span>Get Started Now</span></button>
@@ -76,9 +76,9 @@
                 </form>
 
 
-                <span class="d-block cate">Are you an old student?
+                {{-- <span class="d-block cate">Are you an old student?
                     <a href="{{ route('customer.old.register') }}" class="text-primary fw-bold">Click Here</a>
-                </span>
+                </span> --}}
 
                 <hr class="my-3">
 

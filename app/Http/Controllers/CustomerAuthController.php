@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Jobs\SendRegistrationEmails;
 use App\Models\Customer;
 use App\Notifications\InviteCodeNotification;
 use App\Notifications\VerifyEmailNotification;
@@ -40,7 +41,7 @@ class CustomerAuthController extends Controller
             'email' => 'required|email|unique:customers,email',
             'contact_number' => 'required|string|unique:customers,contact_number',
             'password' => 'required|min:6|confirmed',
-            'sponser_code' => 'nullable|string|max:255',
+            'sponser_code' => 'required|string|max:255|exists:customers,invite_code',
         ]);
         //dd($request);
 
@@ -82,11 +83,14 @@ class CustomerAuthController extends Controller
             $customer->email_verification_token = $token;
             $customer->save();
 
-            // Send Email Verification Link
-            $customer->notify(new VerifyEmailNotification($token));
+            // // Send Email Verification Link
+            // $customer->notify(new VerifyEmailNotification($token));
 
-            // Send Invite Code to Email
-            $customer->notify(new InviteCodeNotification($inviteCode));
+            // // Send Invite Code to Email
+            // $customer->notify(new InviteCodeNotification($inviteCode));
+
+            dispatch(new SendRegistrationEmails($customer, $token, $inviteCode));
+
 
             return redirect()->route('customer.login')->with('success', 'Registration complete. Please please comfirm your email.');
 

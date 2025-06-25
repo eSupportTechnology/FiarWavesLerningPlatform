@@ -115,19 +115,33 @@ class WithdrawController extends Controller
         return view('AdminDashboard.withdraw.withdraw', compact('withdrawals'));
     }
 
-    public function pendingWithdrawals()
+    public function pendingWithdrawals(Request $request)
     {
-        $withdrawals = Withdrawal::where('status', 'pending')->with('customer')->latest()->get();
+        $search = $request->input('search');
+
+        $withdrawals = Withdrawal::where('status', 'pending')
+            ->with('customer')
+            ->when($search, function ($query, $search) {
+                $query->whereHas('customer', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('contact_number', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->appends(['search' => $search]);
+
         return view('AdminDashboard.withdraw.pending', compact('withdrawals'));
     }
 
-    public function approvedWithdrawals()
+    public function approvedWithdrawals(Request $request)
     {
         $withdrawals = Withdrawal::where('status', 'approved')->with('customer')->latest()->get();
         return view('AdminDashboard.withdraw.approved', compact('withdrawals'));
     }
 
-    public function rejectedWithdrawals()
+    public function rejectedWithdrawals(Request $request)
     {
         $withdrawals = Withdrawal::where('status', 'rejected')->with('customer')->latest()->get();
         return view('AdminDashboard.withdraw.rejected', compact('withdrawals'));

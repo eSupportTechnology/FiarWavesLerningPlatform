@@ -122,7 +122,7 @@
 
                         @if($customer->bank_front_image)
                         <tr>
-                            <th>Bank Front</th>
+                            <th>Bank Book</th>
                             <td>
                                 <a href="{{ asset('storage/' . $customer->bank_front_image) }}" target="_blank">
                                     <img src="{{ asset('storage/' . $customer->bank_front_image) }}" alt="Front"
@@ -131,7 +131,7 @@
                             </td>
                         </tr>
                         @endif
-                        @if($customer->bank_back_image)
+                        {{-- @if($customer->bank_back_image)
                         <tr>
                             <th>Bank Back</th>
                             <td>
@@ -141,7 +141,7 @@
                                 </a>
                             </td>
                         </tr>
-                        @endif
+                        @endif --}}
                         <tr>
                             <th>Current Bank Status</th>
                             <td>

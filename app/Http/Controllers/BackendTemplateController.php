@@ -23,9 +23,22 @@ class BackendTemplateController extends Controller
 
 
     // Show list of customers
-    public function index1()
+    public function index1(Request $request)
     {
-        $customers = Customer::with('assignedBatches')->latest()->paginate(10);
+        $search = $request->input('search');
+
+        $customers = Customer::with('assignedBatches')
+            ->when($search, function ($query, $search) {
+                $query->where(function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('contact_number', 'like', "%{$search}%")
+                        ->orWhere('invite_code', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->appends(['search' => $search]);
         return view('AdminDashboard.customers.index', compact('customers'));
     }
 

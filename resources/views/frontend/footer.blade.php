@@ -69,9 +69,9 @@
                                     <div class="title"><h4>Follow Us</h4></div>
                                     <div class="content">
                                         <ul class="lab-ul">
-                                            <li><a href="https://www.facebook.com/share/1B8Hty84zo/?mibextid=wwXIfr" target="_blank"><i class="icofont-facebook"></i> Facebook</a></li>
-                                            <li><a href="https://youtube.com/@dsaacademylk?si=wYkBGSyTYsxDbKAr" target="_blank"><i class="icofont-youtube"></i> YouTube</a></li>
-                                            <li><a href="https://www.tiktok.com/@dsa_academy?_t=ZS-8uwiQdxgMmO&_r=1" target="_blank"><i class="icofont-twitch"></i> TikTok</a></li>
+                                            <li><a href="#" target="_blank"><i class="icofont-facebook"></i> Facebook</a></li>
+                                            <li><a href="#" target="_blank"><i class="icofont-youtube"></i> YouTube</a></li>
+                                            <li><a href="#" target="_blank"><i class="icofont-twitch"></i> TikTok</a></li>
                                             <li><a href="#"><i class="icofont-instagram"></i> Instagram</a></li>
                                             <li><a href="#"><i class="icofont-brand-whatsapp"></i> WhatsApp</a></li>
                                         </ul>

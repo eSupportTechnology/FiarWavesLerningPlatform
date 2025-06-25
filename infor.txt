@@ -1,0 +1,12 @@
+run before production
+
+php artisan queue:restart
+php artisan queue:work
+
+run this as a cron job, set up for 00.00 every day.
+
+php artisan app:daily-income-command
+
+make sure to link storage
+
+php artisan storage:link

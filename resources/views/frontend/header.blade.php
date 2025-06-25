@@ -90,22 +90,22 @@ a {
                     <ul class="lab-ul social-icons d-flex align-items-center">
                         <li><p></p></li>
                         <li>
-                            <a href="https://youtube.com/@dsaacademylk?si=wYkBGSyTYsxDbKAr" class="youtube" target="_blank" title="YouTube">
+                            <a href="#" class="youtube" target="_blank" title="YouTube">
                                 <i class="icofont-youtube"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.tiktok.com/@dsa_academy?_t=ZS-8uwiQdxgMmO&_r=1" class="tiktok" target="_blank" title="TikTok">
+                            <a href="#" class="tiktok" target="_blank" title="TikTok">
                                 <i class="icofont-twitch"></i> <!-- No TikTok icon, using Twitch as placeholder -->
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.facebook.com/share/1EAj83c8JN/?mibextid=wwXIfr" class="facebook" target="_blank" title="Facebook">
+                            <a href="#" class="facebook" target="_blank" title="Facebook">
                                 <i class="icofont-facebook-messenger"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="https://www.facebook.com/share/1B8Hty84zo/?mibextid=wwXIfr" class="facebook" target="_blank" title="Facebook">
+                            <a href="#" class="facebook" target="_blank" title="Facebook">
                                 <i class="icofont-facebook-messenger"></i>
                             </a>
                         </li>

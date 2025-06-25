@@ -34,6 +34,19 @@
 
             <div class="card-body">
                 <div class="table-responsive">
+                    <form method="GET" action="{{ route('admin.withdrawals.pending') }}" class="mb-3">
+                        <div class="row g-2 align-items-center">
+                            <div class="col-md-4">
+                                <input type="text" name="search" class="form-control"
+                                    placeholder="Search by customer name, email or contact" value="{{ request('search') }}">
+                            </div>
+                            <div class="col-md-auto">
+                                <button type="submit" class="btn btn-primary">Search</button>
+                                <a href="{{ route('admin.withdrawals.pending') }}" class="btn btn-secondary">Reset</a>
+                            </div>
+                        </div>
+                    </form>
+
                     <table class="table table-bordered table-striped align-middle">
                         <thead class="table-dark">
                             <tr>
@@ -48,7 +61,7 @@
                         <tbody>
                             @forelse($withdrawals as $index => $withdrawal)
                                 <tr>
-                                    <td>{{ $index + 1 }}</td>
+                                    <td>{{ $withdrawals->firstItem() + $index }}</td>
                                     <td>{{ $withdrawal->customer->name ?? 'N/A' }}</td>
                                     <td>{{ number_format($withdrawal->amount, 2) }}</td>
                                     <td><span class="badge bg-warning text-dark">{{ ucfirst($withdrawal->status) }}</span>
@@ -115,6 +128,21 @@
                             @endforelse
                         </tbody>
                     </table>
+                    @if ($withdrawals->hasPages())
+                        <div class="d-flex justify-content-between align-items-center mt-3 flex-wrap">
+                            <div>
+                                <small>
+                                    Showing
+                                    {{ $withdrawals->firstItem() }} to {{ $withdrawals->lastItem() }} of
+                                    {{ $withdrawals->total() }} entries
+                                </small>
+                            </div>
+                            <div>
+                                {{ $withdrawals->links('pagination::bootstrap-5') }}
+                            </div>
+                        </div>
+                    @endif
+
                 </div>
             </div>
         </div>

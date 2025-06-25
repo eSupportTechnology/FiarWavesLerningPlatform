@@ -21,10 +21,10 @@
 </head>
 <body>
     <p>Hello,</p>
-    <p>Your DSA Academy email verification code is:</p>
+    <p>Your Better Way Academy email verification code is:</p>
     <p class="code-box">{{ $code }}</p>
     <p>Enter this code on the website to complete your registration.</p>
     <br>
-    <p>Thanks,<br>DSA Academy Team</p>
+    <p>Thanks,<br>Better Way Team</p>
 </body>
 </html>
