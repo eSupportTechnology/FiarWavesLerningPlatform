@@ -344,11 +344,11 @@
                                 </div>
                             </div>
 
-                            <h6 class="text-primary mb-3">Bank Book Images</h6>
+                            <h6 class="text-primary mb-3">Bank Book Image</h6>
                             <div class="mb-3">
                                 <div class="row">
-                                    <div class="col-sm-12 col-md-12 col-lg-6">
-                                        <label for="bank_front_image" class="form-label fw-semibold">Bank Book Front
+                                    <div class="col-sm-12 col-md-12 col-lg-12">
+                                        <label for="bank_front_image" class="form-label fw-semibold">Bank Book
                                             Image</label>
                                         <input type="file" class="form-control" id="bank_front_image"
                                             name="bank_front_image" accept="image/*">
@@ -362,7 +362,7 @@
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
                                     </div>
-                                    <div class="col-sm-12 col-md-12 col-lg-6">
+                                    {{-- <div class="col-sm-12 col-md-12 col-lg-6">
                                         <label for="bank_back_image" class="form-label fw-semibold">Bank Book Back
                                             Image</label>
                                         <input type="file" class="form-control" id="bank_back_image"
@@ -376,7 +376,7 @@
                                         @error('bank_back_image')
                                             <small class="text-danger">{{ $message }}</small>
                                         @enderror
-                                    </div>
+                                    </div> --}}
                                 </div>
                             </div>
                             @if ($customer->bank_status)
@@ -546,7 +546,9 @@
                     </div>
                     <div class="card-body">
 
-                        <form action="{{ route('customer.password.update') }}" method="POST">
+                        {{-- <form action="{{ route('customer.password.update') }}" method="POST"> --}}
+                        <form action="{{ route('customer.password.send_code') }}" method="POST">
+
                             @csrf
 
                             <div class="mb-3">
@@ -579,6 +581,34 @@
                             </button>
                         </form>
 
+                        <!-- Verification Code Modal -->
+                        <div class="modal fade" id="codeModal" tabindex="-1" aria-labelledby="codeModalLabel"
+                            aria-hidden="true">
+                            <div class="modal-dialog">
+                                <form action="{{ route('customer.password.verify_code') }}" method="POST">
+                                    @csrf
+                                    <div class="modal-content">
+                                        <div class="modal-header">
+                                            <h5 class="modal-title" id="codeModalLabel">Enter Verification Code</h5>
+                                            <button type="button" class="btn-close" data-bs-dismiss="modal"
+                                                aria-label="Close"></button>
+                                        </div>
+                                        <div class="modal-body">
+                                            <label for="verification_code" class="form-label">Verification Code (sent to
+                                                your email)</label>
+                                            <input type="text" name="verification_code" id="verification_code"
+                                                class="form-control" required>
+                                        </div>
+                                        <div class="modal-footer">
+                                            <button type="submit" class="btn btn-primary">Verify & Update
+                                                Password</button>
+                                        </div>
+                                    </div>
+                                </form>
+                            </div>
+                        </div>
+
+
                     </div>
                 </div>
 
@@ -587,6 +617,24 @@
         </div>
 
     </div>
+
+    @if (session('password_success') === 'Verification code sent to your email.')
+    <input type="hidden" id="show-code-modal" value="1">
+@endif
+
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const triggerModal = document.getElementById('show-code-modal');
+        if (triggerModal && triggerModal.value === '1') {
+            const modalEl = document.getElementById('codeModal');
+            const modal = new bootstrap.Modal(modalEl);
+            modal.show();
+        }
+    });
+</script>
+
+
+
 
     {{-- <script>
     document.addEventListener('DOMContentLoaded', function () {

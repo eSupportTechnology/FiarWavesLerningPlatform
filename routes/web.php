@@ -401,6 +401,9 @@ Route::get('/student/course/{booking}/zoom-links', [StudentDashboardController::
 Route::get('/student/profile', [StudentDashboardController::class, 'profile'])->name('customer.profile');
 Route::post('/student/profile', [StudentDashboardController::class, 'updateProfile'])->name('customer.profile.update');
 Route::post('/student/profile/password', [StudentDashboardController::class, 'updatePassword'])->name('customer.password.update');
+Route::post('/student/profile/password/send-code', [StudentDashboardController::class, 'sendPasswordVerificationCode'])->name('customer.password.send_code');
+Route::post('/student/profile/password/verify-code', [StudentDashboardController::class, 'verifyPasswordCode'])->name('customer.password.verify_code');
+
 Route::post('/student/dashboard/invitee', [StudentDashboardController::class, 'inviteeplace'])->name('invitee.place');
 Route::post('/student/kyc-submit', [StudentDashboardController::class, 'submitKyc'])->name('customer.kyc.submit');
 

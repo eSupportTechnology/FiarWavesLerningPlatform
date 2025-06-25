@@ -215,7 +215,7 @@ class StudentDashboardController extends Controller
 
         $request->validate([
             'bank_front_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
-            'bank_back_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
+            // 'bank_back_image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg,webp|max:2048',
         ]);
 
         if ($request->hasFile('bank_front_image')) {
@@ -229,16 +229,16 @@ class StudentDashboardController extends Controller
             $customer->bank_front_image = $frontPath;
         }
 
-        if ($request->hasFile('bank_back_image')) {
-            if ($customer->bank_back_image) {
-                Storage::delete('public/' . $customer->bank_back_image);
-            }
-            if ($customer->bank_back_image && Storage::disk('public')->exists($customer->bank_back_image)) {
-                Storage::disk('public')->delete($customer->bank_back_image);
-            }
-            $backPath = $request->file('bank_back_image')->store('bank', 'public');
-            $customer->bank_back_image = $backPath;
-        }
+        // if ($request->hasFile('bank_back_image')) {
+        //     if ($customer->bank_back_image) {
+        //         Storage::delete('public/' . $customer->bank_back_image);
+        //     }
+        //     if ($customer->bank_back_image && Storage::disk('public')->exists($customer->bank_back_image)) {
+        //         Storage::disk('public')->delete($customer->bank_back_image);
+        //     }
+        //     $backPath = $request->file('bank_back_image')->store('bank', 'public');
+        //     $customer->bank_back_image = $backPath;
+        // }
 
         $customer->bank_status = 'pending';
         $customer->save();
@@ -318,6 +318,71 @@ class StudentDashboardController extends Controller
 
         return back()->with('password_success', 'Password updated successfully!');
     }
+
+    public function sendPasswordVerificationCode(Request $request)
+    {
+        $customerId = session('customer_id');
+        $customer = Customer::findOrFail($customerId);
+
+        $request->validate([
+            'current_password' => 'required',
+            'new_password' => 'required|min:6|confirmed',
+        ]);
+
+        if (!Hash::check($request->current_password, $customer->password)) {
+            return back()->with('password_error', 'Current password is incorrect.');
+        }
+
+        $code = rand(100000, 999999);
+
+        // Store temporarily in session (you can use DB or cache as well)
+        session([
+            'password_reset_code' => $code,
+            'pending_new_password' => $request->new_password,
+            'pending_customer_id' => $customerId,
+        ]);
+
+        $customer->password_reset_code = $code;
+        $customer->save();
+
+        // Send the code to user's email
+        Mail::send('emails.password_reset_code', ['customer' => $customer, 'code' => $code], function ($message) use ($customer) {
+            $message->to($customer->email)
+                ->subject('Your Password Reset Code');
+        });
+
+
+        return back()->with('password_success', 'Verification code sent to your email.');
+    }
+
+    public function verifyPasswordCode(Request $request)
+    {
+        $request->validate([
+            'verification_code' => 'required|numeric',
+        ]);
+
+        if (
+            session('password_reset_code') == $request->verification_code &&
+            session('pending_customer_id') &&
+            session('pending_new_password')
+        ) {
+            $customer = Customer::findOrFail(session('pending_customer_id'));
+            if ($customer->password_reset_code != $request->verification_code) {
+                return back()->with('password_error', 'Invalid verification code.');
+            }
+            $customer->password = Hash::make(session('pending_new_password'));
+            $customer->save();
+
+            // Clear session
+            session()->forget(['password_reset_code', 'pending_new_password', 'pending_customer_id']);
+
+            return back()->with('password_success', 'Password updated successfully!');
+        }
+
+        return back()->with('password_error', 'Invalid verification code.');
+    }
+
+
 
     public function inviteeplace(Request $request)
     {

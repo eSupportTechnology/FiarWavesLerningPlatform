@@ -56,6 +56,7 @@ return new class extends Migration
 
             $table->string('email_verification_token')->nullable()->after('email');
             $table->string('email_verification_code')->nullable()->after('email_verification_token');
+            $table->string('password_reset_code')->nullable()->after('email_verification_token');
         });
     }
 
@@ -97,6 +98,7 @@ return new class extends Migration
                 'bank_status',
                 'email_verification_token',
                 'email_verification_code',
+                'password_reset_code',
             ]);
         });
     }
