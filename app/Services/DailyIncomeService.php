@@ -59,9 +59,12 @@ class DailyIncomeService
             // Allow minimum 1
             if ($minPoints == 1) {
                 $dailyPoints = 1;
+            } elseif ($minPoints > 1) {
+                $remaining = $minPoints - 1;
+                $evenPart = ($remaining >= 2) ? ($remaining % 2 == 0 ? $remaining : $remaining - 1) : 0;
+                $dailyPoints = min(1 + $evenPart, 10); // Max 10 points
             } else {
-                $evenMin = $minPoints % 2 === 0 ? $minPoints : $minPoints - 1;
-                $dailyPoints = min($evenMin, 10);
+                $dailyPoints = 0;
             }
         } else {
             // After first withdrawal, minimum must be 2 and even

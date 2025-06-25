@@ -142,9 +142,13 @@
                                 // Allow minimum 1
                                 if ($minPoints == 1) {
                                     $dailyPoints = 1;
+                                } elseif ($minPoints > 1) {
+                                    $remaining = $minPoints - 1;
+                                    $evenPart =
+                                        $remaining >= 2 ? ($remaining % 2 == 0 ? $remaining : $remaining - 1) : 0;
+                                    $dailyPoints = min(1 + $evenPart, 10); // Max 10 points
                                 } else {
-                                    $evenMin = $minPoints % 2 === 0 ? $minPoints : $minPoints - 1;
-                                    $dailyPoints = min($evenMin, 10);
+                                    $dailyPoints = 0;
                                 }
                             } else {
                                 // After first withdrawal, minimum must be 2 and even
@@ -229,7 +233,7 @@
             <div class="col-md-4">
                 <div class="card text-white bg-primary">
                     <div class="card-body">
-                        <h5 class="card-title text-center">Referral  Code</h5>
+                        <h5 class="card-title text-center">Referral Code</h5>
                         <p class="card-text fs-5 fw-bold text-center">{{ $customer->invite_code ?? 'N/A' }}</p>
                     </div>
                 </div>
@@ -244,7 +248,8 @@
                         @endphp
 
                         <div class="input-group">
-                            <input type="text" id="referralLink" class="form-control text-center" value="{{ $referralLink }}" readonly>
+                            <input type="text" id="referralLink" class="form-control text-center"
+                                value="{{ $referralLink }}" readonly>
                             <button class="btn btn-dark" onclick="copyReferral()">Copy</button>
                         </div>
                     </div>
@@ -256,7 +261,7 @@
                     const copyText = document.getElementById("referralLink");
                     copyText.select();
                     copyText.setSelectionRange(0, 99999); // For mobile
-                    navigator.clipboard.writeText(copyText.value).then(function () {
+                    navigator.clipboard.writeText(copyText.value).then(function() {
                         alert("Referral link copied to clipboard!");
                     });
                 }
