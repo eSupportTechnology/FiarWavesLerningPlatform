@@ -57,6 +57,8 @@ return new class extends Migration
             $table->string('email_verification_token')->nullable()->after('email');
             $table->string('email_verification_code')->nullable()->after('email_verification_token');
             $table->string('password_reset_code')->nullable()->after('email_verification_token');
+            $table->enum('user_type', ['super_user', 'user'])->default('user')->after('password_reset_code'); // New column for user type
+
         });
     }
 
@@ -99,6 +101,7 @@ return new class extends Migration
                 'email_verification_token',
                 'email_verification_code',
                 'password_reset_code',
+                'user_type',
             ]);
         });
     }

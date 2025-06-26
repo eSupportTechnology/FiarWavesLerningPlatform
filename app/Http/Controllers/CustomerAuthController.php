@@ -212,6 +212,7 @@ class CustomerAuthController extends Controller
                 'customer_name' => $customer->name,
                 'customer_email' => $customer->email,
                 'contact_number' => $customer->contact_number,
+                'user_type' => $customer->user_type,
             ]);
             return redirect()->route('frontend.home')->with('success', 'Login successful!');
         } else {

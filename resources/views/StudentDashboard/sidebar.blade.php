@@ -69,7 +69,14 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('student.invitees.index') }}">All Invitees</a></li>
+                            @php
+
+$userType = session('user_type');
+@endphp
+                            @if($userType === 'super_user')
                             <li><a href="{{ route('student.invitees.genealogy') }}">Genealogy</a></li>
+
+                            @endif
                         </ul>
                     </li>
 

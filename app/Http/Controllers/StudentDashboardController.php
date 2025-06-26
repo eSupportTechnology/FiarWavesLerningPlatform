@@ -724,9 +724,9 @@ class StudentDashboardController extends Controller
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
         }
-        $root = Customer::where('user_id', $customerId)->first();
+        $root = Customer::where('user_id', $customerId)->where('user_type', 'super_user')->first();
         if (!$root) {
-            return redirect()->back()->with('error', 'Customer not found.');
+            return redirect()->back()->with('error', 'Customer not found. or you do not have permission to view this page.');
         }
         return view('StudentDashboard.invitees.genealogy', compact('root'));
     }

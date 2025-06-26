@@ -58,6 +58,7 @@ class Customer extends Authenticatable implements MustVerifyEmail
         'bank_status', // New column for bank status
         'email_verification_token',
         'password_reset_code',
+        'user_type', // New column for user type
     ];
 
     protected $casts = [
