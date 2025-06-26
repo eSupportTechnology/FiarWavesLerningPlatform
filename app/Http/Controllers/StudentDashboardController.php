@@ -717,4 +717,17 @@ class StudentDashboardController extends Controller
             throw new \Exception("SMS sending failed.");
         }
     }
+
+    public function genealogy()
+    {
+        $customerId = session('customer_id');
+        if ($customerId === null) {
+            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+        }
+        $root = Customer::where('user_id', $customerId)->first();
+        if (!$root) {
+            return redirect()->back()->with('error', 'Customer not found.');
+        }
+        return view('StudentDashboard.invitees.genealogy', compact('root'));
+    }
 }

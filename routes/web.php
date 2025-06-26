@@ -412,6 +412,7 @@ Route::post('/student/dashboard/invitee', [StudentDashboardController::class, 'i
 Route::post('/student/kyc-submit', [StudentDashboardController::class, 'submitKyc'])->name('customer.kyc.submit');
 
 Route::get('/student/invitees', [StudentDashboardController::class, 'allInvitees'])->name('student.invitees.index');
+Route::get('/student/genealogy', [StudentDashboardController::class, 'genealogy'])->name('student.invitees.genealogy');
 
 Route::post('/student/send-email-verification-code', [StudentDashboardController::class, 'sendEmailVerificationCode'])->name('customer.email.sendCode');
 Route::post('/student/update-email', [StudentDashboardController::class, 'updateEmail'])->name('customer.email.update');

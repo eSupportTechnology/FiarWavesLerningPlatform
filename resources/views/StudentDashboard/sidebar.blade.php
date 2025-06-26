@@ -69,6 +69,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('student.invitees.index') }}">All Invitees</a></li>
+                            <li><a href="{{ route('student.invitees.genealogy') }}">Genealogy</a></li>
                         </ul>
                     </li>
 
