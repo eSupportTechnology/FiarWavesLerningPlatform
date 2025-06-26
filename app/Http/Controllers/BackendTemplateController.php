@@ -7,6 +7,7 @@ use App\Models\Customer;
 use App\Models\Booking;
 use App\Models\CustomerCourseBatch;
 use App\Services\DialogSMSService;
+use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 
@@ -253,6 +254,9 @@ class BackendTemplateController extends Controller
             'kyc_doc_back' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'bank_front_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
             'bank_back_image' => 'nullable|image|mimes:jpeg,png,jpg|max:2048',
+
+            'user_type' => 'nullable|in:user,super_user', // Assuming user_type is optional
+            'password' => 'nullable|string|min:6', // Optional password update
         ]);
 
         // Assign standard fields
@@ -279,6 +283,11 @@ class BackendTemplateController extends Controller
         $customer->kyc_status = $validated['kyc_status'] ?? null;
         $customer->bank_status = $validated['bank_status'] ?? null;
         $customer->status = $validated['status'];
+        $customer->user_type = $validated['user_type'] ?? 'user'; // Default to 'user' if not provided
+
+        if(!empty($validated['password'])) {
+            $customer->password = Hash::make($validated['password']); // Hash the password if provided
+        }
 
         // Handle file uploads (with optional existing image cleanup if needed)
         if ($request->hasFile('kyc_doc_front')) {

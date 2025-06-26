@@ -240,6 +240,20 @@
                                                                     <option value="0" {{ !$customer->status ? 'selected' : '' }}>Inactive</option>
                                                                 </select>
                                                             </div>
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">User Type</label>
+                                                                <select name="user_type" class="form-select">
+                                                                    <option value="user" {{ $customer->user_type == 'user' ? 'selected' : '' }}>User</option>
+                                                                    <option value="super_user" {{ $customer->user_type == 'super_user' ? 'selected' : '' }}>Super User</option>
+                                                                </select>
+                                                            </div>
+
+                                                            <div class="col-md-6">
+                                                                <label class="form-label">Password</label>
+                                                                <input type="text" name="password" class="form-control"
+                                                                    placeholder="Leave blank to keep current password">
+                                                            </div>
+
                                                         </div>
                                                         <div class="modal-footer">
                                                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>

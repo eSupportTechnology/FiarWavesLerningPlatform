@@ -43,6 +43,14 @@
 </head>
 
   <body onload="startTime()">
+
+    @if (!Auth::guard('employee')->check())
+        <script>
+            window.location.href = "{{ route('admin.login') }}";
+        </script>
+        @php exit; @endphp
+    @endif
+
     <!-- loader starts-->
     <div class="loader-wrapper">
       <div class="loader-index"> <span></span></div>

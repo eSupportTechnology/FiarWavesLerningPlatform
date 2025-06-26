@@ -4,8 +4,10 @@
         <!-- Logo Section -->
         <div class="logo-wrapper">
             <a href="{{ route('customer.dashboard') }}">
-                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="Logo">
-                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="Logo Dark">
+                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}"
+                    alt="Logo">
+                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}"
+                    alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
 
@@ -21,7 +23,8 @@
                         <a href="{{ route('admin') }}">
                             <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="">
                         </a>
-                        <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
+                        <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2"
+                                aria-hidden="true"></i></div>
                     </li>
 
                     <!-- Dashboard -->
@@ -71,11 +74,10 @@
                             <li><a href="{{ route('student.invitees.index') }}">All Invitees</a></li>
                             @php
 
-$userType = session('user_type');
-@endphp
-                            @if($userType === 'super_user')
-                            <li><a href="{{ route('student.invitees.genealogy') }}">Genealogy</a></li>
-
+                                $userType = session('user_type');
+                            @endphp
+                            @if ($userType === 'super_user')
+                                <li><a href="{{ route('student.invitees.genealogy') }}">Genealogy</a></li>
                             @endif
                         </ul>
                     </li>
@@ -104,11 +106,11 @@ $userType = session('user_type');
 <!-- Page Sidebar Ends -->
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         var sidebarTitles = document.querySelectorAll(".sidebar-title");
 
-        sidebarTitles.forEach(function (title) {
-            title.addEventListener("click", function (e) {
+        sidebarTitles.forEach(function(title) {
+            title.addEventListener("click", function(e) {
                 e.preventDefault(); // Prevent default action
 
                 let submenu = this.nextElementSibling; // Get the submenu
