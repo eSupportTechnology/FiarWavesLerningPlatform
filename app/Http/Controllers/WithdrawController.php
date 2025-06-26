@@ -137,13 +137,39 @@ class WithdrawController extends Controller
 
     public function approvedWithdrawals(Request $request)
     {
-        $withdrawals = Withdrawal::where('status', 'approved')->with('customer')->latest()->get();
+        $search = $request->input('search');
+
+        $withdrawals = Withdrawal::where('status', 'approved')
+            ->with('customer')
+            ->when($search, function ($query, $search) {
+                $query->whereHas('customer', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('contact_number', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->appends(['search' => $search]);
+
         return view('AdminDashboard.withdraw.approved', compact('withdrawals'));
     }
 
     public function rejectedWithdrawals(Request $request)
     {
-        $withdrawals = Withdrawal::where('status', 'rejected')->with('customer')->latest()->get();
+        $search = $request->input('search');
+        $withdrawals = Withdrawal::where('status', 'rejected')
+            ->with('customer')
+            ->when($search, function ($query, $search) {
+                $query->whereHas('customer', function ($q) use ($search) {
+                    $q->where('name', 'like', "%{$search}%")
+                        ->orWhere('email', 'like', "%{$search}%")
+                        ->orWhere('contact_number', 'like', "%{$search}%");
+                });
+            })
+            ->latest()
+            ->paginate(10)
+            ->appends(['search' => $search]);
         return view('AdminDashboard.withdraw.rejected', compact('withdrawals'));
     }
 

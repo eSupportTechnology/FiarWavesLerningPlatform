@@ -322,4 +322,23 @@ class BackendTemplateController extends Controller
 
         return back()->with('success', 'Customer updated successfully.');
     }
+
+    public function genealogy(){
+        // Get root sponsor (the top-most user or based on your logic)
+        $root = Customer::whereNull('sponsor_id')->first(); // or a specific user
+        return view('AdminDashboard.customers.genealogy', compact('root'));
+    }
+
+    // Recursive helper (optional if needed in AJAX later)
+    public function getSubTree($userId)
+    {
+        $customer = Customer::where('user_id', $userId)->firstOrFail();
+        $left = Customer::where('user_id', $customer->left_child_id)->first();
+        $right = Customer::where('user_id', $customer->right_child_id)->first();
+        return response()->json([
+            'customer' => $customer,
+            'left' => $left,
+            'right' => $right,
+        ]);
+    }
 }

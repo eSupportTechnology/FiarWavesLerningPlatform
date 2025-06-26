@@ -46,6 +46,8 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.customers.index') }}">All Customers</a></li>
+                            <li><a href="{{ route('admin.customers.genealogy') }}">Genealogy</a></li>
+
                         </ul>
                     </li>
 

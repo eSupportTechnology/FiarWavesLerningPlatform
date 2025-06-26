@@ -316,6 +316,10 @@ Route::prefix('admin/blogs')->name('admin.blogs.')->group(function () {
 // Customer Admin Actions
 Route::prefix('admin/customers')->name('admin.customers.')->group(function () {
     Route::get('/', [BackendTemplateController::class, 'index1'])->name('index');
+
+    Route::get('/genealogy', [BackendTemplateController::class, 'genealogy'])->name('genealogy');
+
+
     Route::get('/{customer}', [BackendTemplateController::class, 'show'])->name('show');
     Route::post('/{customer}/toggle-status', [BackendTemplateController::class, 'toggleStatus'])->name('toggleStatus');
     Route::delete('/{customer}', [BackendTemplateController::class, 'destroy'])->name('destroy');
