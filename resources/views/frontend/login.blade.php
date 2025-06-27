@@ -50,9 +50,27 @@
                     <div class="form-group">
                         <input type="text" placeholder="User Id" name="invite_code">
                     </div>
-                    <div class="form-group">
-                        <input type="password" placeholder="Password" name="password">
+                    <div class="form-group position-relative">
+                        <input type="password" placeholder="Password" name="password" id="password-input">
+                        <span class="position-absolute top-50 end-0 translate-middle-y me-3" style="cursor:pointer;" onclick="togglePasswordVisibility()">
+                            <i class="fa fa-eye" id="toggle-password-icon"></i>
+                        </span>
                     </div>
+                    <script>
+                        function togglePasswordVisibility() {
+                            const passwordInput = document.getElementById('password-input');
+                            const icon = document.getElementById('toggle-password-icon');
+                            if (passwordInput.type === 'password') {
+                                passwordInput.type = 'text';
+                                icon.classList.remove('fa-eye');
+                                icon.classList.add('fa-eye-slash');
+                            } else {
+                                passwordInput.type = 'password';
+                                icon.classList.remove('fa-eye-slash');
+                                icon.classList.add('fa-eye');
+                            }
+                        }
+                    </script>
                     <div class="form-group">
                         <div class="d-flex justify-content-between flex-wrap pt-sm-2">
                             <div class="checkgroup">

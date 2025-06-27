@@ -10,6 +10,12 @@ use App\Models\YoutubeVideo;
 use App\Models\Review;
 use App\Models\AdBanner;
 use App\Models\Banner;
+use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Log;
+use Illuminate\Support\Facades\Password;
+
+use Illuminate\Support\Str;
+use function Laravel\Prompts\alert;
 
 class FrontendTemplateController extends Controller
 {
@@ -141,7 +147,7 @@ class FrontendTemplateController extends Controller
     {
         return view('frontend.contact');
     }
-    
+
     public function team_single()
     {
         return view('frontend.team_single');
@@ -150,12 +156,60 @@ class FrontendTemplateController extends Controller
     {
         return view('frontend.forgetpass');
     }
+
+    public function sendResetLinkEmail(Request $request)
+    {
+        $request->validate(['email' => 'required|email']);
+
+        Log::info('Password reset link email requested for: ' . $request->email);
+
+        $status = Password::broker('customers')->sendResetLink($request->only('email'));
+
+
+        return $status === Password::RESET_LINK_SENT
+            ? back()->with('success', __($status))
+            : back()->with('error', __($status));
+    }
+
+    public function showResetForm($token)
+    {
+        return view('frontend.reset-password', [
+            'token' => $token,
+            'email' => request()->query('email'),
+        ]);
+    }
+
+    public function resetPassword(Request $request)
+    {
+        $request->validate([
+            'token' => 'required',
+            'email' => 'required|email',
+            'password' => 'required|min:8|confirmed',
+        ]);
+
+        $status = Password::broker('customers')->reset(
+            $request->only('email', 'password', 'password_confirmation', 'token'),
+            function ($customer, $password) {
+                $customer->forceFill([
+                    'password' => Hash::make($password),
+                    'remember_token' => Str::random(60),
+                ])->save();
+            }
+        );
+
+
+        return $status === Password::PASSWORD_RESET
+            ? redirect()->route('customer.login')->with('success', __($status))
+            : back()->with('error', __($status));
+    }
+
+
     public function study()
     {
         return view('frontend.study');
     }
 
-    
+
 
     public function vipPackages()
     {

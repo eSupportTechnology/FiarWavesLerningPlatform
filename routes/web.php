@@ -76,7 +76,14 @@ Route::get('/search_none', [FrontendTemplateController::class, 'search_none'])->
 Route::get('/404', [FrontendTemplateController::class, 'error'])->name('frontend.404');
 Route::get('/contact', [FrontendTemplateController::class, 'contact'])->name('frontend.contact');
 Route::get('/team_single', [FrontendTemplateController::class, 'team_single'])->name('frontend.team_single');
+
 Route::get('/forgetpass', [FrontendTemplateController::class, 'forgetpass'])->name('frontend.forgetpass');
+Route::post('/forgot-password-new', [FrontendTemplateController::class, 'sendResetLinkEmail'])->name('password.emailNew');
+
+
+Route::get('/reset-password/{token}', [FrontendTemplateController::class, 'showResetForm'])->name('password.resetNew');
+Route::post('/reset-password-new', [FrontendTemplateController::class, 'resetPassword'])->name('password.updateNew');
+
 Route::get('/study', [FrontendTemplateController::class, 'study'])->name('frontend.study');
 Route::view('international-stu', 'frontend.international-stu')->name('international-stu');
 Route::get('/vip_Packages', [FrontendTemplateController::class, 'vipPackages'])->name('frontend.vip.packages');

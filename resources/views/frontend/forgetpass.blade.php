@@ -29,15 +29,29 @@
         <div class="container">
             <div class="account-wrapper">
                 <h3 class="title">Forget Password</h3>
-                <form class="account-form">
-                    <div class="form-group">
-                        <input type="text" placeholder="Phone / Email">
+                @if (session('success'))
+                    <div class="alert alert-success alert-dismissible fade show" role="alert">
+                        <strong>Success!</strong> {{ session('success') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
                     </div>
+                @endif
+
+                @if (session('error'))
+                    <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                        <strong>Error!</strong> {{ session('error') }}
+                        <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                    </div>
+                @endif
+                <form class="account-form" method="POST" action="{{ route('password.emailNew') }}">
+                    @csrf
                     <div class="form-group">
+                        <input type="email" name="email" placeholder="Email">
+                    </div>
+                    {{-- <div class="form-group">
                         <input type="text" placeholder="G-123456">
-                    </div>
+                    </div> --}}
                     <div class="form-group text-center">
-                        <button class="d-block lab-btn"><span>Reset My Password</span></button>
+                        <button type="submit" class="d-block lab-btn"><span>Email Password Reset Link</span></button>
                     </div>
                 </form>
             </div>
@@ -46,4 +60,4 @@
     <!-- Login Section Section Ends Here -->
 
 
-    @endsection 
+@endsection

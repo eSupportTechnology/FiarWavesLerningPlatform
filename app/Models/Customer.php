@@ -2,13 +2,14 @@
 
 namespace App\Models;
 
+use Illuminate\Contracts\Auth\CanResetPassword;
 use Illuminate\Contracts\Auth\MustVerifyEmail;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 
-class Customer extends Authenticatable implements MustVerifyEmail
+class Customer extends Authenticatable implements MustVerifyEmail, CanResetPassword
 {
-    use Notifiable;
+    use Notifiable, \Illuminate\Auth\Passwords\CanResetPassword;
 
     protected $primaryKey = 'user_id';
 
