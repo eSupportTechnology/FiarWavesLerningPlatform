@@ -44,6 +44,8 @@ return new class extends Migration
             $table->string('kyc_doc_front')->nullable()->after('kyc_doc_number');
             $table->string('kyc_doc_back')->nullable()->after('kyc_doc_front');
             $table->enum('kyc_status', ['pending', 'approved', 'rejected'])->nullable()->after('kyc_doc_back');
+            $table->string('selfie')->nullable()->after('kyc_doc_back'); // New column for selfie with document
+            $table->string('kyc_reject_reason')->nullable()->after('selfie'); // New column for KYC rejection reason
 
             $table->integer('total_left_points')->default(0)->after('right_child_id');
             $table->integer('total_right_points')->default(0)->after('total_left_points');
@@ -102,6 +104,8 @@ return new class extends Migration
                 'email_verification_code',
                 'password_reset_code',
                 'user_type',
+                'selfie', // Drop the selfie column
+                'kyc_reject_reason', // Drop the KYC rejection reason column
             ]);
         });
     }

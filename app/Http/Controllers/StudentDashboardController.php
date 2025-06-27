@@ -263,6 +263,7 @@ class StudentDashboardController extends Controller
             'kyc_doc_number' => 'required|string|max:255',
             'kyc_doc_front' => $customer->kyc_doc_front ? 'nullable|image|max:2048' : 'required|image|max:2048',
             'kyc_doc_back' => $customer->kyc_doc_back ? 'nullable|image|max:2048' : 'required|image|max:2048',
+            'selfie' => $customer->selfie ? 'nullable|image|max:2048' : 'required|image|max:2048',
         ]);
 
         // Upload files if provided
@@ -286,6 +287,16 @@ class StudentDashboardController extends Controller
             }
             $backPath = $request->file('kyc_doc_back')->store('kyc', 'public');
             $customer->kyc_doc_back = $backPath;
+        }
+        if ($request->hasFile('selfie')) {
+            if ($customer->selfie) {
+                Storage::delete('public/' . $customer->selfie);
+            }
+            if ($customer->selfie && Storage::disk('public')->exists($customer->selfie)) {
+                Storage::disk('public')->delete($customer->selfie);
+            }
+            $selfiePath = $request->file('selfie')->store('kyc', 'public');
+            $customer->selfie = $selfiePath;
         }
 
         // Save the rest of the info

@@ -208,6 +208,18 @@
                             </td>
                         </tr>
                         @endif
+
+                        @if($customer->selfie)
+                        <tr>
+                            <th>Selfie with Document</th>
+                            <td>
+                                <a href="{{ asset('storage/' . $customer->selfie) }}" target="_blank">
+                                    <img src="{{ asset('storage/' . $customer->selfie) }}" alt="Back"
+                                        style="max-width:120px;max-height:80px;">
+                                </a>
+                            </td>
+                        </tr>
+                        @endif
                         <tr>
                             <th>Current KYC Status</th>
                             <td>
@@ -224,16 +236,47 @@
                         </tr>
                     </table>
                     @if ($customer->kyc_status !== 'approved' && $customer->kyc_status !== 'rejected' && !is_null($customer->kyc_status))
-                        <form action="{{ route('admin.customers.kyc.update', $customer) }}" method="POST"
-                            class="d-flex gap-2">
-                            @csrf
-                            @method('PATCH')
-                            <button type="submit" name="action" value="approve" class="btn btn-success btn-sm"
-                                onclick="return confirm('Are you sure you want to approve this KYC?')">Approve</button>
-                            <button type="submit" name="action" value="reject" class="btn btn-danger btn-sm"
-                                onclick="return confirm('Are you sure you want to reject this KYC?')">Reject</button>
-                        </form>
-                    @endif
+    <div class="d-flex gap-2">
+        <form action="{{ route('admin.customers.kyc.update', $customer) }}" method="POST" id="kyc-approve-form">
+            @csrf
+            @method('PATCH')
+            <button type="submit" name="action" value="approve" class="btn btn-success btn-sm"
+                onclick="return confirm('Are you sure you want to approve this KYC?')">Approve</button>
+        </form>
+
+        <!-- Reject Button triggers modal -->
+        <button type="button" class="btn btn-danger btn-sm" data-bs-toggle="modal" data-bs-target="#kycRejectModal">
+            Reject
+        </button>
+    </div>
+
+    <!-- Reject Modal -->
+    <div class="modal fade" id="kycRejectModal" tabindex="-1" aria-labelledby="kycRejectModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <form action="{{ route('admin.customers.kyc.update', $customer) }}" method="POST" id="kyc-reject-form">
+                @csrf
+                @method('PATCH')
+                <input type="hidden" name="action" value="reject">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title" id="kycRejectModalLabel">Reject KYC</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="kyc_reject_reason" class="form-label">Reason for rejection</label>
+                            <textarea class="form-control" id="kyc_reject_reason" name="kyc_reject_reason" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                        <button type="submit" class="btn btn-danger">Reject</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+@endif
                 @else
                     <div class="alert alert-secondary mt-3 mb-0">
                         No KYC details submitted.

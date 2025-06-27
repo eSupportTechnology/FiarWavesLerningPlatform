@@ -430,12 +430,18 @@
                                     <img src="{{ asset('storage/' . $customer->kyc_doc_back) }}" alt="Back Image"
                                         class="img-thumbnail" style="width: 150px; height: 150px; object-fit: fill;">
                                 </li>
+
+                                <li class="list-group-item">
+                                    <strong>Selfie with document:</strong><br>
+                                    <img src="{{ asset('storage/' . $customer->selfie) }}" alt="Selfie Image"
+                                        class="img-thumbnail" style="width: 150px; height: 150px; object-fit: fill;">
+                                </li>
                             </ul>
                         @else
                             @if ($customer->kyc_status === 'rejected')
                                 <div class="alert alert-danger d-flex align-items-center">
                                     <i class="bi bi-x-circle-fill me-2"></i>
-                                    Your KYC was Rejected. Please resubmit your details.
+                                    Your KYC was Rejected. Reason is : <b> {{ $customer->kyc_reject_reason}}</b>. Please resubmit your details.
                                 </div>
                             @elseif($customer->kyc_status === 'pending')
                                 <div class="alert alert-warning d-flex align-items-center">
@@ -509,6 +515,21 @@
                                         </div>
                                     @endif
                                     @error('kyc_doc_back')
+                                        <small class="text-danger">{{ $message }}</small>
+                                    @enderror
+                                </div>
+                                <div class="mb-3">
+                                    <label for="selfie" class="form-label fw-semibold">Selfie With Document</label>
+                                    <input type="file" class="form-control" id="selfie" name="selfie"
+                                        accept="image/*" {{ $customer->kyc_status === 'pending' ? 'disabled' : '' }}
+                                        {{ $customer->selfie ? '' : 'required' }}>
+                                    @if ($customer->selfie)
+                                        <div class="mt-2">
+                                            <img src="{{ asset('storage/' . $customer->selfie) }}" alt="Selfie Image"
+                                                class="img-thumbnail" style="max-width:150px;">
+                                        </div>
+                                    @endif
+                                    @error('selfie')
                                         <small class="text-danger">{{ $message }}</small>
                                     @enderror
                                 </div>

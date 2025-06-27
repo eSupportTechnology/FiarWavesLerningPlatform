@@ -60,6 +60,8 @@ class Customer extends Authenticatable implements MustVerifyEmail, CanResetPassw
         'email_verification_token',
         'password_reset_code',
         'user_type', // New column for user type
+        'selfie',
+        'kyc_reject_reason',
     ];
 
     protected $casts = [

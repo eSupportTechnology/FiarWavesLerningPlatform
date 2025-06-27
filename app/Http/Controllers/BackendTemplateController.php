@@ -186,6 +186,10 @@ class BackendTemplateController extends Controller
 
     public function updateKyc(Request $request, Customer $customer)
     {
+        $request->validate([
+            'action' => 'required|in:approve,reject',
+            'kyc_reject_reason' => 'nullable|string|max:255', // Optional reason for rejection
+        ]);
         $action = $request->input('action');
 
         if ($action === 'approve') {
@@ -193,6 +197,7 @@ class BackendTemplateController extends Controller
             $message = 'KYC approved successfully.';
         } elseif ($action === 'reject') {
             $customer->kyc_status = 'rejected';
+            $customer->kyc_reject_reason = $request->input('kyc_reject_reason', 'No reason provided');
             $message = 'KYC rejected successfully.';
         } else {
             return redirect()->back()->with('error', 'Invalid action.');
