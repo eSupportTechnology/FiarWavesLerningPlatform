@@ -78,6 +78,13 @@ Route::get('/404', [FrontendTemplateController::class, 'error'])->name('frontend
 Route::get('/contact', [FrontendTemplateController::class, 'contactPage'])->name('frontend.contact');
 Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
 
+Route::view('/help-center', 'frontend.support.help_center')->name('help.center');
+Route::view('/privacy-policy', 'frontend.support.privacy_policy')->name('privacy.policy');
+Route::view('/terms-and-conditions', 'frontend.support.terms_conditions')->name('terms.conditions');
+Route::view('/support-ticket', 'frontend.support.support_ticket')->name('support.ticket');
+Route::view('/faqs', 'frontend.support.faqs')->name('faqs');
+
+
 Route::get('/team_single', [FrontendTemplateController::class, 'team_single'])->name('frontend.team_single');
 
 Route::get('/forgetpass', [FrontendTemplateController::class, 'forgetpass'])->name('frontend.forgetpass');

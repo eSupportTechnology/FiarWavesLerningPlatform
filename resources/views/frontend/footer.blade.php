@@ -16,7 +16,8 @@
                     <form action="#">
                         <div class="nf-list">
                             <input type="email" name="email" placeholder="Enter Your Email">
-                            <input type="submit" name="submit" style="background-color: #ee1831;" value="Subscribe Now">
+                            <input type="submit" name="submit" style="background-color: #ee1831;"
+                                value="Subscribe Now">
                         </div>
                     </form>
                 </div>
@@ -34,8 +35,11 @@
                     <div class="col pr-5">
                         <div class="footer-item">
                             <div class="footer-inner text-center">
-                                <img src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="DSA Logo" style="max-width: 150px;">
-                                <p class="mt-3 text-muted">{{$landingPageContent ? $landingPageContent->footer_description : "Better Way is your trusted partner for mastering Forex & Crypto trading with top-tier guidance." }}</p>
+                                <img src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="DSA Logo"
+                                    style="max-width: 150px;">
+                                <p class="mt-3 text-muted">
+                                    {{ $landingPageContent ? $landingPageContent->footer_description : 'Better Way is your trusted partner for mastering Forex & Crypto trading with top-tier guidance.' }}
+                                </p>
                             </div>
                         </div>
                     </div>
@@ -45,7 +49,9 @@
                         <div class="footer-item">
                             <div class="footer-inner">
                                 <div class="footer-content">
-                                    <div class="title"><h4>Useful Links</h4></div>
+                                    <div class="title">
+                                        <h4>Useful Links</h4>
+                                    </div>
                                     <div class="content">
                                         <ul class="lab-ul">
 
@@ -66,14 +72,23 @@
                         <div class="footer-item">
                             <div class="footer-inner">
                                 <div class="footer-content">
-                                    <div class="title"><h4>Follow Us</h4></div>
+                                    <div class="title">
+                                        <h4>Follow Us</h4>
+                                    </div>
                                     <div class="content">
                                         <ul class="lab-ul">
-                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->facebook_link : "#" }}" target="_blank"><i class="icofont-facebook"></i> Facebook</a></li>
-                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->youtube_link : "#" }}" target="_blank"><i class="icofont-youtube"></i> YouTube</a></li>
-                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->tiktok_link : "#" }}" target="_blank"><i class="icofont-twitch"></i> TikTok</a></li>
-                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->instagram_link : "#" }}"><i class="icofont-instagram"></i> Instagram</a></li>
-                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->whatsapp_link : "#" }}"><i class="icofont-brand-whatsapp"></i> WhatsApp</a></li>
+                                            <li><a href="{{ $socialMediaLinks ? $socialMediaLinks->facebook_link : '#' }}"
+                                                    target="_blank"><i class="icofont-facebook"></i> Facebook</a></li>
+                                            <li><a href="{{ $socialMediaLinks ? $socialMediaLinks->youtube_link : '#' }}"
+                                                    target="_blank"><i class="icofont-youtube"></i> YouTube</a></li>
+                                            <li><a href="{{ $socialMediaLinks ? $socialMediaLinks->tiktok_link : '#' }}"
+                                                    target="_blank"><i class="icofont-twitch"></i> TikTok</a></li>
+                                            <li><a
+                                                    href="{{ $socialMediaLinks ? $socialMediaLinks->instagram_link : '#' }}"><i
+                                                        class="icofont-instagram"></i> Instagram</a></li>
+                                            <li><a
+                                                    href="{{ $socialMediaLinks ? $socialMediaLinks->whatsapp_link : '#' }}"><i
+                                                        class="icofont-brand-whatsapp"></i> WhatsApp</a></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -86,20 +101,23 @@
                         <div class="footer-item">
                             <div class="footer-inner">
                                 <div class="footer-content">
-                                    <div class="title"><h4>Support</h4></div>
+                                    <div class="title">
+                                        <h4>Support</h4>
+                                    </div>
                                     <div class="content">
                                         <ul class="lab-ul">
-                                            <li><a href="#">Help Center</a></li>
-                                            <li><a href="#">Privacy Policy</a></li>
-                                            <li><a href="#">Terms & Conditions</a></li>
-                                            <li><a href="#">Support Ticket</a></li>
-                                            <li><a href="#">FAQs</a></li>
+                                            <li><a href="{{ route('help.center') }}">Help Center</a></li>
+                                            <li><a href="{{ route('privacy.policy') }}">Privacy Policy</a></li>
+                                            <li><a href="{{ route('terms.conditions') }}">Terms & Conditions</a></li>
+                                            <li><a href="{{ route('frontend.contact') }}">Support Ticket</a></li>
+                                            <li><a href="{{ route('faqs') }}">FAQs</a></li>
                                         </ul>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
+
 
                 </div>
             </div>
@@ -109,7 +127,8 @@
         <div class="footer-bottom style-2">
             <div class="container">
                 <div class="section-wrapper text-center">
-                    <p>&copy; {{ date('Y') }} Better Way. Designed by <a href="https://esupporttech.lk" target="_blank">Esupport Technologies</a>.</p>
+                    <p>&copy; {{ date('Y') }} Better Way. Designed by <a href="https://esupporttech.lk"
+                            target="_blank">Esupport Technologies</a>.</p>
                 </div>
             </div>
         </div>
