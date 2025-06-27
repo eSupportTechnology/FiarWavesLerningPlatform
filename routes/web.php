@@ -20,6 +20,7 @@ use App\Http\Controllers\VipPackageBookingController;
 use App\Http\Controllers\EmployeeAuthController;
 use App\Http\Controllers\EmployeeController;
 use App\Http\Controllers\CallCenterController;
+use App\Http\Controllers\ContactController;
 use App\Http\Controllers\WalletController;
 use App\Http\Controllers\WithdrawController;
 
@@ -75,6 +76,8 @@ Route::get('/search_page', [FrontendTemplateController::class, 'search_page'])->
 Route::get('/search_none', [FrontendTemplateController::class, 'search_none'])->name('frontend.search_none');
 Route::get('/404', [FrontendTemplateController::class, 'error'])->name('frontend.404');
 Route::get('/contact', [FrontendTemplateController::class, 'contactPage'])->name('frontend.contact');
+Route::post('/contact', [ContactController::class, 'submit'])->name('contact.submit');
+
 Route::get('/team_single', [FrontendTemplateController::class, 'team_single'])->name('frontend.team_single');
 
 Route::get('/forgetpass', [FrontendTemplateController::class, 'forgetpass'])->name('frontend.forgetpass');
@@ -140,7 +143,6 @@ require __DIR__.'/auth.php';
 use App\Http\Controllers\PopupContactController;
 Route::post('/popup-contact-submit', [PopupContactController::class, 'store'])->name('popup.contact.submit');
 Route::get('popup-leads', [PopupContactController::class, 'index'])->name('popupcontacts.index');
-
 
 
 //admindashboard
