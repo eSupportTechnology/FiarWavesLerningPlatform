@@ -358,8 +358,10 @@ Route::prefix('admin/orders')->name('admin.orders.')->group(function () {
 
 });
 
+Route::get('/admin/landing/social-media', [LandingPageController::class, 'socialMedia'])->name('admin.landing.social_media');
 Route::get('/admin/landing/edit', [LandingPageController::class, 'edit'])->name('admin.landing.edit');
 Route::put('/admin/landing/update/{id}', [LandingPageController::class, 'update'])->name('admin.landing.update');
+Route::put('/admin/landing/social-media/{id}', [LandingPageController::class, 'socialMediaUpdate'])->name('admin.landing.socialMedia');
 
 
 

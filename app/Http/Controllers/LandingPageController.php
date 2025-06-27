@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\LandingPageContent;
+use App\Models\SocialMedia;
 use Illuminate\Http\Request;
 
 class LandingPageController extends Controller
@@ -18,6 +19,19 @@ class LandingPageController extends Controller
 
 
         return view('AdminDashboard.landing_page.index', compact('landingPage'));
+    }
+
+    public function socialMedia()
+    {
+        $socialMedia = SocialMedia::first(); // or find($id) if multiple
+
+        // If no record exists, create a blank one
+        if (!$socialMedia) {
+            $socialMedia = SocialMedia::create(); // Make sure fillable is set
+        }
+
+
+        return view('AdminDashboard.landing_page.social-media', compact('socialMedia'));
     }
 
     public function update(Request $request, $id)
@@ -47,5 +61,25 @@ class LandingPageController extends Controller
         $landingPage->update($request->all());
 
         return back()->with('success', 'Landing page content updated successfully.');
+    }
+
+    public function socialMediaUpdate(Request $request, $id)
+    {
+        $socialMedia = SocialMedia::findOrFail($id);
+
+        $request->validate([
+
+            'facebook_link' => 'nullable|url',
+            'youtube_link' => 'nullable|url',
+            'tiktok_link' => 'nullable|url',
+            'instagram_link' => 'nullable|url',
+            'whatsapp_link' => 'nullable|url',
+
+            // ...other field validations
+        ]);
+
+        $socialMedia->update($request->all());
+
+        return back()->with('success', 'Social Media Handles updated successfully.');
     }
 }

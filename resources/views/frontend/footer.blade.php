@@ -69,11 +69,11 @@
                                     <div class="title"><h4>Follow Us</h4></div>
                                     <div class="content">
                                         <ul class="lab-ul">
-                                            <li><a href="#" target="_blank"><i class="icofont-facebook"></i> Facebook</a></li>
-                                            <li><a href="#" target="_blank"><i class="icofont-youtube"></i> YouTube</a></li>
-                                            <li><a href="#" target="_blank"><i class="icofont-twitch"></i> TikTok</a></li>
-                                            <li><a href="#"><i class="icofont-instagram"></i> Instagram</a></li>
-                                            <li><a href="#"><i class="icofont-brand-whatsapp"></i> WhatsApp</a></li>
+                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->facebook_link : "#" }}" target="_blank"><i class="icofont-facebook"></i> Facebook</a></li>
+                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->youtube_link : "#" }}" target="_blank"><i class="icofont-youtube"></i> YouTube</a></li>
+                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->tiktok_link : "#" }}" target="_blank"><i class="icofont-twitch"></i> TikTok</a></li>
+                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->instagram_link : "#" }}"><i class="icofont-instagram"></i> Instagram</a></li>
+                                            <li><a href="{{$socialMediaLinks ? $socialMediaLinks->whatsapp_link : "#" }}"><i class="icofont-brand-whatsapp"></i> WhatsApp</a></li>
                                         </ul>
                                     </div>
                                 </div>

@@ -3,6 +3,7 @@
 namespace App\Providers;
 
 use App\Models\LandingPageContent;
+use App\Models\SocialMedia;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Support\Facades\View;
@@ -28,6 +29,7 @@ class AppServiceProvider extends ServiceProvider
 
         View::composer('*', function ($view) {
             $view->with('landingPageContent', LandingPageContent::first());
+            $view->with('socialMediaLinks', SocialMedia::first());
         });
     }
 }

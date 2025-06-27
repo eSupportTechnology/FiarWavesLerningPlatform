@@ -213,7 +213,8 @@
                             <span>Landing Page</span>
                         </a>
                         <ul class="sidebar-submenu">
-                            <li><a href="{{ route('admin.landing.edit') }}">Updates</a></li>
+                            <li><a href="{{ route('admin.landing.edit') }}">Main Details</a></li>
+                            <li><a href="{{ route('admin.landing.social_media') }}">Social Media</a></li>
                         </ul>
                     </li>
 

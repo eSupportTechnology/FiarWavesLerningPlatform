@@ -90,25 +90,25 @@ a {
                     <ul class="lab-ul social-icons d-flex align-items-center">
                         <li><p></p></li>
                         <li>
-                            <a href="#" class="youtube" target="_blank" title="YouTube">
+                            <a href="{{$socialMediaLinks ? $socialMediaLinks->youtube_link : "#" }}" class="youtube" target="_blank" title="YouTube">
                                 <i class="icofont-youtube"></i>
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="tiktok" target="_blank" title="TikTok">
+                            <a href="{{$socialMediaLinks ? $socialMediaLinks->tiktok_link : "#" }}" class="tiktok" target="_blank" title="TikTok">
                                 <i class="icofont-twitch"></i> <!-- No TikTok icon, using Twitch as placeholder -->
                             </a>
                         </li>
                         <li>
-                            <a href="#" class="facebook" target="_blank" title="Facebook">
+                            <a href="{{$socialMediaLinks ? $socialMediaLinks->facebook_link : "#" }}" class="facebook" target="_blank" title="Facebook">
                                 <i class="icofont-facebook-messenger"></i>
                             </a>
                         </li>
-                        <li>
+                        {{-- <li>
                             <a href="#" class="facebook" target="_blank" title="Facebook">
                                 <i class="icofont-facebook-messenger"></i>
                             </a>
-                        </li>
+                        </li> --}}
                     </ul>
                     <ul class="lab-ul right d-flex align-items-center gap-2 pr-3">
 
@@ -139,7 +139,7 @@ a {
         </li>
     @else
         <li><a href="{{ route('customer.login') }}" class="login"><i class="icofont-user"></i> LOG IN</a></li>
-        <li><a href="{{ route('customer.register') }}" class="signup"><i class="icofont-users" "></i> SIGN UP</a></li>
+        <li><a href="{{ route('customer.register') }}" class="signup"><i class="icofont-users" ></i> SIGN UP</a></li>
     @endif
 
 </ul>
