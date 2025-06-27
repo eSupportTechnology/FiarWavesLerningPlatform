@@ -29,6 +29,7 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees,email',
             'password' => 'required|string|min:6|confirmed',
+            'role' => 'required|in:admin,staff,manager,super_admin',
         ]);
 
         try {
@@ -36,7 +37,8 @@ class EmployeeController extends Controller
                 'name' => $request->name,
                 'email' => $request->email,
                 'password' => Hash::make($request->password),
-                'status' => true
+                'status' => true,
+                'role' => $request->role,
             ]);
 
             return redirect()->route('admin.employees.index')->with('success', 'Employee created successfully.');
@@ -60,11 +62,13 @@ class EmployeeController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:employees,email,' . $employee->id,
             'password' => 'nullable|string|min:6|confirmed',
+            'role' => 'required|in:admin,staff,manager,super_admin',
         ]);
 
         try {
             $employee->name = $request->name;
             $employee->email = $request->email;
+            $employee->role = $request->role;
             if ($request->filled('password')) {
                 $employee->password = Hash::make($request->password);
             }

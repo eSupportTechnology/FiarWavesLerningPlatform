@@ -52,6 +52,7 @@
                             <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                             <select name="role" class="form-control" required>
                                 <option value="admin" {{ $employee->role === 'admin' ? 'selected' : '' }}>Admin</option>
+                                <option value="super_admin" {{ $employee->role === 'super_admin' ? 'selected' : '' }}>Super Admin</option>
                                 <option value="manager" {{ $employee->role === 'manager' ? 'selected' : '' }}>Manager</option>
                                 <option value="staff" {{ $employee->role === 'staff' ? 'selected' : '' }}>Staff</option>
                             </select>

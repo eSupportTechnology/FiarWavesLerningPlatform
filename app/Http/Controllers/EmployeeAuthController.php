@@ -49,7 +49,7 @@ class EmployeeAuthController extends Controller
             'name' => 'required|string|max:255',
             'email' => 'required|string|email|unique:employees,email',
             'password' => 'required|string|min:6|confirmed',
-            'role' => 'required|in:admin,staff,manager', // or customize roles
+            'role' => 'required|in:admin,staff,manager,super_admin', // or customize roles
         ]);
 
         $employee = \App\Models\Employee::create([
@@ -65,7 +65,7 @@ class EmployeeAuthController extends Controller
     }
 
 
-    
+
 
     public function logout(Request $request)
     {

@@ -51,6 +51,7 @@
                             <label for="role" class="form-label">Role <span class="text-danger">*</span></label>
                             <select name="role" class="form-control" required>
                                 <option value="">Select Role</option>
+                                <option value="super_admin">Super Admin</option>
                                 <option value="admin">Admin</option>
                                 <option value="manager">Manager</option>
                                 <option value="staff">Staff</option>

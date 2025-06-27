@@ -41,7 +41,12 @@
                             <td>{{ $index + 1 }}</td>
                             <td>{{ $employee->name }}</td>
                             <td>{{ $employee->email }}</td>
+                            @if($employee->role == 'super_admin')
+                                <td>Super Admin</td>
+                            @else
                             <td>{{ ucfirst($employee->role ?? 'N/A') }}</td>
+
+                            @endif
                             <td>
                                 <span class="badge bg-{{ $employee->status ? 'success' : 'danger' }}">
                                     {{ $employee->status ? 'Active' : 'Inactive' }}
