@@ -64,6 +64,51 @@
                                             </form>
                                         </td>
                                     </tr>
+
+                                    <!-- Edit Modal -->
+    <div class="modal fade" id="editFileModal{{ $file->file_id }}" tabindex="-1" aria-labelledby="editFileModalLabel{{ $file->file_id }}" aria-hidden="true">
+        <div class="modal-dialog modal-lg">
+            <div class="modal-content">
+                <form action="{{ route('courseFile.update', $file->file_id) }}" method="POST">
+                    @csrf
+                    @method('PUT')
+
+                    <div class="modal-header">
+                        <h5 class="modal-title">Edit File: {{ $file->file_name }}</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label class="form-label">File Name</label>
+                            <input type="text" name="file_name" class="form-control" value="{{ $file->file_name }}" required>
+                        </div>
+
+                        <div class="mb-3">
+                            <label class="form-label">Assign to Batches</label>
+                            <div class="row">
+                                @foreach($course->batches as $batch)
+                                    <div class="col-md-4">
+                                        <div class="form-check">
+                                            <input type="checkbox" name="batches[]" value="{{ $batch->id }}"
+                                                class="form-check-input" id="editBatch{{ $file->file_id }}-{{ $batch->id }}"
+                                                {{ $file->batches->contains($batch->id) ? 'checked' : '' }}>
+                                            <label for="editBatch{{ $file->file_id }}-{{ $batch->id }}" class="form-check-label">{{ $batch->name }}</label>
+                                        </div>
+                                    </div>
+                                @endforeach
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="submit" class="btn btn-success">Update</button>
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
                                 @endforeach
                             </tbody>
                         </table>
@@ -119,49 +164,6 @@
         </div>
     </div>
 
-    <!-- Edit Modal -->
-    <div class="modal fade" id="editFileModal{{ $file->file_id }}" tabindex="-1" aria-labelledby="editFileModalLabel{{ $file->file_id }}" aria-hidden="true">
-        <div class="modal-dialog modal-lg">
-            <div class="modal-content">
-                <form action="{{ route('courseFile.update', $file->file_id) }}" method="POST">
-                    @csrf
-                    @method('PUT')
 
-                    <div class="modal-header">
-                        <h5 class="modal-title">Edit File: {{ $file->file_name }}</h5>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-
-                    <div class="modal-body">
-                        <div class="mb-3">
-                            <label class="form-label">File Name</label>
-                            <input type="text" name="file_name" class="form-control" value="{{ $file->file_name }}" required>
-                        </div>
-
-                        <div class="mb-3">
-                            <label class="form-label">Assign to Batches</label>
-                            <div class="row">
-                                @foreach($course->batches as $batch)
-                                    <div class="col-md-4">
-                                        <div class="form-check">
-                                            <input type="checkbox" name="batches[]" value="{{ $batch->id }}"
-                                                class="form-check-input" id="editBatch{{ $file->file_id }}-{{ $batch->id }}"
-                                                {{ $file->batches->contains($batch->id) ? 'checked' : '' }}>
-                                            <label for="editBatch{{ $file->file_id }}-{{ $batch->id }}" class="form-check-label">{{ $batch->name }}</label>
-                                        </div>
-                                    </div>
-                                @endforeach
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="modal-footer">
-                        <button type="submit" class="btn btn-success">Update</button>
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
 
 @endsection
