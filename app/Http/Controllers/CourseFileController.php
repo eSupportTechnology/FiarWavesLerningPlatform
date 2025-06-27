@@ -42,20 +42,15 @@ class CourseFileController extends Controller
                 $extension = $file->getClientOriginalExtension();
                 $fileName = time() . '_' . $originalName;
 
-                // Upload path like: public/uploads/courses/{id}/files
-                $uploadPath = public_path("uploads/courses/{$courseId}/files");
-
-                if (!file_exists($uploadPath)) {
-                    mkdir($uploadPath, 0777, true);
-                }
-
-                $file->move($uploadPath, $fileName);
+                // Store file in storage/app/public/uploads/courses/{id}/files
+                $storagePath = "uploads/courses/{$courseId}/files";
+                $filePath = $file->storeAs($storagePath, $fileName, 'public');
 
                 // Save file
                 $newFile = CourseFile::create([
                     'course_id'   => $courseId,
                     'file_name'   => $request->file_name,
-                    'file_path'   => "uploads/courses/{$courseId}/files/{$fileName}",
+                    'file_path'   => $filePath,
                     'file_type'   => $extension,
                 ]);
 
@@ -109,5 +104,5 @@ class CourseFileController extends Controller
 
 
 
-    
+
 }
