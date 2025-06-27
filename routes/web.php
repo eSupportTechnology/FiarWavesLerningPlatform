@@ -74,7 +74,7 @@ Route::get('/cart_page', [FrontendTemplateController::class, 'cart_page'])->name
 Route::get('/search_page', [FrontendTemplateController::class, 'search_page'])->name('frontend.search_page');
 Route::get('/search_none', [FrontendTemplateController::class, 'search_none'])->name('frontend.search_none');
 Route::get('/404', [FrontendTemplateController::class, 'error'])->name('frontend.404');
-Route::get('/contact', [FrontendTemplateController::class, 'contact'])->name('frontend.contact');
+Route::get('/contact', [FrontendTemplateController::class, 'contactPage'])->name('frontend.contact');
 Route::get('/team_single', [FrontendTemplateController::class, 'team_single'])->name('frontend.team_single');
 
 Route::get('/forgetpass', [FrontendTemplateController::class, 'forgetpass'])->name('frontend.forgetpass');
@@ -131,9 +131,9 @@ Route::get('/booking/success', function () {
 Route::get('/frontend/international-stu', function (){
     return view('frontend.international-stu');
 })->name('frontend.international-stu');
-Route::get('/contact', function (){
-    return view('frontend.contact');
-})->name('frontend.contact');
+// Route::get('/contact', function (){
+//     return view('frontend.contact');
+// })->name('frontend.contact');
 require __DIR__.'/auth.php';
 
 

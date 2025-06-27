@@ -10,6 +10,7 @@ use App\Models\YoutubeVideo;
 use App\Models\Review;
 use App\Models\AdBanner;
 use App\Models\Banner;
+use App\Models\Branch;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
@@ -143,9 +144,10 @@ class FrontendTemplateController extends Controller
     {
         return view('frontend.404');
     }
-    public function contact()
+    public function contactPage()
     {
-        return view('frontend.contact');
+        $branches = Branch::all();
+        return view('frontend.contact', compact('branches'));
     }
 
     public function team_single()

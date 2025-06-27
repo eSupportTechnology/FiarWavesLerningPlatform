@@ -116,39 +116,24 @@
             <h2 class="title">You Can Also Reach Us At</h2>
         </div>
         <div class="row g-4 justify-content-center">
-            <!-- Branch 1 -->
-            <div class="col-md-4">
-                <div class="card text-center shadow-sm h-100">
-                    <div class="card-body">
-                        <i class="fas fa-university fa-2x text-primary mb-3"></i>
-                        <h5 class="card-title">xxxx Branch</h5>
-                        <p>NO.xxx/A/01, xxx, xxx </p>
+            @foreach ($branches as $branch)
+                <div class="col-md-4">
+                    <div class="card text-center shadow-sm h-100">
+                        <div class="card-body">
+                            <i class="fas fa-university fa-2x text-primary mb-3"></i>
+                            <h5 class="card-title">{{ $branch->name }}</h5>
+                            <p>{{ $branch->address ?? 'Address not available' }}</p>
+                            @if($branch->phone)
+                                <p><i class="fas fa-phone-alt"></i> {{ $branch->phone }}</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
-            </div>
-            <!-- Branch 2 -->
-            <div class="col-md-4">
-                <div class="card text-center shadow-sm h-100">
-                    <div class="card-body">
-                        <i class="fas fa-university fa-2x text-primary mb-3"></i>
-                        <h5 class="card-title">xxx Branch</h5>
-                        <p>Near Old xxx, xxxx, xxx</p>
-                    </div>
-                </div>
-            </div>
-            <!-- Branch 3 -->
-            <div class="col-md-4">
-                <div class="card text-center shadow-sm h-100">
-                    <div class="card-body">
-                        <i class="fas fa-university fa-2x text-primary mb-3"></i>
-                        <h5 class="card-title">xxxx Branch</h5>
-                        <p>Main Road , xxxx</p>
-                    </div>
-                </div>
-            </div>
+            @endforeach
         </div>
     </div>
 </div>
+
 
 
 <!-- ✅ Contact Form -->
