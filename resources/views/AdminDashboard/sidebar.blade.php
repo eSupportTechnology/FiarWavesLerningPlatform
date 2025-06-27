@@ -5,8 +5,10 @@
         <!-- Logo Section -->
         <div class="logo-wrapper">
             <a href="{{ route('admin.dashboard') }}">
-                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="Logo">
-                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}" alt="Logo Dark">
+                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}"
+                    alt="Logo">
+                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}"
+                    alt="Logo Dark">
             </a>
             <div class="back-btn"><i class="fa fa-angle-left"></i></div>
 
@@ -23,11 +25,12 @@
                         <a href="{{ route('admin') }}">
                             <img class="img-fluid" src="{{ asset('frontend/assets/images/logo.png') }}" alt="">
                         </a>
-                        <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2" aria-hidden="true"></i></div>
+                        <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2"
+                                aria-hidden="true"></i></div>
                     </li>
 
                     <!-- Dashboard -->
-                    <li class="sidebar-list mt-5" >
+                    <li class="sidebar-list mt-5">
                         <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
@@ -68,7 +71,7 @@
                     <!-- Booking Requests -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
-                        <i class="fa fa-file-text"></i> <!-- Corrected Icon -->
+                            <i class="fa fa-file-text"></i> <!-- Corrected Icon -->
                             <span>Booking Requests</span>
                         </a>
                         <ul class="sidebar-submenu">
@@ -140,7 +143,7 @@
                     <!-- You Tube Videos -->
                     <li class="sidebar-list">
                         <a class="sidebar-link sidebar-title" href="#">
-                        <i class="fa fa-youtube"></i> <!-- Corrected Icon -->
+                            <i class="fa fa-youtube"></i> <!-- Corrected Icon -->
                             <span>You-Tube Videos </span>
                         </a>
                         <ul class="sidebar-submenu">
@@ -229,7 +232,12 @@
                         </a>
                         <ul class="sidebar-submenu mb-5">
                             <li><a href="{{ route('admin.banners.index') }}">Manage Banners</a></li>
-                            <li><a href="{{ route('admin.employees.index') }}">Manage Employees</a></li>
+                            @php
+                                $loggedInEmployee = session('employee');
+                            @endphp
+                            @if ($loggedInEmployee && $loggedInEmployee->role === 'super_admin')
+                                <li><a href="{{ route('admin.employees.index') }}">Manage Employees</a></li>
+                            @endif
                         </ul>
                     </li>
 
@@ -244,11 +252,11 @@
 <!-- Page Sidebar Ends -->
 
 <script>
-    document.addEventListener("DOMContentLoaded", function () {
+    document.addEventListener("DOMContentLoaded", function() {
         var sidebarTitles = document.querySelectorAll(".sidebar-title");
 
-        sidebarTitles.forEach(function (title) {
-            title.addEventListener("click", function (e) {
+        sidebarTitles.forEach(function(title) {
+            title.addEventListener("click", function(e) {
                 e.preventDefault(); // Prevent default action
 
                 let submenu = this.nextElementSibling; // Get the submenu
@@ -259,6 +267,3 @@
         });
     });
 </script>
-
-
-
