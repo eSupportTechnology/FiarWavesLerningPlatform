@@ -260,7 +260,7 @@ class StudentDashboardController extends Controller
         // Validate input
         $validated = $request->validate([
             'kyc_doc_type' => 'required|string|in:NIC,Passport,DL',
-            'kyc_doc_number' => 'required|string|max:255',
+            'kyc_doc_number' => 'required|string|max:255||unique:customers,kyc_doc_number',
             'kyc_doc_front' => $customer->kyc_doc_front ? 'nullable|image|max:2048' : 'required|image|max:2048',
             'kyc_doc_back' => $customer->kyc_doc_back ? 'nullable|image|max:2048' : 'required|image|max:2048',
             'selfie' => $customer->selfie ? 'nullable|image|max:2048' : 'required|image|max:2048',
