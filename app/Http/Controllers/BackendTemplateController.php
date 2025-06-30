@@ -37,6 +37,7 @@ class BackendTemplateController extends Controller
                         ->orWhere('invite_code', 'like', "%{$search}%");
                 });
             })
+            ->where('status', '!=', 2) // Exclude deleted customers
             ->latest()
             ->paginate(10)
             ->appends(['search' => $search]);
@@ -66,7 +67,9 @@ class BackendTemplateController extends Controller
     {
         try {
             $customer = Customer::findOrFail($id);
-            $customer->delete();
+            $customer->status = 2; // Set status to inactive instead of deleting
+            $customer->save();
+            // $customer->delete();
 
             return redirect()->route('admin.customers.index')->with('success', 'Customer deleted successfully.');
         } catch (\Throwable $e) {
@@ -337,22 +340,23 @@ class BackendTemplateController extends Controller
         return back()->with('success', 'Customer updated successfully.');
     }
 
-    public function genealogy(){
+    public function genealogy(Request $request)
+    {
         // Get root sponsor (the top-most user or based on your logic)
-        $root = Customer::whereNull('sponsor_id')->first(); // or a specific user
-        return view('AdminDashboard.customers.genealogy', compact('root'));
+        $root = Customer::whereNull('sponsor_id')->first();
+
+        // Get performance limit from request or use default
+        // $performanceLimit = $request->get('limit', 11); // Default to 10 levels initially
+
+        // Option to show all at once (use with caution for large trees)
+        // $showAll = $request->get('show_all', false);
+
+        // if ($showAll) {
+            $performanceLimit = 999; // Essentially unlimited
+        // }
+
+        return view('AdminDashboard.customers.genealogy', compact('root', 'performanceLimit'));
     }
 
-    // Recursive helper (optional if needed in AJAX later)
-    public function getSubTree($userId)
-    {
-        $customer = Customer::where('user_id', $userId)->firstOrFail();
-        $left = Customer::where('user_id', $customer->left_child_id)->first();
-        $right = Customer::where('user_id', $customer->right_child_id)->first();
-        return response()->json([
-            'customer' => $customer,
-            'left' => $left,
-            'right' => $right,
-        ]);
-    }
+
 }

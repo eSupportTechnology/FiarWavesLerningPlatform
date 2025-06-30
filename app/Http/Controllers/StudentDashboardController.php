@@ -739,6 +739,8 @@ class StudentDashboardController extends Controller
         if (!$root) {
             return redirect()->back()->with('error', 'Customer not found. or you do not have permission to view this page.');
         }
-        return view('StudentDashboard.invitees.genealogy', compact('root'));
+
+        $performanceLimit = 999;
+        return view('StudentDashboard.invitees.genealogy', compact('root', 'performanceLimit'));
     }
 }

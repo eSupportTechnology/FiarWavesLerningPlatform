@@ -205,6 +205,10 @@ class CustomerAuthController extends Controller
 
         $customer = Customer::where('invite_code', $request->invite_code)->first();
 
+        if($customer && $customer->status == 2){
+            return redirect()->back()->with('error', 'Your account is deleted.');
+        }
+
         if ($customer && Hash::check($request->password, $customer->password)) {
             // Custom session
             session([
