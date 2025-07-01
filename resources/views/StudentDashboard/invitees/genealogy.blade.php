@@ -38,32 +38,49 @@
         margin: 5px 0;
     }
 
-    .node-content {
-        background: #2d2d2d;
-        color: #ffffff;
-        border: 1px solid #444;
-        padding: 8px 12px;
-        border-radius: 6px;
-        text-align: center;
-        z-index: 2;
-        cursor: pointer;
-        box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-        min-width: 120px;
-        box-sizing: border-box;
-    }
+    /* Children Container - Back to original */
+.children {
+    display: flex;
+    position: relative;
+    margin-top: 25px;
+    gap: 10px;
+}
 
-    /* Empty slot styling */
-    .empty-slot {
-        background: #333;
-        color: #666;
-        border: 1px dashed #555;
-        padding: 8px 12px;
-        border-radius: 6px;
-        text-align: center;
-        font-style: italic;
-        min-width: 120px;
-        box-sizing: border-box;
-    }
+/* Node content styling */
+.node-content {
+    background: #2d2d2d;
+    color: #ffffff;
+    border: 1px solid #444;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-align: center;
+    z-index: 2;
+    cursor: pointer;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    min-width: 120px;
+    box-sizing: border-box;
+}
+
+/* Empty slot styling */
+/* Ensure empty slots have consistent base styling */
+.empty-slot {
+    background: #333;
+    color: #666;
+    border: 1px dashed #555;
+    padding: 8px 12px;
+    border-radius: 6px;
+    text-align: center;
+    font-style: italic;
+    min-width: 120px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    /* Ensure it can be resized by JavaScript */
+    width: auto;
+    /* Same height calculation as regular nodes */
+    min-height: 1.2em;
+}
 
     /* Children Container - Critical Change */
     .children {
@@ -177,58 +194,96 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const container = document.getElementById('tree-container');
-        const tree = document.getElementById('genealogy-tree');
+   document.addEventListener('DOMContentLoaded', function() {
+    const container = document.getElementById('tree-container');
+    const tree = document.getElementById('genealogy-tree');
 
-        // Calculate all parent widths based on children
-        function calculateWidths() {
-            // Process nodes from bottom up
-            const nodes = Array.from(document.querySelectorAll('.tree-node')).reverse();
+    function calculateWidths() {
+        // First, let all elements render with their natural size
+        setTimeout(() => {
+            matchEmptySlots();
+            setTimeout(() => {
+                calculateParentWidths();
+                centerTree();
+            }, 50);
+        }, 100);
+    }
 
-            nodes.forEach(node => {
-                const childrenContainer = node.querySelector('.children');
-                if (childrenContainer) {
-                    const children = Array.from(childrenContainer.children);
-                    let totalWidth = 0;
+    function matchEmptySlots() {
+        // Find all empty slots
+        const emptySlots = document.querySelectorAll('.empty-slot');
 
-                    children.forEach(child => {
-                        const content = child.querySelector('.node-content, .empty-slot');
-                        if (content) {
-                            totalWidth += content.offsetWidth;
-                        }
-                    });
+        emptySlots.forEach(emptySlot => {
+            // Find the parent children container
+            const parentChildren = emptySlot.closest('.children');
+            if (parentChildren) {
+                // Get all child nodes in this container
+                const childNodes = Array.from(parentChildren.children);
 
-                    // Add gaps between children
-                    totalWidth += 10 * (children.length - 1);
+                // Find non-empty siblings
+                const nonEmptyNodes = childNodes.filter(child => {
+                    const content = child.querySelector('.node-content');
+                    return content !== null;
+                });
 
-                    // Set parent width
-                    const parentContent = node.querySelector('.node-content');
-                    if (parentContent) {
-                        parentContent.style.width = `${totalWidth}px`;
+                // If there are non-empty siblings, match the width of the first one
+                if (nonEmptyNodes.length > 0) {
+                    const referenceContent = nonEmptyNodes[0].querySelector('.node-content');
+                    if (referenceContent) {
+                        const referenceWidth = referenceContent.offsetWidth;
+                        emptySlot.style.width = `${referenceWidth}px`;
                     }
                 }
-            });
+            }
+        });
+    }
 
-            // Center the tree after calculation
-            centerTree();
-        }
+    function calculateParentWidths() {
+        // Process nodes from bottom up
+        const nodes = Array.from(document.querySelectorAll('.tree-node')).reverse();
 
-        function centerTree() {
-            setTimeout(() => {
-                container.scrollLeft = (tree.scrollWidth - container.clientWidth) / 2;
-                container.scrollTop = (tree.scrollHeight - container.clientHeight) / 2;
-            }, 100);
-        }
+        nodes.forEach(node => {
+            const childrenContainer = node.querySelector('.children');
+            if (childrenContainer) {
+                const children = Array.from(childrenContainer.children);
+                let totalWidth = 0;
 
-        // Initial calculation
-        calculateWidths();
+                children.forEach(child => {
+                    const content = child.querySelector('.node-content, .empty-slot');
+                    if (content) {
+                        totalWidth += content.offsetWidth;
+                    }
+                });
 
-        // Recalculate on window resize
-        window.addEventListener('resize', calculateWidths);
-    });
+                // Add gaps between children
+                totalWidth += 10 * (children.length - 1);
 
-    let scale = 1;
+                // Set parent width
+                const parentContent = node.querySelector('.node-content');
+                if (parentContent) {
+                    parentContent.style.width = `${totalWidth}px`;
+                }
+            }
+        });
+    }
+
+    function centerTree() {
+        setTimeout(() => {
+            container.scrollLeft = (tree.scrollWidth - container.clientWidth) / 2;
+            container.scrollTop = (tree.scrollHeight - container.clientHeight) / 2;
+        }, 100);
+    }
+
+    // Run calculation multiple times to ensure it works
+    calculateWidths();
+    setTimeout(calculateWidths, 300);
+    setTimeout(calculateWidths, 600);
+
+    // Recalculate on window resize
+    window.addEventListener('resize', calculateWidths);
+});
+
+let scale = 1;
 const zoomStep = 0.1;
 const wrapper = document.getElementById('tree-wrapper');
 
@@ -264,7 +319,6 @@ function centerTree() {
     }, 100);
 }
 
-// Update the existing centerNode function to work with zoom:
 function centerNode(element) {
     const container = document.getElementById('tree-container');
     const rect = element.getBoundingClientRect();
