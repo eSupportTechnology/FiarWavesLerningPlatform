@@ -84,4 +84,20 @@ class Customer extends Authenticatable implements MustVerifyEmail, CanResetPassw
         return $this->hasOne(Wallet::class, 'customer_id', 'user_id');
     }
 
+    // Recursive relationships for tree structure
+    public function leftChild()
+    {
+        return $this->belongsTo(Customer::class, 'left_child_id');
+    }
+
+    public function rightChild()
+    {
+        return $this->belongsTo(Customer::class, 'right_child_id');
+    }
+
+    public function sponsor()
+    {
+        return $this->belongsTo(Customer::class, 'sponsor_id');
+    }
+
 }

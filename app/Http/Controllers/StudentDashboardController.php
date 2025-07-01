@@ -735,11 +735,19 @@ class StudentDashboardController extends Controller
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
         }
-        $root = Customer::where('user_id', $customerId)->where('user_type', 'super_user')->first();
+
+
+        $performanceLimit = 999;
+
+        // Load root node (where sponsor_id is null) with recursive relationships
+        $root = Customer::with(['leftChild', 'rightChild'])
+            ->where('user_id', $customerId)->where('user_type', 'super_user')->first();
+
         if (!$root) {
             return redirect()->back()->with('error', 'Customer not found. or you do not have permission to view this page.');
         }
 
+        // Prevent infinite recursion
         $performanceLimit = 999;
         return view('StudentDashboard.invitees.genealogy', compact('root', 'performanceLimit'));
     }

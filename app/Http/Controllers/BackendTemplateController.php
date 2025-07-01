@@ -340,22 +340,32 @@ class BackendTemplateController extends Controller
         return back()->with('success', 'Customer updated successfully.');
     }
 
+    // In your controller
     public function genealogy(Request $request)
     {
-        // Get root sponsor (the top-most user or based on your logic)
-        $root = Customer::whereNull('sponsor_id')->first();
+        // Load root node (where sponsor_id is null) with recursive relationships
+        $root = Customer::with(['leftChild', 'rightChild'])
+            ->whereNull('sponsor_id')
+            ->first();
 
-        // Get performance limit from request or use default
-        // $performanceLimit = $request->get('limit', 11); // Default to 10 levels initially
+        // Fallback if no root found (for testing)
+        if (!$root) {
+            $root = Customer::with(['leftChild', 'rightChild'])->first();
 
-        // Option to show all at once (use with caution for large trees)
-        // $showAll = $request->get('show_all', false);
+            if (!$root) {
+                return view('AdminDashboard.customers.genealogy', [
+                    'error' => 'No customers found in database'
+                ]);
+            }
+        }
 
-        // if ($showAll) {
-            $performanceLimit = 999; // Essentially unlimited
-        // }
+        // Prevent infinite recursion
+        $performanceLimit = 999;
 
-        return view('AdminDashboard.customers.genealogy', compact('root', 'performanceLimit'));
+        return view('AdminDashboard.customers.genealogy', [
+            'root' => $root,
+            'performanceLimit' => $performanceLimit
+        ]);
     }
 
 
