@@ -18,6 +18,18 @@
     <!-- Swiper CSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@10/swiper-bundle.min.css"/>
 
+    <style>
+        .pageheader-section {
+            background-position: center center; /* default for desktop */
+        }
+
+        @media (max-width: 767.98px) {
+            .pageheader-section {
+                background-position: 30% center !important; /* shift left on mobile */
+            }
+        }
+    </style>
+
 
 </head>
 
