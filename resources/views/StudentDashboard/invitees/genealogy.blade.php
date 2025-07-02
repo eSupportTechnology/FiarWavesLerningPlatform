@@ -1,4 +1,4 @@
-@extends('AdminDashboard.master')
+@extends('StudentDashboard.master')
 
 @section('title', 'Customer Genealogy')
 
