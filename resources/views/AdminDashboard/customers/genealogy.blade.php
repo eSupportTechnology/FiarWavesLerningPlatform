@@ -65,7 +65,7 @@
 /* Ensure empty slots have consistent base styling */
 .empty-slot {
     background: #333;
-    color: #666;
+    color: #fff;
     border: 1px dashed #555;
     padding: 8px 12px;
     border-radius: 6px;
@@ -124,7 +124,7 @@
 
     .node-id, .node-sponsor, .node-bv {
         font-size: 0.8em;
-        color: #aaa;
+        color: #fff;
         margin-top: 2px;
     }
 
