@@ -13,11 +13,14 @@ class WithdrawController extends Controller
     /**
      * Display the withdrawal page.
      *
-     * @return \Illuminate\View\View
+     * @return \Illuminate\View\View|\Illuminate\Http\RedirectResponse
      */
     public function index()
     {
         $customerId = session('customer_id');
+        if ($customerId === null) {
+            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+        }
         $customer = Customer::where('user_id', $customerId)->first();
         $wallet = Wallet::where('customer_id', $customerId)->first();
         if(!$wallet){
