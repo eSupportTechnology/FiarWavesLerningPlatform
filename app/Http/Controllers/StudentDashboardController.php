@@ -19,6 +19,7 @@ use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\Mail;
+use Illuminate\Validation\Rule;
 
 class StudentDashboardController extends Controller
 {
@@ -260,7 +261,12 @@ class StudentDashboardController extends Controller
         // Validate input
         $validated = $request->validate([
             'kyc_doc_type' => 'required|string|in:NIC,Passport,DL',
-            'kyc_doc_number' => 'required|string|max:255||unique:customers,kyc_doc_number',
+            'kyc_doc_number' => [
+                'required',
+                'string',
+                'max:255',
+                Rule::unique('customers', 'kyc_doc_number')->ignore($customer->user_id,'user_id'),
+            ],
             'kyc_doc_front' => $customer->kyc_doc_front ? 'nullable|image|max:2048' : 'required|image|max:2048',
             'kyc_doc_back' => $customer->kyc_doc_back ? 'nullable|image|max:2048' : 'required|image|max:2048',
             'selfie' => $customer->selfie ? 'nullable|image|max:2048' : 'required|image|max:2048',
