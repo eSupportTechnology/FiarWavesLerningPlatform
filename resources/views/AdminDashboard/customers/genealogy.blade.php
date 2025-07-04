@@ -10,7 +10,7 @@
         height: 80vh;
         overflow: auto;
         padding: 20px;
-        background: #ffffff;
+        background: #f8f9fa;
     }
 
     /* Tree Wrapper */
@@ -35,136 +35,241 @@
         display: flex;
         flex-direction: column;
         align-items: center;
-        margin: 5px 0;
+        margin: 8px 0;
     }
 
-    /* Children Container - Back to original */
-.children {
-    display: flex;
-    position: relative;
-    margin-top: 25px;
-    gap: 10px;
-}
-
-/* Node content styling */
+/* Node content styling - Beautiful modern design */
 .node-content {
-    background: #2d2d2d;
-    color: #ffffff;
-    border: 1px solid #444;
-    padding: 8px 12px;
-    border-radius: 6px;
+    background: #ffffff;
+    color: #2c3e50;
+    border: 2px solid #E85D04;
+    padding: 12px 16px;
+    border-radius: 12px;
     text-align: center;
     z-index: 2;
     cursor: pointer;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    min-width: 120px;
+    box-shadow: 0 4px 12px rgba(232, 93, 4, 0.15);
+    min-width: 140px;
     box-sizing: border-box;
+    transition: all 0.3s ease;
+    position: relative;
+    font-weight: 500;
 }
 
-/* Empty slot styling */
-/* Ensure empty slots have consistent base styling */
+.node-content:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 20px rgba(232, 93, 4, 0.25);
+    border-color: #d34a02;
+}
+
+/* Empty slot styling - Beautiful design */
 .empty-slot {
-    background: #333;
-    color: #fff;
-    border: 1px dashed #555;
-    padding: 8px 12px;
-    border-radius: 6px;
+    background: #f8f9fa;
+    color: #6c757d;
+    border: 2px dashed #E85D04;
+    padding: 12px 16px;
+    border-radius: 12px;
     text-align: center;
     font-style: italic;
-    min-width: 120px;
+    min-width: 140px;
     box-sizing: border-box;
     display: flex;
     align-items: center;
     justify-content: center;
-    /* Ensure it can be resized by JavaScript */
     width: auto;
-    /* Same height calculation as regular nodes */
     min-height: 1.2em;
+    transition: all 0.3s ease;
+    opacity: 0.7;
 }
 
-    /* Children Container - Critical Change */
+.empty-slot:hover {
+    background: #ffffff;
+    opacity: 1;
+    border-color: #d34a02;
+}
+
+    /* Children Container - Clean layout */
     .children {
         display: flex;
         position: relative;
         margin-top: 25px;
-        gap: 10px;
+        gap: 15px;
     }
 
-    /* Connecting Lines */
-    .tree-node::before {
+    /* Beautiful Connecting Lines */
+    
+    /* Main vertical line from parent down */
+    .tree-node:not(.level-0)::before {
         content: '';
         position: absolute;
-        top: -15px;
+        top: -25px;
         left: 50%;
-        width: 1px;
+        width: 3px;
         height: 15px;
-        background: #444;
+        background: linear-gradient(180deg, #E85D04 0%, #d34a02 100%);
         z-index: 1;
+        transform: translateX(-50%);
+        border-radius: 2px;
     }
 
+    /* Horizontal connecting line between children */
     .children::before {
         content: '';
         position: absolute;
-        top: -15px;
-        left: 0;
-        right: 0;
-        width: 100%;
-        height: 1px;
-        background: #444;
+        top: -12px;
+        left: 20%;
+        right: 20%;
+        height: 3px;
+        background: linear-gradient(90deg, #E85D04 0%, #d34a02 100%);
         z-index: 1;
+        border-radius: 2px;
     }
 
-    /* Node content details */
+    /* Vertical drop lines for each child */
+    .children .tree-node::after {
+        content: '';
+        position: absolute;
+        top: -12px;
+        left: 50%;
+        width: 3px;
+        height: 12px;
+        background: linear-gradient(180deg, #E85D04 0%, #d34a02 100%);
+        z-index: 2;
+        transform: translateX(-50%);
+        border-radius: 2px;
+    }
+
+    /* Hide lines for root level */
+    .level-0::before,
+    .level-0::after {
+        display: none !important;
+    }
+
+    /* Node content details - Enhanced typography */
     .node-name {
-        font-weight: bold;
-        margin-bottom: 3px;
-        color: #fff;
-        font-size: 0.95em;
+        font-weight: 600;
+        margin-bottom: 4px;
+        color: #2c3e50;
+        font-size: 1rem;
+        letter-spacing: 0.3px;
     }
 
     .node-id, .node-sponsor, .node-bv {
-        font-size: 0.8em;
-        color: #fff;
-        margin-top: 2px;
+        font-size: 0.85rem;
+        color: #6c757d;
+        margin-top: 3px;
+        font-weight: 500;
     }
 
-    /* Root Node Special Styling */
+    /* Root Node Special Styling - Premium look */
     .level-0 .node-content {
-        background: #3a3a3a;
-        border: 1px solid #555;
-        padding: 10px 15px;
+        background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);
+        color: white;
+        border: 3px solid #c44b03;
+        padding: 16px 20px;
+        font-size: 1.1rem;
+        box-shadow: 0 6px 20px rgba(232, 93, 4, 0.3);
     }
 
-    /* Zoom controls */
+    .level-0 .node-name {
+        color: white;
+        font-weight: 700;
+        font-size: 1.1rem;
+    }
+
+    .level-0 .node-id, 
+    .level-0 .node-sponsor, 
+    .level-0 .node-bv {
+        color: rgba(255, 255, 255, 0.9);
+    }
+
+    /* Modern Zoom controls */
 .zoom-controls {
     position: fixed;
-    bottom: 20px;
-    right: 20px;
+    bottom: 30px;
+    right: 30px;
     z-index: 100;
     display: flex;
-    gap: 8px;
+    gap: 10px;
+    background: rgba(255, 255, 255, 0.95);
+    padding: 8px;
+    border-radius: 12px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+    backdrop-filter: blur(10px);
 }
 
 .zoom-btn {
-    background: #333;
+    background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);
     color: white;
     border: none;
-    border-radius: 50%;
-    width: 36px;
-    height: 36px;
-    font-size: 16px;
+    border-radius: 8px;
+    width: 40px;
+    height: 40px;
+    font-size: 18px;
+    font-weight: 600;
     cursor: pointer;
     display: flex;
     align-items: center;
     justify-content: center;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    box-shadow: 0 2px 8px rgba(232, 93, 4, 0.3);
+    transition: all 0.3s ease;
+}
+
+.zoom-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(232, 93, 4, 0.4);
+}
+
+.zoom-btn:active {
+    transform: translateY(0);
+}
+
+/* Enhanced card styling */
+.card {
+    border: none;
+    border-radius: 16px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    overflow: hidden;
+}
+
+.card-header {
+    background: linear-gradient(135deg, #1a1a1a 0%, #2c2c2c 60%, #E85D04 85%, #d34a02 100%) !important;
+    border: none !important;
+    padding: 20px;
+}
+
+.card-header h5 {
+    color: white !important;
+    font-weight: 600;
+    font-size: 1.25rem;
+    margin: 0;
+}
+
+/* Scrollbar styling */
+.genealogy-container::-webkit-scrollbar {
+    width: 8px;
+    height: 8px;
+}
+
+.genealogy-container::-webkit-scrollbar-track {
+    background: #f1f1f1;
+    border-radius: 4px;
+}
+
+.genealogy-container::-webkit-scrollbar-thumb {
+    background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);
+    border-radius: 4px;
+}
+
+.genealogy-container::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(135deg, #d34a02 0%, #c44b03 100%);
 }
 </style>
 
 <div class="container-fluid">
-    <div class="card shadow-sm" style="background: #222; border-color: #333;">
-        <div class="card-header" style="background: #333; border-color: #444;">
-            <h5 class="mb-0 text-white">Customer Genealogy Tree</h5>
+    <div class="card shadow-lg">
+        <div class="card-header">
+            <h5 class="mb-0">Customer Genealogy Tree</h5>
         </div>
         <div class="card-body p-0">
             <div class="genealogy-container" id="tree-container">
@@ -185,9 +290,9 @@
                 @endif
             </div>
             <div class="zoom-controls">
-                <button class="zoom-btn" onclick="zoomOut()">-</button>
-                <button class="zoom-btn" onclick="resetZoom()">⌂</button>
-                <button class="zoom-btn" onclick="zoomIn()">+</button>
+                <button class="zoom-btn" onclick="zoomOut()" title="Zoom Out">−</button>
+                <button class="zoom-btn" onclick="resetZoom()" title="Reset Zoom">⌂</button>
+                <button class="zoom-btn" onclick="zoomIn()" title="Zoom In">+</button>
             </div>
         </div>
     </div>

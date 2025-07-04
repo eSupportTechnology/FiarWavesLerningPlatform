@@ -51,7 +51,12 @@
                 <!-- Profile Dropdown -->
                 <li class="profile-nav onhover-dropdown pe-0 py-0">
                     <div class="media profile-media">
-                        <img class="b-r-10" src="{{ asset('frontend/assets/images/dashboard/profile.png') }}" alt="">
+                        <div class="profile-icon-wrapper">
+                            <svg class="profile-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
+                                <path d="M6 21v-2a4 4 0 0 1 4-4h4a4 4 0 0 1 4 4v2" stroke="currentColor" stroke-width="2" fill="none"/>
+                            </svg>
+                        </div>
                         <div class="media-body">
                             @if(session()->has('customer_id'))
                                 <span>{{ session('customer_name') }}</span>
@@ -60,7 +65,7 @@
                                 <span>{{ Auth::user()->name }}</span>
                                 <p class="mb-0 font-roboto">Admin <i class="middle fa fa-angle-down"></i></p>
                             @else
-                                <span>Guest</span>
+                                <span>Guest <i class="middle fa fa-angle-down"></i></span>
                             @endif
                         </div>
                     </div>

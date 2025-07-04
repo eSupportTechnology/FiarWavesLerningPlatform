@@ -1,49 +1,38 @@
 <!-- Page Sidebar Start -->
 <div class="sidebar-wrapper" sidebar-layout="stroke-svg">
     <div>
-        <!-- Logo Section -->
-        <div class="logo-wrapper">
-            <a href="{{ route('customer.dashboard') }}">
-                <img class="img-fluid for-light w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}"
-                    alt="Logo">
-                <img class="img-fluid for-dark w-50" src="{{ asset('frontend/assets/images/newlogo.png') }}"
-                    alt="Logo Dark">
+        <!-- Logo Section - Matching Header Height -->
+        <div class="logo-wrapper d-flex align-items-center justify-content-between" style="height: 150px; padding: 0 24px; border-bottom: 1px solid #e9ecef; background: white;">
+            <a href="{{ route('customer.dashboard') }}" class="d-flex align-items-center">
+                <img class="img-fluid" src="{{ asset('frontend/assets/images/newlogo.png') }}" 
+                     alt="BetterWay Logo" style="height: 120px; max-width: 280px; object-fit: contain;">
+                <span class="ms-2 fw-bold text-primary" style="font-size: 20px;"></span>
             </a>
-            <div class="back-btn"><i class="fa fa-angle-left"></i></div>
-
+            <div class="back-btn d-lg-none">
+                <i class="fa fa-angle-left"></i>
+            </div>
         </div>
 
 
 
-        <nav class="sidebar-main ">
+        <nav class="sidebar-main">
             <div class="left-arrow" id="left-arrow"><i data-feather="arrow-left"></i></div>
-            <div id="sidebar-menu">
+            <div id="sidebar-menu" style="max-height: calc(100vh - 90px); overflow-y: auto;">
                 <ul class="sidebar-links" id="simple-bar">
-                    <li class="back-btn-juy">
-                        <a href="{{ route('admin') }}">
-                            <img class="img-fluid" src="{{ asset('assets/images/logo/logo-icon.png') }}" alt="">
-                        </a>
-                        <div class="mobile-back text-end"><span>Back</span><i class="fa fa-angle-right ps-2"
-                                aria-hidden="true"></i></div>
-                    </li>
-
                     <!-- Dashboard -->
-                    <li class="sidebar-list mt-5">
-                        <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
+                    <li class="sidebar-list">
+                        <a class="sidebar-link sidebar-title" href="{{ route('customer.dashboard') }}">
                             <i class="fa fa-dashboard"></i>
                             <span>Dashboard</span>
                         </a>
-                        <ul class="sidebar-submenu">
-                            <li><a href="{{ route('customer.dashboard') }}">Dashboard</a></li>
-                        </ul>
                     </li>
 
 
                     <!-- Course Management -->
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
-                            <i class="fa fa-users"></i> <!-- Corrected Icon -->
-                            <span>Courses </span>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-book"></i>
+                            <span>My Courses</span>
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('student.bookings') }}">All Courses</a></li>
@@ -64,16 +53,15 @@
                         </ul>
                     </li>
 
-                    <!-- Course Management -->
+                    <!-- Invitees Management -->
                     <li class="sidebar-list">
-                        <a class="sidebar-link sidebar-title" href="{{ route('admin') }}">
-                            <i class="fa fa-group"></i> <!-- Corrected Icon -->
-                            <span>Invitees </span>
+                        <a class="sidebar-link sidebar-title" href="#">
+                            <i class="fa fa-group"></i>
+                            <span>My Network</span>
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('student.invitees.index') }}">All Invitees</a></li>
                             @php
-
                                 $userType = session('user_type');
                             @endphp
                             @if ($userType === 'super_user')

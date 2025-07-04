@@ -174,7 +174,7 @@
                         @endphp
 
                         <div class="progress" style="height: 8px;">
-                            <div class="progress-bar bg-success" role="progressbar" style="width: {{ $progress }}%;"
+                            <div class="progress-bar" role="progressbar" style="width: {{ $progress }}%; background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);"
                                 aria-valuenow="{{ $dailyIncome }}" aria-valuemin="0" aria-valuemax="10000">
                             </div>
                         </div>
@@ -206,18 +206,18 @@
                 @endphp
 
                 <div class="d-flex justify-content-center">
-                    <div class="position-relative" style="width: 150px; height: 150px;">
-                        <svg width="150" height="150" class="position-absolute">
+                    <div class="allowance-progress-container">
+                        <svg width="150" height="150">
                             <!-- Background circle -->
                             <circle cx="75" cy="75" r="{{ $radius }}" fill="none" stroke="#495057"
                                 stroke-width="8" />
                             <!-- Foreground circle (progress) -->
-                            <circle cx="75" cy="75" r="{{ $radius }}" fill="none" stroke="#28a745"
+                            <circle cx="75" cy="75" r="{{ $radius }}" fill="none" stroke="#E85D04"
                                 stroke-width="8" stroke-dasharray="{{ $circumference }}"
                                 stroke-dashoffset="{{ $offset }}" stroke-linecap="round"
                                 transform="rotate(-90 75 75)" />
                         </svg>
-                        <div class="position-absolute top-50 start-50 translate-middle text-white">
+                        <div class="allowance-progress-text">
                             <h2 class="mb-0">{{ $percentage }}%</h2>
                             <small>{{ $clampedPoints }} / {{ $totalPoints }} pts</small>
                         </div>
@@ -297,7 +297,7 @@
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-md-6">
-                <div class="card text-white bg-success">
+                <div class="card text-white" style="background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);">
                     <div class="card-body text-center">
                         <h5 class="card-title">Active Left Side Points</h5>
                         <p class="card-text fs-3 fw-bold">{{ $customer->active_left_points ?? 0 }}</p>
@@ -305,7 +305,7 @@
                 </div>
             </div>
             <div class="col-md-6">
-                <div class="card text-white bg-success">
+                <div class="card text-white" style="background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);">
                     <div class="card-body text-center">
                         <h5 class="card-title">Active Right Side Points</h5>
                         <p class="card-text fs-3 fw-bold">{{ $customer->active_right_points ?? 0 }}</p>
