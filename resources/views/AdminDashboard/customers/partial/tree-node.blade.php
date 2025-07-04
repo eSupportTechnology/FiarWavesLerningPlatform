@@ -7,7 +7,13 @@
 
 <div class="tree-node level-{{ $currentLevel }}" data-id="{{ $customer->id }}">
     <div class="node-content" onclick="centerNode(this)">
-        <div class="node-name">{{ $customer->name ?? 'Unknown' }}</div>
+        <div class="node-name">{{ $customer->name ?? 'Unknown' }}
+            @if(isset($customer->status) && $customer->status == 1)
+            <span class="status-bulb" style="color:green;">&#128994;</span>
+            @else
+            <span class="status-bulb" style="color:red;">&#128308;</span>
+            @endif
+        </div>
         <div class="node-id">UID :{{ $customer->invite_code  }}</div>
         {{-- <div class="node-bv">-3.60 BV</div> --}}
         @if($sponsor)

@@ -405,7 +405,7 @@ class StudentDashboardController extends Controller
     {
         $request->validate([
             'invitee_id' => 'required|exists:customers,user_id',
-            'side' => 'required|in:left,right',
+            'side' => 'required|in:left,right,delete',
         ]);
         $customerId = session('customer_id');
         $customer = Customer::where('user_id', $customerId)->first();
@@ -479,7 +479,7 @@ class StudentDashboardController extends Controller
                     $user->save();
                 }
             }
-        } else {
+        } else if ($request->side === 'right') {
             $inviteeId = $invitee->user_id;
 
             // 1. Traverse downward (right children)
@@ -545,6 +545,18 @@ class StudentDashboardController extends Controller
 
         $invitee->is_side_selected = 1;
         $invitee->save();
+
+        if ($request->side === 'delete') {
+            // Remove the invitee from the tree
+            $inviteeId = $invitee->user_id;
+            $inviteeDelete = Customer::where('user_id', $inviteeId)->first();
+            if (!$inviteeDelete) {
+                return redirect()->back()->with('error', 'Invitee not found.');
+            }
+            $inviteeDelete->status = 2;
+            $inviteeDelete->is_side_selected = 0;
+            $inviteeDelete->save();
+        }
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
     }

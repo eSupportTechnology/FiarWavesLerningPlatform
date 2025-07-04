@@ -228,6 +228,13 @@
     </div>
 
 
+    @if($customer->is_side_selected == 0)
+        <div class="container-fluid mb-4">
+            <div class="alert alert-warning text-center" role="alert">
+                <strong>Notice:</strong> Your sposer have not selected a side yet.
+            </div>
+        </div>
+    @else
     <div class="container-fluid mb-4">
         <div class="row">
             <div class="col-md-4">
@@ -270,6 +277,8 @@
 
         </div>
     </div>
+    @endif
+
 
     <!-- Daily Points Section -->
     <div class="container-fluid mb-4">
@@ -409,6 +418,10 @@
                             <input type="radio" class="btn-check" name="side" id="right_side" value="right"
                                 required>
                             <label class="btn btn-outline-primary" for="right_side">Right</label>
+
+                            <input type="radio" class="btn-check" name="side" id="delete_side" value="delete"
+                                required>
+                            <label class="btn btn-outline-secondary" for="delete_side">Remove</label>
                         </div>
                     </div>
                     <div class="modal-footer">
