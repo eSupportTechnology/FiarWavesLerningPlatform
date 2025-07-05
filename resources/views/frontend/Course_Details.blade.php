@@ -33,7 +33,7 @@
                 <div class="pageheader-content">
                     <div class="course-category mb-2">
                         <span class="badge bg-primary fs-6">Rs. {{ number_format($course->total_price, 2) }}</span>
-                        <span class="badge bg-warning text-dark fs-6">First Payment: Rs. {{ number_format($course->first_payment, 2) }}</span>
+                        <span class="badge bg-success text-white fs-6">Full Payment Required</span>
                     </div>
 
                     <h2 class="phs-title mb-3">{{ $course->name }}</h2>
@@ -88,7 +88,7 @@
 
                         <div class="text-center mb-3">
                             <h3 class="text-danger">Rs. {{ number_format($course->total_price, 2) }}</h3>
-                            <small class="text-muted">First Payment: Rs. {{ number_format($course->first_payment, 2) }}</small>
+                            <small class="text-muted">Full Payment Required</small>
                         </div>
 
                         <p class="text-center"><i class="icofont-clock-time"></i> Limited Time Offer</p>

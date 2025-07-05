@@ -26,7 +26,7 @@
                         <h4 class="card-title">{{ $course->name }}</h4>
                         <p class="mb-1"><strong>Duration:</strong> {{ $course->duration }} Days</p>
                         <p class="mb-1"><strong>Total Price:</strong> <span class="text-danger fs-5">Rs. {{ number_format($course->total_price, 2) }}</span></p>
-                        <p class="mb-1"><strong>First Payment:</strong> <span class="text-warning">Rs. {{ number_format($course->first_payment, 2) }}</span></p>
+                        <p class="mb-1"><span class="text-info">Full Payment Required</span></p>
                     </div>
                 </div>
             </div>
@@ -72,11 +72,10 @@
                                 <div class="row g-3">
                                     <div class="col-md-6">
                                         <label>Payment Type</label>
-                                        <select name="payment_status" class="form-control">
-                                            <option value="">Select Payment</option>
-                                            <option value="half">First Payment - Rs. {{ number_format($course->first_payment, 2) }}</option>
-                                            <option value="full">Full Payment - Rs. {{ number_format($course->total_price, 2) }}</option>
-                                        </select>
+                                        <input type="hidden" name="payment_status" value="full">
+                                        <div class="form-control bg-light">
+                                            Full Payment - Rs. {{ number_format($course->total_price, 2) }}
+                                        </div>
                                     </div>
 
                                     <div class="col-md-6">

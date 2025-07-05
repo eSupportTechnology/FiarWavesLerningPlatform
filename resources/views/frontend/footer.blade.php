@@ -10,15 +10,15 @@
         <div class="container">
             <div class="section-wrapper">
                 <div class="news-title">
-                    <h3>Want Us To Email You About Special Offers And Updates?</h3>
+                    <!--h3>Want Us To Email You About Special Offers And Updates?</h3-->
                 </div>
                 <div class="news-form">
                     <form action="#">
-                        <div class="nf-list">
+                        <!--div class="nf-list">
                             <input type="email" name="email" placeholder="Enter Your Email">
                             <input type="submit" name="submit" style="background-color: #ee1831;"
-                                value="Subscribe Now">
-                        </div>
+                                value="Subscribe Now"-->
+                        <!--/div-->
                     </form>
                 </div>
             </div>

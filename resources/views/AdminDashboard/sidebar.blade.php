@@ -67,7 +67,7 @@
                         </a>
                         <ul class="sidebar-submenu">
                             <li><a href="{{ route('admin.orders.pending') }}">Pending Orders</a></li>
-                            <li><a href="{{ route('admin.orders.half') }}">Half Orders</a></li>
+                            <!--li><a href="{ route('admin.orders.half') }}">Half Orders</a></li-->
                             <li><a href="{{ route('admin.orders.success') }}">Success Orders</a></li>
                         </ul>
                     </li>

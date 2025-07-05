@@ -33,9 +33,15 @@
             <ul class="nav-menus">
 
                 <!-- Website Link -->
-                <li class="nav-item">
-                    <a href="{{ url('/') }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                        <i data-feather="globe"></i> Website
+                <li class="nav-item website-nav">
+                    <a href="{{ url('/') }}" target="_blank" class="website-button">
+                        <div class="website-icon-wrapper">
+                            <i class="fa fa-globe"></i>
+                        </div>
+                        <div class="website-text">
+                            <span>Website</span>
+                            <small>Visit Site</small>
+                        </div>
                     </a>
                 </li>
 
@@ -67,7 +73,7 @@
                         </div>
                     </div>
 
-                    <ul class="profile-dropdown onhover-show-div">
+                    <ul class="profile-dropdown profile-dropdown-menu">
                         
                         <li>
                             <a href="{{ route('admin.logout') }}"

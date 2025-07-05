@@ -32,7 +32,7 @@ class BookingController extends Controller
             'contact_number'   => 'required|string|max:15',
             'address'          => 'nullable|string|max:255',
             'payment_method'   => 'required|in:Card,Bank Transfer',
-            'payment_status'   => 'required|in:half,full',
+            'payment_status'   => 'required|in:full',
             'receipt_path'     => 'nullable|file|mimes:jpg,jpeg,png,pdf',
             'bank_name'        => 'nullable|string|max:100',
             'bank_branch'      => 'nullable|string|max:100',
@@ -75,7 +75,7 @@ class BookingController extends Controller
 
         // 🟢 Card Payment flow
         $course   = Course::findOrFail($request->course_id);
-        $amount   = $request->payment_status === 'full' ? $course->total_price : $course->first_payment;
+        $amount   = $course->total_price; // Always use full payment
         $currency = 'LKR';
 
         $hash      = OnepayHelper::generateHash($currency, $amount);

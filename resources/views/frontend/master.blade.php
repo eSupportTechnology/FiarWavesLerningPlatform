@@ -28,6 +28,40 @@
                 background-position: 30% center !important; /* shift left on mobile */
             }
         }
+
+        /* Global breadcrumb alignment fix */
+        .breadcrumb {
+            flex-wrap: nowrap !important;
+            white-space: nowrap;
+            display: inline-flex !important;
+            align-items: center;
+            margin-bottom: 1rem;
+        }
+
+        .breadcrumb-item {
+            display: inline-flex;
+            align-items: center;
+            white-space: nowrap;
+        }
+
+        .breadcrumb-item + .breadcrumb-item::before {
+            float: none !important;
+            display: inline-block;
+            line-height: 1;
+        }
+
+        /* Handle overflow on very small screens */
+        @media (max-width: 480px) {
+            .breadcrumb {
+                overflow-x: auto;
+                scrollbar-width: none;
+                -ms-overflow-style: none;
+            }
+            
+            .breadcrumb::-webkit-scrollbar {
+                display: none;
+            }
+        }
     </style>
 
 

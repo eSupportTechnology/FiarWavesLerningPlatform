@@ -33,9 +33,15 @@
             <ul class="nav-menus">
 
                 <!-- Website Link -->
-                <li class="nav-item">
-                    <a href="{{ url('/') }}" target="_blank" class="btn btn-outline-primary btn-sm">
-                        <i class="fa fa-globe"></i> Website
+                <li class="nav-item website-nav">
+                    <a href="{{ url('/') }}" target="_blank" class="website-button">
+                        <div class="website-icon-wrapper">
+                            <i class="fa fa-globe"></i>
+                        </div>
+                        <div class="website-text">
+                            <span>Website</span>
+                            <small>Visit Site</small>
+                        </div>
                     </a>
                 </li>
 
@@ -51,6 +57,9 @@
                 <!-- Profile Dropdown -->
                 <li class="profile-nav onhover-dropdown pe-0 py-0">
                     <div class="media profile-media">
+                        <img class="b-r-10" src="{{ asset('frontend/assets/images/dashboard/profile.png') }}" alt="">
+                <li class="profile-nav profile-dropdown-toggle pe-0 py-0">
+                    <div class="media profile-media profile-trigger">
                         <div class="profile-icon-wrapper">
                             <svg class="profile-icon" width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <circle cx="12" cy="8" r="4" stroke="currentColor" stroke-width="2" fill="none"/>
@@ -71,7 +80,7 @@
                     </div>
 
                     <!-- Dropdown Menu -->
-                    <ul class="profile-dropdown onhover-show-div">
+                    <ul class="profile-dropdown profile-dropdown-menu">
                         @if(session()->has('customer_id'))
                             <li>
                                 <a href="{{ route('customer.profile') }}">

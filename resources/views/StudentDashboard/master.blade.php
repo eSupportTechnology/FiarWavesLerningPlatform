@@ -243,7 +243,7 @@
         
         /* Enhanced styling for larger logo in sidebar */
         .sidebar-wrapper .logo-wrapper img {
-            max-height: 200px !important;
+            max-height: 120px !important;
             width: auto !important;
             object-fit: contain !important;
             transition: transform 0.3s ease;
@@ -276,7 +276,7 @@
             left: auto !important; /* Override any left positioning */
         }
         
-        /* Profile Media Spacing Improvements */
+        /* Profile Media Spacing Improvements - Light Blue Theme */
         .page-wrapper .page-header .header-wrapper .nav-right.right-header ul li .profile-media {
             display: flex;
             align-items: center;
@@ -284,10 +284,13 @@
             padding: 8px 12px;
             border-radius: 8px;
             transition: all 0.2s ease;
+            background: rgba(173, 216, 230, 0.15) !important; /* Light blue background */
+            border: 1px solid rgba(173, 216, 230, 0.3) !important; /* Light blue border */
         }
         
         .page-wrapper .page-header .header-wrapper .nav-right.right-header ul li .profile-media:hover {
-            background: rgba(68, 102, 242, 0.05);
+            background: rgba(173, 216, 230, 0.25) !important; /* Slightly darker light blue on hover */
+            border-color: rgba(173, 216, 230, 0.5) !important;
         }
         
         .page-wrapper .page-header .header-wrapper .nav-right.right-header ul li .profile-media .media-body {
@@ -463,6 +466,220 @@
             padding: 8px 0 !important;
             min-width: 180px !important;
         }
+        
+        /* Website Button Styling - Matching Profile Section */
+        .website-nav .website-button {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            padding: 8px 12px;
+            border-radius: 8px;
+            transition: all 0.2s ease;
+            background: rgba(173, 216, 230, 0.15) !important; /* Light blue background matching profile */
+            border: 1px solid rgba(173, 216, 230, 0.3) !important; /* Light blue border */
+            text-decoration: none;
+            color: inherit;
+            min-width: 120px;
+        }
+        
+        .website-nav .website-button:hover {
+            background: rgba(173, 216, 230, 0.25) !important; /* Slightly darker light blue on hover */
+            border-color: rgba(173, 216, 230, 0.5) !important;
+            text-decoration: none;
+            color: inherit;
+            transform: translateY(-1px);
+            box-shadow: 0 2px 8px rgba(173, 216, 230, 0.2);
+        }
+        
+        .website-icon-wrapper {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: linear-gradient(135deg, #52C41A 0%, #389E0D 100%); /* Green gradient for website */
+            transition: all 0.3s ease;
+        }
+        
+        .website-icon-wrapper:hover {
+            transform: scale(1.05);
+            box-shadow: 0 4px 12px rgba(82, 196, 26, 0.3);
+        }
+        
+        .website-icon-wrapper i {
+            color: white;
+            font-size: 18px;
+        }
+        
+        .website-text {
+            display: flex;
+            flex-direction: column;
+            gap: 2px;
+        }
+        
+        .website-text span {
+            font-weight: 600;
+            color: #2c3e50;
+            font-size: 14px;
+            line-height: 1.2;
+        }
+        
+        .website-text small {
+            font-size: 12px;
+            color: rgba(47, 47, 59, 0.7);
+            line-height: 1.1;
+        }
+        
+        /* Mobile responsive adjustments for website button */
+        @media (max-width: 768px) {
+            .website-nav .website-button {
+                min-width: auto;
+                padding: 6px 10px;
+            }
+            
+            .website-text span {
+                font-size: 13px;
+            }
+            
+            .website-text small {
+                font-size: 11px;
+            }
+            
+            .website-icon-wrapper {
+                width: 35px;
+                height: 35px;
+            }
+            
+            .website-icon-wrapper i {
+                font-size: 16px;
+            }
+        }
+        
+        /* Extra small screens - compact version */
+        @media (max-width: 576px) {
+            .website-text {
+                display: none; /* Hide text on very small screens */
+            }
+            
+            .website-nav .website-button {
+                min-width: auto;
+                padding: 8px;
+                justify-content: center;
+            }
+        }
+
+        /* Enhanced Profile Dropdown - Click to Toggle (Desktop & Mobile) */
+        .profile-dropdown-toggle {
+            position: relative;
+            cursor: pointer;
+        }
+        
+        .profile-trigger {
+            cursor: pointer;
+            user-select: none;
+        }
+        
+        /* Hide dropdown by default */
+        .profile-dropdown-menu {
+            display: none !important;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            z-index: 9999;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+            border-radius: 8px;
+            padding: 8px 0;
+            min-width: 200px;
+            margin-top: 8px;
+            animation: dropdown-slide-down 0.3s ease-out;
+        }
+        
+        /* Show dropdown when active */
+        .profile-dropdown-menu.show {
+            display: block !important;
+        }
+        
+        /* Dropdown animation */
+        @keyframes dropdown-slide-down {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+        
+        /* Ensure dropdown items inherit styling */
+        .profile-dropdown-menu li a {
+            color: #333 !important;
+            display: flex !important;
+            align-items: center !important;
+            padding: 12px 16px !important;
+            transition: all 0.2s ease !important;
+            background-color: #fff !important;
+            text-decoration: none !important;
+            border-radius: 4px !important;
+            margin: 2px 8px !important;
+        }
+        
+        .profile-dropdown-menu li a:hover {
+            background-color: rgba(52, 152, 219, 0.1) !important;
+            color: #2c3e50 !important;
+            text-decoration: none !important;
+        }
+        
+        .profile-dropdown-menu li a i,
+        .profile-dropdown-menu li a svg {
+            color: #666 !important;
+            margin-right: 8px !important;
+            font-size: 16px !important;
+        }
+        
+        .profile-dropdown-menu li a:hover i,
+        .profile-dropdown-menu li a:hover svg {
+            color: #2c3e50 !important;
+        }
+        
+        /* Mobile responsiveness for dropdown */
+        @media (max-width: 768px) {
+            .profile-dropdown-menu {
+                right: 5px;
+                min-width: 180px;
+                box-shadow: 0 6px 25px rgba(0,0,0,0.2);
+            }
+            
+            .profile-media .media-body {
+                display: none; /* Hide text on mobile for cleaner look */
+            }
+            
+            .profile-icon-wrapper {
+                margin-right: 0 !important;
+            }
+        }
+        
+        /* Ensure dropdown appears above other elements */
+        .profile-dropdown-toggle {
+            z-index: 1000;
+        }
+        
+        .profile-dropdown-menu {
+            z-index: 9999;
+        }
+        
+        /* Visual feedback for clickable profile */
+        .profile-trigger:hover {
+            opacity: 0.9;
+            transform: scale(1.02);
+        }
+        
+        .profile-trigger:active {
+            transform: scale(0.98);
+        }
     </style>
 
 
@@ -547,6 +764,46 @@
     <script src="{{asset('backend/assets/js/script.js')}}"></script>
 
     <script>new WOW().init();</script>
+    
+    <!-- Enhanced Profile Dropdown Click Functionality -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const profileTrigger = document.querySelector('.profile-trigger');
+            const profileDropdown = document.querySelector('.profile-dropdown-menu');
+            const profileToggle = document.querySelector('.profile-dropdown-toggle');
+            
+            if (profileTrigger && profileDropdown) {
+                // Toggle dropdown on click
+                profileTrigger.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    
+                    // Toggle the show class
+                    profileDropdown.classList.toggle('show');
+                });
+                
+                // Close dropdown when clicking outside
+                document.addEventListener('click', function(e) {
+                    if (!profileToggle.contains(e.target)) {
+                        profileDropdown.classList.remove('show');
+                    }
+                });
+                
+                // Close dropdown when pressing escape key
+                document.addEventListener('keydown', function(e) {
+                    if (e.key === 'Escape') {
+                        profileDropdown.classList.remove('show');
+                    }
+                });
+                
+                // Prevent dropdown from closing when clicking inside it
+                profileDropdown.addEventListener('click', function(e) {
+                    e.stopPropagation();
+                });
+            }
+        });
+    </script>
+    
     @yield('script')
 
   </body>
