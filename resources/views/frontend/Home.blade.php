@@ -124,6 +124,71 @@
         padding: 8px 15px; /* Adjust padding */
     }
 }
+
+/* Vision and Mission Section Styles */
+.vis-container {
+    display: flex;
+    justify-content: space-around;
+    align-items: flex-start;
+    background-color: rgb(27, 41, 84);
+    padding: 50px;
+    color: white;
+    margin-top: 50px; /* Add spacing between sections */
+    padding: 20px 10px;
+}
+
+.vis-content-box {
+    width: 40%;
+}
+
+.vis-content-box h2 {
+    font-size: 24px;
+    font-weight: bold;
+    margin-bottom: 10px;
+}
+
+.vis-content-box h2::after {
+    content: '';
+    display: block;
+    width: 50px;
+    height: 5px;
+    background-color: #ee1831 !important;
+    margin-top: 5px;
+}
+
+.vis-content-box p {
+    font-size: 16px;
+    line-height: 1.8;
+    margin: 20px 0;
+}
+
+.vis-content-box .quote {
+    font-size: 30px;
+    font-weight: bold;
+}
+
+/* Responsive for Vision and Mission */
+@media (max-width: 768px) {
+    .vis-container {
+        flex-direction: column;
+        margin-left: 20px !important;
+        margin-right: 20px !important;
+        padding: 30px 20px;
+    }
+    
+    .vis-content-box {
+        width: 100%;
+        margin-bottom: 30px;
+    }
+    
+    .vis-content-box h2 {
+        font-size: 20px;
+    }
+    
+    .vis-content-box p {
+        font-size: 14px;
+    }
+}
 </style>
 
 
@@ -164,7 +229,7 @@
 
                     <!-- Image Area -->
                     <div class="col-xxl-6 col-xl-5 d-none d-xl-block"
-                    style="background-image: url('{{ asset('frontend/assets/images/newlogo.png') }}');
+                    style="background-image: url('{{ asset('frontend/assets/images/graduategroup.jpeg') }}');
                         background-size: contain;
                         background-repeat: no-repeat;
                         background-position: center;
@@ -179,10 +244,10 @@
 
 
     <!-- Achievement section start here -->
-    <div class="achievement-section padding-tb">
+    <!--div class="achievement-section padding-tb">
         <div class="container">
             <!-- Stats Top -->
-            <div class="section-header text-center">
+            <!--div class="section-header text-center">
                 <span class="subtitle" style="color:#ed3532;">START TO SUCCESS</span>
                 <h2 class="title" style="color:#1b2954;">Achieve Your Goals With Better Way</h2>
             </div>
@@ -215,11 +280,35 @@
                             </div>
                         </div>
                     </div>
+                </div-->
+
+                <!-- Vision and Mission Section Start Here -->
+                <div class="vis-container" style="margin-left: 90px; margin-right: 90px; margin-bottom:150px;">
+                    <div class="vis-content-box" style="color: white;">
+                        <h2 style="color: white;">Our Vision</h2>
+                        <span class="quote">"</span>
+                        <p style="color:white">{{$landingPageContent ? $landingPageContent->vision : "We aspire to cultivate a dynamic learning environment that nurtures creativity, critical thinking, and entrepreneurial mindset to our graduates and aim to inspire our students to become catalysts for change, instilling in them a deep understanding of ethical business practices and social responsibility." }}
+                        </p>
+                    </div>
+                    <div class="vis-content-box" style="color: white;">
+                        <h2 style="color: white;">Our Mission</h2>
+                        <span class="quote">"</span>
+                        <p style="color:white">{{$landingPageContent ? $landingPageContent->mission : "Our mission at Imperial College of Business Studies is to empower individuals with knowledge, skills, positive attitude and values that drive business excellence and societal impact. We are dedicated to delivering world-class education, coupled with cutting-edge learning tools, and aim to foster a vibrant community of diverse and innovative thinkers who will become successful business leaders." }}
+                        </p>
+                    </div>
                 </div>
+                <!-- Vision and Mission Section End Here -->
 
                 <!-- YouTube Section -->
-                <div class="achieve-part mt-4">
-                    <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
+                <div class="achievement-section padding-tb section-bg">
+                    <div class="container">
+                        <div class="section-header text-center">
+                            <span class="subtitle" style="color:#ed3532;">FROM OUR YOUTUBE CHANNEL</span>
+                            <h2 class="title" style="color:#1b2954;">Our Videos</h2>
+                        </div>
+                        <div class="section-wrapper">
+                            <div class="achieve-part mt-4">
+                                <div class="row g-4 row-cols-1 row-cols-md-2 row-cols-lg-3">
                         @forelse($youtubeVideos as $video)
                             @php
                                 $videoId = getYoutubeVideoId($video->youtube_url);
@@ -252,7 +341,10 @@
                             <div class="col-12 text-center">
                                 <p class="text-muted">No YouTube videos found.</p>
                             </div>
-                        @endforelse
+                                    @endforelse
+                                </div>
+                            </div>
+                        </div>
                     </div>
                 </div>
 
