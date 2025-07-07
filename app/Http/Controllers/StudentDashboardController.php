@@ -660,23 +660,38 @@ class StudentDashboardController extends Controller
     public function sendPhoneVerificationCode(Request $request)
     {
         $request->validate([
-            'phone' => 'required|string|digits:10'
+            'phone' => [
+                'required',
+                'string',
+                'regex:/^07[01245678][0-9]{7}$/'
+            ]
+        ], [
+            'phone.regex' => 'Please insert number start with 07xx..'
         ]);
 
         // Prevent sending to already existing phone numbers
         if (Customer::where('contact_number', $request->phone)->exists()) {
             return response()->json([
                 'success' => false,
-                'message' => 'This phone number is already in use.'
+                'message' => 'This phone number is already registered with another account.'
             ]);
         }
 
         $customerId = session('customer_id');
         if ($customerId === null) {
-            return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
+            return response()->json([
+                'success' => false,
+                'message' => 'Session expired. Please log in again.'
+            ]);
         }
-        $customer = Customer::where('user_id', $customerId)
-            ->first();
+        
+        $customer = Customer::where('user_id', $customerId)->first();
+        if (!$customer) {
+            return response()->json([
+                'success' => false,
+                'message' => 'Customer not found.'
+            ]);
+        }
 
         $verificationCode = rand(100000, 999999);
 
@@ -689,42 +704,56 @@ class StudentDashboardController extends Controller
 
         // Send SMS
         try {
-            $message = "Your verification code is: $verificationCode";
+            $message = "Your Better Way Academy verification code is: $verificationCode. This code will expire in 15 minutes.";
             $this->sendSMS($request->phone, $message);
         } catch (\Exception $e) {
+            Log::error("Phone verification SMS failed: " . $e->getMessage());
             return response()->json([
                 'success' => false,
-                'message' => 'Failed to send SMS. ' . $e->getMessage()
+                'message' => 'Failed to send SMS verification code. Please check your phone number and try again later.'
             ]);
         }
 
-        return response()->json(['success' => true]);
+        return response()->json([
+            'success' => true,
+            'message' => 'Verification code sent successfully to your mobile phone.'
+        ]);
     }
 
     public function updatePhone(Request $request)
     {
         $request->validate([
-            'new_phone' => 'required|string|digits:10',
+            'new_phone' => [
+                'required',
+                'string',
+                'regex:/^07[01245678][0-9]{7}$/'
+            ],
             'phone_verification_code' => 'required'
+        ], [
+            'new_phone.regex' => 'Please insert number start with 07xx..'
         ]);
 
         $code = Session::get('phone_change_code');
         $targetPhone = Session::get('phone_change_target');
 
         if (!$code || !$targetPhone) {
-            return back()->with('error', 'No verification request found.');
+            return back()->with('error', 'No verification request found. Please request a new verification code.');
         }
 
         if ($request->phone_verification_code != $code || $request->new_phone != $targetPhone) {
-            return back()->with('error', 'Invalid code or phone mismatch.');
+            return back()->with('error', 'Invalid verification code or phone number mismatch. Please try again.');
         }
 
         $customerId = session('customer_id');
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
         }
-        $customer = Customer::where('user_id', $customerId)
-            ->first();
+        
+        $customer = Customer::where('user_id', $customerId)->first();
+        if (!$customer) {
+            return back()->with('error', 'Customer not found.');
+        }
+        
         if ($customer->verification_code == $request->phone_verification_code) {
             $customer->contact_number = $request->new_phone;
             $customer->save();

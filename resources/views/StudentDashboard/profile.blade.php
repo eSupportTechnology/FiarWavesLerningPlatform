@@ -1,6 +1,30 @@
 @extends('StudentDashboard.master')
 
 @section('content')
+    <style>
+        .phone-validation-help {
+            font-size: 0.875rem;
+            margin-top: 0.25rem;
+        }
+        .form-control.is-valid {
+            border-color: #28a745 !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='8' height='8' viewBox='0 0 8 8'%3e%3cpath fill='%2328a745' d='m2.3 6.73.5-.5 1.5 1.5 3-3 .5.5-3.5 3.5z'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right calc(0.375em + 0.1875rem) center !important;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+        }
+        .form-control.is-invalid {
+            border-color: #dc3545 !important;
+            background-image: url("data:image/svg+xml,%3csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' fill='none' stroke='%23dc3545' viewBox='0 0 12 12'%3e%3ccircle cx='6' cy='6' r='4.5'/%3e%3cpath d='m5.8 4.6 1.4 1.4M5.8 7.4l1.4-1.4'/%3e%3c/svg%3e") !important;
+            background-repeat: no-repeat !important;
+            background-position: right calc(0.375em + 0.1875rem) center !important;
+            background-size: calc(0.75em + 0.375rem) calc(0.75em + 0.375rem) !important;
+        }
+        #sendPhoneCodeBtn:disabled {
+            opacity: 0.6;
+            cursor: not-allowed;
+        }
+    </style>
     <div class="container py-4">
         <div class="card mb-4">
             <div class="card-header bg-light">
@@ -120,19 +144,45 @@
                                         aria-label="Close"></button>
                                 </div>
                                 <div class="modal-body">
+                                    {{-- Display validation errors --}}
+                                    @if ($errors->any())
+                                        <div class="alert alert-danger">
+                                            <ul class="mb-0">
+                                                @foreach ($errors->all() as $error)
+                                                    <li>{{ $error }}</li>
+                                                @endforeach
+                                            </ul>
+                                        </div>
+                                    @endif
+                                    
                                     <div class="mb-3">
                                         <label for="new_phone" class="form-label">New Phone Number</label>
-                                        <input type="text" class="form-control" id="new_phone" name="new_phone"
-                                            required placeholder="070XXXXXXXX">
+                                        <input type="text" class="form-control @error('new_phone') is-invalid @enderror" 
+                                            id="new_phone" name="new_phone" required placeholder="07X XXXX XXX" 
+                                            pattern="^07[01245678][0-9]{7}$" 
+                                            title="Please insert number start with 07xx.."
+                                            maxlength="10" value="{{ old('new_phone') }}">
+                                        @error('new_phone')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
+                                        <small class="text-muted">Please insert number start with 07xx..</small>
                                     </div>
                                     <div class="mb-3">
                                         <label for="phone_verification_code" class="form-label">Verification Code</label>
                                         <div class="input-group">
-                                            <input type="text" class="form-control" id="phone_verification_code"
-                                                name="phone_verification_code" placeholder="Enter code" required>
+                                            <input type="text" class="form-control @error('phone_verification_code') is-invalid @enderror" 
+                                                id="phone_verification_code" name="phone_verification_code" 
+                                                placeholder="Enter code" required>
                                             <button type="button" class="btn btn-outline-secondary"
-                                                id="sendPhoneCodeBtn">Send Code</button>
+                                                id="sendPhoneCodeBtn" disabled>Send Code</button>
                                         </div>
+                                        @error('phone_verification_code')
+                                            <div class="invalid-feedback">
+                                                {{ $message }}
+                                            </div>
+                                        @enderror
                                         <small class="text-muted">A code will be sent to your new phone number.</small>
                                     </div>
                                 </div>
@@ -152,9 +202,21 @@
                             sendBtn.addEventListener('click', function() {
                                 const newEmail = document.getElementById('new_email').value;
                                 if (!newEmail) {
-                                    alert('Please enter a new email address first.');
+                                    showToast('Please enter a new email address first', 'warning');
                                     return;
                                 }
+
+                                // Email validation
+                                const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+                                if (!emailRegex.test(newEmail)) {
+                                    showToast('Please enter a valid email address', 'error');
+                                    return;
+                                }
+
+                                // Disable button and show loading state
+                                sendBtn.disabled = true;
+                                const originalText = sendBtn.textContent;
+                                sendBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Sending...';
 
                                 fetch("{{ route('customer.email.sendCode') }}", {
                                         method: 'POST',
@@ -169,13 +231,24 @@
                                     .then(response => response.json())
                                     .then(data => {
                                         if (data.success) {
-                                            alert('Verification code sent to your new email.');
+                                            showToast('Verification code sent successfully! Please check your email.', 'success', 6000);
+                                            
+                                            // Focus on verification code input
+                                            setTimeout(() => {
+                                                const codeInput = document.getElementById('email_verification_code');
+                                                if (codeInput) codeInput.focus();
+                                            }, 500);
                                         } else {
-                                            alert(data.message || 'Failed to send verification code.');
+                                            showToast(data.message || 'Failed to send verification code. Please try again.', 'error');
                                         }
                                     })
                                     .catch(error => {
-                                        alert('An error occurred: ' + error.message);
+                                        showToast('An error occurred while sending the verification code. Please try again.', 'error');
+                                    })
+                                    .finally(() => {
+                                        // Reset button state
+                                        sendBtn.disabled = false;
+                                        sendBtn.textContent = originalText;
                                     });
                             });
                         }
@@ -183,14 +256,168 @@
                 </script>
 
 
+                <!-- Professional Toast Notification Container -->
+                <div id="toast-container" class="position-fixed top-0 end-0 p-3" style="z-index: 1055;"></div>
+
                 <script>
+                    // Professional Toast Notification System
+                    function showToast(message, type = 'info', duration = 5000) {
+                        const toastContainer = document.getElementById('toast-container');
+                        const toastId = 'toast_' + Date.now();
+                        
+                        // Toast type configurations
+                        const toastTypes = {
+                            'success': {
+                                icon: '<i class="bi bi-check-circle-fill"></i>',
+                                bgClass: 'bg-success',
+                                title: 'Success'
+                            },
+                            'error': {
+                                icon: '<i class="bi bi-exclamation-triangle-fill"></i>',
+                                bgClass: 'bg-danger',
+                                title: 'Error'
+                            },
+                            'warning': {
+                                icon: '<i class="bi bi-exclamation-circle-fill"></i>',
+                                bgClass: 'bg-warning',
+                                title: 'Warning'
+                            },
+                            'info': {
+                                icon: '<i class="bi bi-info-circle-fill"></i>',
+                                bgClass: 'bg-info',
+                                title: 'Information'
+                            }
+                        };
+                        
+                        const config = toastTypes[type] || toastTypes['info'];
+                        
+                        const toastHTML = `
+                            <div id="${toastId}" class="toast align-items-center text-white ${config.bgClass} border-0" role="alert" aria-live="assertive" aria-atomic="true">
+                                <div class="d-flex">
+                                    <div class="toast-body d-flex align-items-center">
+                                        <span class="me-2">${config.icon}</span>
+                                        <div>
+                                            <strong class="me-2">${config.title}:</strong>
+                                            <span>${message}</span>
+                                        </div>
+                                    </div>
+                                    <button type="button" class="btn-close btn-close-white me-2 m-auto" data-bs-dismiss="toast" aria-label="Close"></button>
+                                </div>
+                            </div>
+                        `;
+                        
+                        toastContainer.insertAdjacentHTML('beforeend', toastHTML);
+                        
+                        const toastElement = document.getElementById(toastId);
+                        const toast = new bootstrap.Toast(toastElement, {
+                            autohide: true,
+                            delay: duration
+                        });
+                        
+                        toast.show();
+                        
+                        // Remove toast element after it's hidden
+                        toastElement.addEventListener('hidden.bs.toast', function() {
+                            toastElement.remove();
+                        });
+                    }
+
                     document.addEventListener('DOMContentLoaded', function() {
-                        document.getElementById('sendPhoneCodeBtn').addEventListener('click', function() {
-                            const newPhone = document.getElementById('new_phone').value;
+                        const phoneInput = document.getElementById('new_phone');
+                        const sendPhoneBtn = document.getElementById('sendPhoneCodeBtn');
+                        
+                        // Enhanced phone validation with better regex
+                        phoneInput.addEventListener('input', function() {
+                            const phoneValue = this.value;
+                            
+                            // Improved regex to strictly validate Sri Lankan mobile format
+                            const phoneRegex = /^07[01245678][0-9]{7}$/;
+                            
+                            // Remove any non-digit characters and +94 country code if present
+                            let cleaned = phoneValue.replace(/[^\d]/g, '');
+                            
+                            // Handle +94 country code conversion
+                            if (cleaned.startsWith('94') && cleaned.length === 11) {
+                                cleaned = '0' + cleaned.substring(2);
+                            } else if (cleaned.startsWith('947') && cleaned.length === 10) {
+                                cleaned = '0' + cleaned.substring(2);
+                            }
+                            
+                            // Ensure it starts with 07
+                            if (cleaned.length >= 2 && !cleaned.startsWith('07')) {
+                                if (cleaned.startsWith('7')) {
+                                    cleaned = '0' + cleaned;
+                                } else if (cleaned.startsWith('0') && !cleaned.startsWith('07')) {
+                                    cleaned = '07' + cleaned.substring(1);
+                                } else if (!cleaned.startsWith('0')) {
+                                    cleaned = '07' + cleaned;
+                                }
+                            }
+                            
+                            // Limit to 10 digits
+                            cleaned = cleaned.substring(0, 10);
+                            
+                            // Update the input value
+                            if (cleaned !== phoneValue) {
+                                this.value = cleaned;
+                            }
+                            
+                            // Enhanced validation with specific error messages
+                            if (cleaned.length === 10 && phoneRegex.test(cleaned)) {
+                                this.classList.remove('is-invalid');
+                                this.classList.add('is-valid');
+                                sendPhoneBtn.disabled = false;
+                                
+                                // Clear any existing error messages
+                                const errorDiv = this.parentNode.querySelector('.invalid-feedback-custom');
+                                if (errorDiv) errorDiv.remove();
+                            } else {
+                                this.classList.remove('is-valid');
+                                this.classList.add('is-invalid');
+                                sendPhoneBtn.disabled = true;
+                                
+                                // Show specific error message
+                                let errorMsg = '';
+                                if (cleaned.length === 0) {
+                                    errorMsg = 'Phone number is required';
+                                } else if (cleaned.length < 10) {
+                                    errorMsg = 'Phone number must be 10 digits';
+                                } else if (!cleaned.startsWith('07')) {
+                                    errorMsg = 'Phone number must start with 07';
+                                } else if (!phoneRegex.test(cleaned)) {
+                                    errorMsg = 'Please insert number start with 07xx..';
+                                }
+                                
+                                // Remove existing custom error and add new one
+                                const existingError = this.parentNode.querySelector('.invalid-feedback-custom');
+                                if (existingError) existingError.remove();
+                                
+                                const errorDiv = document.createElement('div');
+                                errorDiv.className = 'invalid-feedback-custom text-danger small mt-1';
+                                errorDiv.textContent = errorMsg;
+                                this.parentNode.appendChild(errorDiv);
+                            }
+                        });
+
+                        sendPhoneBtn.addEventListener('click', function() {
+                            const newPhone = phoneInput.value;
+                            
                             if (!newPhone) {
-                                alert('Please enter your new phone number.');
+                                showToast('Please enter your new phone number', 'warning');
                                 return;
                             }
+
+                            // Enhanced phone format validation
+                            const phoneRegex = /^07[01245678][0-9]{7}$/;
+                            if (!phoneRegex.test(newPhone)) {
+                                showToast('Please insert number start with 07xx..', 'error');
+                                return;
+                            }
+
+                            // Disable button and show loading state
+                            sendPhoneBtn.disabled = true;
+                            const originalText = sendPhoneBtn.textContent;
+                            sendPhoneBtn.innerHTML = '<span class="spinner-border spinner-border-sm me-2" role="status"></span>Sending...';
 
                             fetch("{{ route('customer.phone.sendCode') }}", {
                                     method: 'POST',
@@ -202,16 +429,44 @@
                                         phone: newPhone
                                     })
                                 })
-                                .then(response => response.json())
+                                .then(response => {
+                                    if (!response.ok) {
+                                        return response.json().then(err => Promise.reject(err));
+                                    }
+                                    return response.json();
+                                })
                                 .then(data => {
                                     if (data.success) {
-                                        alert('Verification code sent to your new phone number.');
+                                        showToast('Verification code sent successfully! Please check your mobile phone.', 'success', 6000);
+                                        
+                                        // Focus on verification code input
+                                        setTimeout(() => {
+                                            const codeInput = document.getElementById('phone_verification_code');
+                                            if (codeInput) codeInput.focus();
+                                        }, 500);
                                     } else {
-                                        alert(data.message || 'Failed to send code.');
+                                        showToast(data.message || 'Failed to send verification code. Please try again.', 'error');
                                     }
                                 })
                                 .catch(error => {
-                                    alert('Error: ' + error.message);
+                                    let errorMessage = 'An unexpected error occurred. Please try again.';
+                                    
+                                    if (error.errors && error.errors.phone) {
+                                        errorMessage = 'Validation Error: ' + error.errors.phone[0];
+                                    } else if (error.message) {
+                                        if (error.message.includes('SMS')) {
+                                            errorMessage = 'Failed to send SMS verification code. Please check your phone number and try again.';
+                                        } else {
+                                            errorMessage = error.message;
+                                        }
+                                    }
+                                    
+                                    showToast(errorMessage, 'error', 8000);
+                                })
+                                .finally(() => {
+                                    // Reset button state
+                                    sendPhoneBtn.disabled = false;
+                                    sendPhoneBtn.textContent = originalText;
                                 });
                         });
                     });

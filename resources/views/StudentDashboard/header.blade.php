@@ -55,9 +55,9 @@
                 </li>
 
                 <!-- Profile Dropdown -->
-                <li class="profile-nav onhover-dropdown pe-0 py-0">
+                <!--li class="profile-nav onhover-dropdown pe-0 py-0">
                     <div class="media profile-media">
-                        <img class="b-r-10" src="{{ asset('frontend/assets/images/dashboard/profile.png') }}" alt="">
+                        <img class="b-r-10" src="{{ asset('frontend/assets/images/dashboard/profile.png') }}" alt=""-->
                 <li class="profile-nav profile-dropdown-toggle pe-0 py-0">
                     <div class="media profile-media profile-trigger">
                         <div class="profile-icon-wrapper">
