@@ -437,6 +437,7 @@ Route::post('/student/update-email', [StudentDashboardController::class, 'update
 
 Route::post('/student/send-phone-verification-code', [StudentDashboardController::class, 'sendPhoneVerificationCode'])->name('customer.phone.sendCode');
 Route::post('/student/update-phone', [StudentDashboardController::class, 'updatePhone'])->name('customer.phone.update');
+Route::post('/student/update-phone', [StudentDashboardController::class, 'updatePhone'])->name('customer.phone.update');
 
 
 
