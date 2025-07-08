@@ -24,7 +24,7 @@
                 <div class="col-md-6 col-lg-4">
                     <div class="card shadow-sm border-0 h-100">
                         @if ($booking->course->image)
-                            <img src="{{ asset($booking->course->image) }}" class="card-img-top"
+                            <img src="{{ asset('storage/' .$booking->course->image) }}" class="card-img-top"
                                 style="height: 180px; object-fit: cover;" alt="{{ $booking->course->name }}">
                         @else
                             <div class="bg-light d-flex align-items-center justify-content-center" style="height: 180px;">

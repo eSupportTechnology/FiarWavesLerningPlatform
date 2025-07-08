@@ -15,7 +15,7 @@
         <div class="row g-0">
             <div class="col-md-5">
                 @if($booking->course->image)
-                    <img src="{{ asset($booking->course->image) }}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="{{ $booking->course->name }}">
+                    <img src="{{ asset('storage/' .$booking->course->image) }}" class="img-fluid rounded-start w-100 h-100 object-fit-cover" alt="{{ $booking->course->name }}">
                 @else
                     <div class="bg-light d-flex align-items-center justify-content-center h-100" style="height: 100%;">
                         <span class="text-muted">No Image</span>
