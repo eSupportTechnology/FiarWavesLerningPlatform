@@ -24,7 +24,7 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background: 
+    background:
         radial-gradient(circle at 20% 80%, rgba(232, 93, 4, 0.3) 0%, transparent 50%),
         radial-gradient(circle at 80% 20%, rgba(255, 255, 255, 0.15) 0%, transparent 50%),
         radial-gradient(circle at 40% 40%, rgba(232, 93, 4, 0.2) 0%, transparent 50%);
@@ -161,15 +161,15 @@
     .pageheader-section {
         min-height: 250px;
     }
-    
+
     .pageheader-content {
         padding: 40px 15px;
     }
-    
+
     .pageheader-content h2 {
         font-size: 2.2rem;
     }
-    
+
     .pageheader-content .breadcrumb {
         padding: 8px 16px;
         font-size: 0.9rem;
@@ -182,11 +182,11 @@
         min-height: 38px !important;
         max-height: 38px !important;
     }
-    
+
     .pageheader-content .breadcrumb::-webkit-scrollbar {
         display: none;
     }
-    
+
     .pageheader-content .breadcrumb-item + .breadcrumb-item::before {
         margin: 0 6px;
         font-size: 0.9rem !important;
@@ -197,7 +197,7 @@
     .pageheader-content h2 {
         font-size: 1.8rem;
     }
-    
+
     .pageheader-content .breadcrumb {
         padding: 6px 12px;
         font-size: 0.8rem;
@@ -210,11 +210,11 @@
         min-height: 32px !important;
         max-height: 32px !important;
     }
-    
+
     .pageheader-content .breadcrumb::-webkit-scrollbar {
         display: none;
     }
-    
+
     .pageheader-content .breadcrumb-item + .breadcrumb-item::before {
         margin: 0 4px;
         font-size: 0.7rem !important;
@@ -246,7 +246,7 @@
 <div class="course-section padding-tb section-bg">
     <div class="container">
         <div class="section-wrapper">
-            
+
             <!-- 🔰 Ad Banner (Top Horizontal) -->
             <div class="mb-4 text-center">
                 @if (!empty($bannerImage)) {{-- Pass $bannerImage from controller --}}
@@ -273,13 +273,13 @@
                             <div class="course-inner">
                                 <div class="course-thumb">
                                     @if ($course->image)
-                                        <img src="{{ asset($course->image) }}" alt="course" width="320" height="190">
+                                        <img src="{{ asset('storage/' .$course->image) }}" alt="course" width="320" height="190">
                                     @else
                                         <img src="{{ asset('frontend/assets/images/default-course.jpg') }}" alt="No Image" width="320" height="190">
                                     @endif
                                 </div>
                                 <div class="course-content">
-                                    
+
 
                                     <a href="{{ route('frontend.Course_Details', ['id' => $course->course_id]) }}">
                                         <h5 class="mt-2">{{ $course->name }}</h5>
