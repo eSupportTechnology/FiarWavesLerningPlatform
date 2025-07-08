@@ -24,7 +24,7 @@
 
                     </div>
                 @else
-                    <img src="{{ asset($course->image) }}" alt="{{ $course->name }}" class="w-100 rounded shadow-sm">
+                    <img src="{{ asset('storage/' .$course->image) }}" alt="{{ $course->name }}" class="w-100 rounded shadow-sm">
                 @endif
 
                 </div>

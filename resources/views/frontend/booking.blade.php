@@ -21,7 +21,7 @@
             <!-- 🟦 Course Summary Box -->
             <div class="col-lg-5">
                 <div class="card shadow-sm border-0 h-100 text-center">
-                    <img src="{{ asset($course->image) }}" class="card-img-top mx-auto d-block" style="height:200px; width: 200px;" alt="{{ $course->name }}">
+                    <img src="{{ asset('storage/' .$course->image) }}" class="card-img-top mx-auto d-block" style="height:200px; width: 200px;" alt="{{ $course->name }}">
                     <div class="card-body">
                         <h4 class="card-title">{{ $course->name }}</h4>
                         <p class="mb-1"><strong>Duration:</strong> {{ $course->duration }} Days</p>
