@@ -5,12 +5,13 @@ namespace App\Http\Controllers;
 use App\Models\Course;
 use App\Models\Branch;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class CourseController extends Controller
 {
     // Show all courses
     public function index()
-    { 
+    {
         $courses = Course::all();
         return view('AdminDashboard.courses.index', compact('courses'));
     }
@@ -46,10 +47,11 @@ class CourseController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/courses'), $imageName);
-            $data['image'] = 'uploads/courses/' . $imageName;
+            // $image = $request->file('image');
+            // $imageName = time() . '.' . $image->getClientOriginalExtension();
+            // $image->move(public_path('uploads/courses'), $imageName);
+            // $data['image'] = 'uploads/courses/' . $imageName;
+            $data['image'] = $request->file('image')->store('uploads/courses', 'public');
         }
 
         Course::create($data);
@@ -69,7 +71,7 @@ class CourseController extends Controller
         $course = Course::findOrFail($id);
         return view('frontend.Course_Details', compact('course'));
     }
-    
+
 
     // Show the form for editing a course
     public function edit($id)
@@ -98,14 +100,19 @@ class CourseController extends Controller
         $data = $request->all();
 
         if ($request->hasFile('image')) {
-            if ($course->image && file_exists(public_path($course->image))) {
-                unlink(public_path($course->image));
+            // if ($course->image && file_exists(public_path($course->image))) {
+            //     unlink(public_path($course->image));
+            // }
+
+            if ($course->image && Storage::disk('public')->exists($course->image)) {
+                Storage::disk('public')->delete($course->image);
             }
 
-            $image = $request->file('image');
-            $imageName = time() . '.' . $image->getClientOriginalExtension();
-            $image->move(public_path('uploads/courses'), $imageName);
-            $data['image'] = 'uploads/courses/' . $imageName;
+            // $image = $request->file('image');
+            // $imageName = time() . '.' . $image->getClientOriginalExtension();
+            // $image->move(public_path('uploads/courses'), $imageName);
+
+            $data['image'] = $request->file('image')->store('uploads/courses', 'public');
         }
 
         $course->update($data);

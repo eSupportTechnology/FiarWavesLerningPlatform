@@ -49,7 +49,7 @@
                                         <td>{{ $course->course_id }}</td>
                                         <td>
                                             @if ($course->image)
-                                                <img src="{{ asset($course->image) }}" alt="Course Image" width="70" height="70" align="center">
+                                                <img src="{{ asset('storage/' .$course->image) }}" alt="Course Image" width="70" height="70" align="center">
                                             @else
                                                 No Image
                                             @endif

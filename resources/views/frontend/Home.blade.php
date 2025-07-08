@@ -653,7 +653,7 @@
                                 <div class="course-inner">
                                     <div class="course-thumb">
                                         @if ($course->image)
-                                            <img src="{{ asset( $course->image) }}" alt="{{ $course->name }}" style="height: 350px; width: 100%; object-fit: cover;">
+                                            <img src="{{ asset( 'storage/' .$course->image) }}" alt="{{ $course->name }}" style="height: 350px; width: 100%; object-fit: cover;">
                                         @else
                                             <img src="{{ asset('frontend/assets/images/default-course.jpg') }}" alt="No Image" style="height: 350px; width: 100%; object-fit: cover;">
                                         @endif

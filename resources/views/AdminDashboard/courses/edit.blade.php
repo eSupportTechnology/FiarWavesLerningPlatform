@@ -85,7 +85,7 @@
                                     <div class="col-sm-9">
                                         <input class="form-control" type="file" name="image" accept="image/*">
                                         @if($course->image)
-                                            <img src="{{ asset($course->image) }}" alt="Course Image" width="200" class="img-thumbnail mt-2">
+                                            <img src="{{ asset('storage/' . $course->image) }}" alt="Course Image" width="200" class="img-thumbnail mt-2">
                                         @endif
                                     </div>
                                 </div>
