@@ -175,16 +175,16 @@
         margin-right: 20px !important;
         padding: 30px 20px;
     }
-    
+
     .vis-content-box {
         width: 100%;
         margin-bottom: 30px;
     }
-    
+
     .vis-content-box h2 {
         font-size: 20px;
     }
-    
+
     .vis-content-box p {
         font-size: 14px;
     }
@@ -653,7 +653,7 @@
                                 <div class="course-inner">
                                     <div class="course-thumb">
                                         @if ($course->image)
-                                            <img src="{{ asset('storage/' . $course->image) }}" alt="{{ $course->name }}" style="height: 350px; width: 100%; object-fit: cover;">
+                                            <img src="{{ asset( $course->image) }}" alt="{{ $course->name }}" style="height: 350px; width: 100%; object-fit: cover;">
                                         @else
                                             <img src="{{ asset('frontend/assets/images/default-course.jpg') }}" alt="No Image" style="height: 350px; width: 100%; object-fit: cover;">
                                         @endif
