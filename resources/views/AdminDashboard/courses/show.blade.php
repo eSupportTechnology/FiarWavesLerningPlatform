@@ -26,7 +26,7 @@
                         <div class="col-md-6">
                             <strong>Course Image:</strong><br>
                             @if($course->image)
-                                <img src="{{ asset($course->image) }}" alt="Course Image" width="200" class="img-thumbnail mt-2">
+                                <img src="{{ asset('storage/' .$course->image) }}" alt="Course Image" width="200" class="img-thumbnail mt-2">
                             @else
                                 <p>No Image Available</p>
                             @endif
@@ -65,7 +65,7 @@
                             <strong>Total Price (Rs.):</strong>
                             <p>{{ number_format($course->total_price, 2) }}</p>
                         </div>
-                        
+
                     </div>
 
                     <div class="row mb-3">
@@ -129,9 +129,9 @@
                     </div>
 
 
-                    
 
-                   
+
+
 
                 </div> <!-- /card-body -->
             </div> <!-- /card -->
