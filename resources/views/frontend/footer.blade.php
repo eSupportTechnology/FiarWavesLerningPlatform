@@ -127,7 +127,7 @@
         <div class="footer-bottom style-2">
             <div class="container">
                 <div class="section-wrapper text-center">
-                    <p>&copy; {{ date('Y') }} Better Way. Designed by <a href="https://esupporttech.lk"
+                    <p>&copy; {{ date('Y') }} Better Way. Designed by <a href="https://esupport.live"
                             target="_blank">Esupport Technologies</a>.</p>
                 </div>
             </div>
