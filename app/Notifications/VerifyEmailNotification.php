@@ -3,11 +3,10 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
 
-class VerifyEmailNotification extends Notification implements ShouldQueue
+class VerifyEmailNotification extends Notification
 {
     use Queueable;
     public $token;

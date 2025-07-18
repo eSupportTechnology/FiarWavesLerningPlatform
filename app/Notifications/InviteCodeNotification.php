@@ -3,11 +3,11 @@
 namespace App\Notifications;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Notifications\Notification;
 use Illuminate\Notifications\Messages\MailMessage;
+use Illuminate\Support\Facades\Log;
 
-class InviteCodeNotification extends Notification implements ShouldQueue
+class InviteCodeNotification extends Notification
 {
     use Queueable;
     protected $inviteCode;

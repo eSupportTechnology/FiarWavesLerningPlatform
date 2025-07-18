@@ -411,7 +411,7 @@ class StudentDashboardController extends Controller
         $customer = Customer::where('user_id', $customerId)->first();
         $invitee = Customer::where('user_id',$request->invitee_id)->first();
 
-        if ($invitee->sponsor_id !== $customerId) {
+        if ($invitee->sponsor_id != $customerId || $invitee->sponsor_id === null) {
             return redirect()->back()->with('error', 'You can only place your own invitees.');
         }
         if ($invitee->is_side_selected) {
@@ -684,7 +684,7 @@ class StudentDashboardController extends Controller
                 'message' => 'Session expired. Please log in again.'
             ]);
         }
-        
+
         $customer = Customer::where('user_id', $customerId)->first();
         if (!$customer) {
             return response()->json([
@@ -748,12 +748,12 @@ class StudentDashboardController extends Controller
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
         }
-        
+
         $customer = Customer::where('user_id', $customerId)->first();
         if (!$customer) {
             return back()->with('error', 'Customer not found.');
         }
-        
+
         if ($customer->verification_code == $request->phone_verification_code) {
             $customer->contact_number = $request->new_phone;
             $customer->save();

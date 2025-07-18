@@ -6,7 +6,7 @@ class DailyIncomeService
 {
     public function process()
     {
-        $customers = \App\Models\Customer::where('status', 1)->where('kyc_status', 'approved')->get();
+        $customers = \App\Models\Customer::where('status', 1)->get();
         foreach ($customers as $customer) {
 
             $wallet = \App\Models\Wallet::firstOrCreate(

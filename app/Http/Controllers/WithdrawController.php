@@ -21,7 +21,10 @@ class WithdrawController extends Controller
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
         }
-        $customer = Customer::where('user_id', $customerId)->first();
+        $customer = Customer::where('user_id', $customerId)->where('status', 1)->where('kyc_status', 'approved')->first();
+        if (!$customer) {
+            return redirect()->route('customer.dashboard')->with('error', 'You are not eligible for withdrawals.');
+        }
         $wallet = Wallet::where('customer_id', $customerId)->first();
         if(!$wallet){
             // Create a new wallet if it doesn't exist

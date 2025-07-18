@@ -84,12 +84,12 @@ class CustomerAuthController extends Controller
             $customer->save();
 
             // // Send Email Verification Link
-            // $customer->notify(new VerifyEmailNotification($token));
+            $customer->notify(new VerifyEmailNotification($token));
 
             // // Send Invite Code to Email
-            // $customer->notify(new InviteCodeNotification($inviteCode));
+            $customer->notify(new InviteCodeNotification($inviteCode));
 
-            dispatch(new SendRegistrationEmails($customer, $token, $inviteCode));
+            // dispatch(new SendRegistrationEmails($customer, $token, $inviteCode));
 
 
             return redirect()->route('customer.login')->with('success', 'Registration complete. Please please comfirm your email.');
