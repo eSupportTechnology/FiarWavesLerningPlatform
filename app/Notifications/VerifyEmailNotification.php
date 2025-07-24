@@ -25,11 +25,12 @@ class VerifyEmailNotification extends Notification
     {
         $verificationUrl = url('/verify-email/' . $this->token);
 
-        return (new MailMessage)
-            ->subject('Email Verification')
-            ->greeting('Hello ' . $notifiable->fname . ',')
-            ->line('Please verify your email by clicking the button below:')
-            ->action('Verify Email', $verificationUrl)
-            ->line('If you did not create an account, no further action is required.');
+        return (new MailMessage)->view(
+            'emails.verify-email',
+            [
+                'name' => $notifiable->fname,
+                'verificationUrl' => $verificationUrl,
+            ]
+        );
     }
 }

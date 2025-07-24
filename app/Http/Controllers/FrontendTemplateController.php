@@ -11,6 +11,8 @@ use App\Models\Review;
 use App\Models\AdBanner;
 use App\Models\Banner;
 use App\Models\Branch;
+use App\Models\Customer;
+use App\Notifications\CustomerResetPasswordNotification;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Password;
@@ -165,8 +167,17 @@ class FrontendTemplateController extends Controller
 
         Log::info('Password reset link email requested for: ' . $request->email);
 
-        $status = Password::broker('customers')->sendResetLink($request->only('email'));
+        // $status = Password::broker('customers')->sendResetLink($request->only('email'));
 
+        $user = Customer::where('email', $request->email)->first();
+
+        if ($user) {
+            $token = app('auth.password.broker')->createToken($user);
+            $user->notify(new CustomerResetPasswordNotification($token, $request->email));
+            return back()->with('success', 'Password reset link sent!');
+        }
+
+        return back()->with('error', 'We couldn’t find a user with that email.');
 
         return $status === Password::RESET_LINK_SENT
             ? back()->with('success', __($status))

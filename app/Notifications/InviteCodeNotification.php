@@ -24,13 +24,12 @@ class InviteCodeNotification extends Notification
 
     public function toMail($notifiable)
     {
-        return (new MailMessage)
-            ->subject('Welcome to BetterWay! Your Invite Code')
-            ->greeting('Hi ' . $notifiable->fname . ',')
-            ->line("Thank you for registering.")
-            ->line("Your Invite Code / User ID is: **{$this->inviteCode}**")
-            ->line("You can now log in using this code.")
-            ->action('Login Now', url('/customer/login'))
-            ->line('If you have any questions, contact support.');
+        return (new MailMessage)->view(
+            'emails.invite-code',
+            [
+                'name' => $notifiable->fname,
+                'inviteCode' => $this->inviteCode,
+            ]
+        )->subject('Welcome to Better Way! Your Invite Code');
     }
 }
