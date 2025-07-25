@@ -174,7 +174,8 @@
                         @endphp
 
                         <div class="progress" style="height: 8px;">
-                            <div class="progress-bar" role="progressbar" style="width: {{ $progress }}%; background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);"
+                            <div class="progress-bar" role="progressbar"
+                                style="width: {{ $progress }}%; background: linear-gradient(135deg, #E85D04 0%, #d34a02 100%);"
                                 aria-valuenow="{{ $dailyIncome }}" aria-valuemin="0" aria-valuemax="10000">
                             </div>
                         </div>
@@ -228,55 +229,55 @@
     </div>
 
 
-    @if($customer->is_side_selected == 0)
+    @if ($customer->is_side_selected == 0)
         <div class="container-fluid mb-4">
             <div class="alert alert-warning text-center" role="alert">
                 <strong>Notice:</strong> Your sposer have not selected a side yet.
             </div>
         </div>
     @else
-    <div class="container-fluid mb-4">
-        <div class="row">
-            <div class="col-md-4">
-                <div class="card text-white bg-primary">
-                    <div class="card-body">
-                        <h5 class="card-title text-center">Referral Code</h5>
-                        <p class="card-text fs-5 fw-bold text-center">{{ $customer->invite_code ?? 'N/A' }}</p>
-                    </div>
-                </div>
-            </div>
-            <div class="col-md-8">
-                <div class="card text-white bg-success">
-                    <div class="card-body text-center">
-                        <h5 class="card-title">Referral Link</h5>
-
-                        @php
-                            $referralLink = url('/customer/register') . '?ref=' . ($customer->invite_code ?? '');
-                        @endphp
-
-                        <div class="input-group">
-                            <input type="text" id="referralLink" class="form-control text-center"
-                                value="{{ $referralLink }}" readonly>
-                            <button class="btn btn-dark" onclick="copyReferral()">Copy</button>
+        <div class="container-fluid mb-4">
+            <div class="row">
+                <div class="col-md-4">
+                    <div class="card text-white bg-primary">
+                        <div class="card-body">
+                            <h5 class="card-title text-center">Referral Code</h5>
+                            <p class="card-text fs-5 fw-bold text-center">{{ $customer->invite_code ?? 'N/A' }}</p>
                         </div>
                     </div>
                 </div>
+                <div class="col-md-8">
+                    <div class="card text-white bg-success">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">Referral Link</h5>
+
+                            @php
+                                $referralLink = url('/customer/register') . '?ref=' . ($customer->invite_code ?? '');
+                            @endphp
+
+                            <div class="input-group">
+                                <input type="text" id="referralLink" class="form-control text-center"
+                                    value="{{ $referralLink }}" readonly>
+                                <button class="btn btn-dark" onclick="copyReferral()">Copy</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <script>
+                    function copyReferral() {
+                        const copyText = document.getElementById("referralLink");
+                        copyText.select();
+                        copyText.setSelectionRange(0, 99999); // For mobile
+                        navigator.clipboard.writeText(copyText.value).then(function() {
+                            alert("Referral link copied to clipboard!");
+                        });
+                    }
+                </script>
+
+
             </div>
-
-            <script>
-                function copyReferral() {
-                    const copyText = document.getElementById("referralLink");
-                    copyText.select();
-                    copyText.setSelectionRange(0, 99999); // For mobile
-                    navigator.clipboard.writeText(copyText.value).then(function() {
-                        alert("Referral link copied to clipboard!");
-                    });
-                }
-            </script>
-
-
         </div>
-    </div>
     @endif
 
 

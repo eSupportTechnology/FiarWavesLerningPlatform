@@ -265,7 +265,7 @@ class StudentDashboardController extends Controller
                 'required',
                 'string',
                 'max:255',
-                Rule::unique('customers', 'kyc_doc_number')->ignore($customer->user_id,'user_id'),
+                Rule::unique('customers', 'kyc_doc_number')->ignore($customer->user_id, 'user_id'),
             ],
             'kyc_doc_front' => $customer->kyc_doc_front ? 'nullable|image|max:2048' : 'required|image|max:2048',
             'kyc_doc_back' => $customer->kyc_doc_back ? 'nullable|image|max:2048' : 'required|image|max:2048',
@@ -409,7 +409,7 @@ class StudentDashboardController extends Controller
         ]);
         $customerId = session('customer_id');
         $customer = Customer::where('user_id', $customerId)->first();
-        $invitee = Customer::where('user_id',$request->invitee_id)->first();
+        $invitee = Customer::where('user_id', $request->invitee_id)->first();
 
         if ($invitee->sponsor_id != $customerId || $invitee->sponsor_id === null) {
             return redirect()->back()->with('error', 'You can only place your own invitees.');
@@ -475,7 +475,7 @@ class StudentDashboardController extends Controller
             foreach ($allLeftUsers as $user) {
                 if ($user->user_id != $inviteeId && $user->status == 1) {
                     $user->left_side_points += 1;
-                    $user->total_left_points +=1;
+                    $user->total_left_points += 1;
                     $user->save();
                 }
             }
@@ -563,7 +563,8 @@ class StudentDashboardController extends Controller
 
 
 
-    public function allInvitees(Request $request){
+    public function allInvitees(Request $request)
+    {
         $customerId = session('customer_id');
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
@@ -641,13 +642,13 @@ class StudentDashboardController extends Controller
             return back()->with('error', 'Invalid verification code or email mismatch.');
         }
 
-         $customerId = session('customer_id');
+        $customerId = session('customer_id');
         if ($customerId === null) {
             return redirect()->route('customer.login')->with('error', 'Please log in to access your dashboard.');
         }
         $customer = Customer::where('user_id', $customerId)
             ->first();
-        if($customer->email_verification_code == $request->email_verification_code){
+        if ($customer->email_verification_code == $request->email_verification_code) {
             $customer->email = $request->new_email;
             $customer->save();
         }
