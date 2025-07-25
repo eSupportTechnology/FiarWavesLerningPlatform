@@ -417,145 +417,58 @@ class StudentDashboardController extends Controller
         if ($invitee->is_side_selected) {
             return redirect()->back()->with('error', 'This invitee has already been placed.');
         }
-        if ($request->side === 'left') {
-            $inviteeId = $invitee->user_id;
 
-            // 1. Traverse downward (left children)
-            $downward = [];
-            $stack = [$customer]; // start from current user
+        $side = $request->side;
+        $inviteeId = $invitee->user_id;
 
-            while (!empty($stack)) {
-                $current = array_pop($stack);
-
-                if ($current->left_child_id) {
-                    $leftChild = Customer::where('user_id', $current->left_child_id)->first();
-                    if ($leftChild) {
-                        $downward[] = $leftChild;
-                        $stack[] = $leftChild; // continue DFS
-                    }
-                }
-            }
-
-            // 2. Traverse upward (sponsors with this user as their left child)
-            $upward = [];
-            $current = $customer;
-            while ($current->sponsor_id) {
-                $sponsor = Customer::where('user_id', $current->sponsor_id)->first();
-                if ($sponsor && $sponsor->left_child_id == $current->user_id) {
-                    $upward[] = $sponsor;
-                    $current = $sponsor;
-                } else {
-                    break;
-                }
-            }
-
-            $current2 = $customer;
-            while ($current2->user_id) {
-                $user = Customer::where('left_child_id', $current2->user_id)->first();
-                if ($user && $user->left_child_id == $current2->user_id) {
-                    $upward[] = $user;
-                    $current2 = $user;
-                } else {
-                    break;
-                }
-            }
-
-            // 3. Combine all users: upward, current, and downward
-            $allLeftUsers = array_merge($upward, [$customer], $downward);
-
-            // 4. Assign invitee to the last left user
-            $lastLeft = $customer;
-            while ($lastLeft->left_child_id) {
-                $lastLeft = Customer::where('user_id', $lastLeft->left_child_id)->first();
-            }
-            $lastLeft->left_child_id = $inviteeId;
-            $lastLeft->save();
-
-            // 5. Award points to all EXCEPT the invitee and status != 1
-            foreach ($allLeftUsers as $user) {
-                if ($user->user_id != $inviteeId && $user->status == 1) {
-                    $user->left_side_points += 1;
-                    $user->total_left_points += 1;
-                    $user->save();
-                }
-            }
-        } else if ($request->side === 'right') {
-            $inviteeId = $invitee->user_id;
-
-            // 1. Traverse downward (right children)
-            $downward = [];
-            $stack = [$customer]; // start from current user
-
-            while (!empty($stack)) {
-                $current = array_pop($stack);
-
-                if ($current->right_child_id) {
-                    $rightChild = Customer::where('user_id', $current->right_child_id)->first();
-                    if ($rightChild) {
-                        $downward[] = $rightChild;
-                        $stack[] = $rightChild; // continue DFS
-                    }
-                }
-            }
-
-            // 2. Traverse upward (sponsors with this user as their right child)
-            $upward = [];
-            $current = $customer;
-            while ($current->sponsor_id) {
-                $sponsor = Customer::where('user_id', $current->sponsor_id)->first();
-                if ($sponsor && $sponsor->right_child_id == $current->user_id) {
-                    $upward[] = $sponsor;
-                    $current = $sponsor;
-                } else {
-                    break;
-                }
-            }
-
-            $current2 = $customer;
-            while ($current2->user_id) {
-                $user = Customer::where('right_child_id', $current2->user_id)->first();
-                if ($user && $user->right_child_id == $current2->user_id) {
-                    $upward[] = $user;
-                    $current2 = $user;
-                } else {
-                    break;
-                }
-            }
-
-            // 3. Combine all right side users: upward, current user, downward
-            $allRightUsers = array_merge($upward, [$customer], $downward);
-
-            // 4. Assign invitee to last right user
-            $lastRight = $customer;
-            while ($lastRight->right_child_id) {
-                $lastRight = Customer::where('user_id', $lastRight->right_child_id)->first();
-            }
-            $lastRight->right_child_id = $inviteeId;
-            $lastRight->save();
-
-            // 5. Award points to all EXCEPT the invitee and those with status != 1
-            foreach ($allRightUsers as $user) {
-                if ($user->user_id != $inviteeId && $user->status == 1) {
-                    $user->right_side_points += 1;
-                    $user->total_right_points += 1;
-                    $user->save();
-                }
-            }
+        // 1. Find the last node on the selected side
+        $last = $customer;
+        $childField = $side . '_child_id';
+        while ($last->$childField) {
+            $last = Customer::where('user_id', $last->$childField)->first();
         }
+
+        // 2. Assign invitee
+        $last->$childField = $inviteeId;
+        $last->save();
+
+        // 3. Award point to the placing user (based on selected side)
+        if ($customer->status == 1) {
+            $pointField = $side . '_side_points';
+            $totalPointField = 'total_' . $side . '_points';
+            $customer->$pointField += 1;
+            $customer->$totalPointField += 1;
+            $customer->save();
+        }
+
+        // 4. Traverse upward and add points based on relation (left/right)
+        $current = $customer;
+        while ($current->sponsor_id) {
+            $sponsor = Customer::where('user_id', $current->sponsor_id)->first();
+            if (!$sponsor || $sponsor->status != 1) break;
+
+            if ($sponsor->left_child_id == $current->user_id) {
+                $sponsor->left_side_points += 1;
+                $sponsor->total_left_points += 1;
+            } else if ($sponsor->right_child_id == $current->user_id) {
+                $sponsor->right_side_points += 1;
+                $sponsor->total_right_points += 1;
+            } else {
+                break; // not directly connected
+            }
+
+            $sponsor->save();
+            $current = $sponsor;
+        }
+
 
         $invitee->is_side_selected = 1;
         $invitee->save();
 
         if ($request->side === 'delete') {
-            // Remove the invitee from the tree
-            $inviteeId = $invitee->user_id;
-            $inviteeDelete = Customer::where('user_id', $inviteeId)->first();
-            if (!$inviteeDelete) {
-                return redirect()->back()->with('error', 'Invitee not found.');
-            }
-            $inviteeDelete->status = 2;
-            $inviteeDelete->is_side_selected = 0;
-            $inviteeDelete->save();
+            $invitee->status = 2;
+            $invitee->is_side_selected = 0;
+            $invitee->save();
         }
 
         return redirect()->back()->with('success', 'Profile updated successfully!');

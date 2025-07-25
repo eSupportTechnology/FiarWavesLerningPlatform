@@ -55,8 +55,23 @@ class DailyIncomeService
 
         $minPoints = min($left, $right);
 
+        // Special case: first time, only 1 point on each side – don't process, move to active
+        if (
+            $customer->is_first_time_withdrawal == 0 &&
+            $customer->left_side_points == 1 &&
+            $customer->right_side_points == 1
+        ) {
+            $customer->active_left_points += 1;
+            $customer->active_right_points += 1;
+            $customer->left_side_points = 0;
+            $customer->right_side_points = 0;
+            $customer->is_first_time_withdrawal = 1;
+            $customer->save();
+            return 0; // skip income for today
+        }
+
+        // Normal logic
         if ($customer->is_first_time_withdrawal == 0) {
-            // Allow minimum 1
             if ($minPoints == 1) {
                 $dailyPoints = 1;
             } elseif ($minPoints > 1) {
@@ -67,7 +82,6 @@ class DailyIncomeService
                 $dailyPoints = 0;
             }
         } else {
-            // After first withdrawal, minimum must be 2 and even
             if ($minPoints >= 2) {
                 $adjusted = $minPoints % 2 == 0 ? $minPoints : $minPoints - 1;
                 $dailyPoints = min($adjusted, 10);
@@ -75,6 +89,7 @@ class DailyIncomeService
                 $dailyPoints = 0;
             }
         }
+
         $dailyIncome = $dailyPoints * 1000; // Adjust this logic as per your requirements
 
         if (
@@ -97,12 +112,15 @@ class DailyIncomeService
         } else {
             // Deduct points
 
-            $customer->active_left_points += $customer->left_side_points;
-            $customer->active_right_points += $customer->right_side_points;
+            // Combine daily points into active first
+            $combinedLeft = $customer->active_left_points + $customer->left_side_points;
+            $combinedRight = $customer->active_right_points + $customer->right_side_points;
 
-            $customer->active_left_points -= $minPoints;
-            $customer->active_right_points -= $minPoints;
+            // Deduct used points
+            $customer->active_left_points = max(0, $combinedLeft - $dailyPoints);
+            $customer->active_right_points = max(0, $combinedRight - $dailyPoints);
 
+            // Reset daily points
             $customer->left_side_points = 0;
             $customer->right_side_points = 0;
         }
