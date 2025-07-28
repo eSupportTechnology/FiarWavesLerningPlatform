@@ -417,48 +417,142 @@ class StudentDashboardController extends Controller
         if ($invitee->is_side_selected) {
             return redirect()->back()->with('error', 'This invitee has already been placed.');
         }
+        if ($request->side === 'left') {
+            $inviteeId = $invitee->user_id;
 
-        $side = $request->side;
-        $inviteeId = $invitee->user_id;
+            // 1. Find path from HEAD to $customer
+            $head = Customer::where('sponsor_id', null)->first(); // Assuming single root
+            $path = [];
 
-        // 1. Find the last node on the selected side
-        $last = $customer;
-        $childField = $side . '_child_id';
-        while ($last->$childField) {
-            $last = Customer::where('user_id', $last->$childField)->first();
-        }
+            $found = false;
+            $stack = [[$head, [$head]]];
 
-        // 2. Assign invitee
-        $last->$childField = $inviteeId;
-        $last->save();
+            while (!empty($stack)) {
+                [$node, $currentPath] = array_pop($stack);
 
-        // 3. Award point to the placing user (based on selected side)
-        if ($customer->status == 1) {
-            $pointField = $side . '_side_points';
-            $totalPointField = 'total_' . $side . '_points';
-            $customer->$pointField += 1;
-            $customer->$totalPointField += 1;
-            $customer->save();
-        }
+                if ($node->user_id === $customer->user_id) {
+                    $path = $currentPath;
+                    $found = true;
+                    break;
+                }
 
-        // 4. Traverse upward and add points based on relation (left/right)
-        $current = $customer;
-        while ($current->sponsor_id) {
-            $sponsor = Customer::where('user_id', $current->sponsor_id)->first();
-            if (!$sponsor || $sponsor->status != 1) break;
+                if ($node->left_child_id) {
+                    $left = Customer::where('user_id', $node->left_child_id)->first();
+                    if ($left) {
+                        $stack[] = [$left, array_merge($currentPath, [$left])];
+                    }
+                }
 
-            if ($sponsor->left_child_id == $current->user_id) {
-                $sponsor->left_side_points += 1;
-                $sponsor->total_left_points += 1;
-            } else if ($sponsor->right_child_id == $current->user_id) {
-                $sponsor->right_side_points += 1;
-                $sponsor->total_right_points += 1;
-            } else {
-                break; // not directly connected
+                if ($node->right_child_id) {
+                    $right = Customer::where('user_id', $node->right_child_id)->first();
+                    if ($right) {
+                        $stack[] = [$right, array_merge($currentPath, [$right])];
+                    }
+                }
             }
 
-            $sponsor->save();
-            $current = $sponsor;
+            Log::info('Path from head to current customer (tree-based): ' . json_encode($path));
+
+            // 2. Assign invitee to last available left
+            $lastLeft = $customer;
+            while ($lastLeft->left_child_id) {
+                $lastLeft = Customer::where('user_id', $lastLeft->left_child_id)->first();
+            }
+            $lastLeft->left_child_id = $inviteeId;
+            $lastLeft->save();
+
+            // 3. Award points on correct sides
+            for ($i = 0; $i < count($path) - 1; $i++) {
+                $current = $path[$i];
+                $next = $path[$i + 1];
+
+                if ($current->status != 1) continue;
+
+                if ($current->left_child_id == $next->user_id) {
+                    $current->left_side_points += 1;
+                    $current->total_left_points += 1;
+                } elseif ($current->right_child_id == $next->user_id) {
+                    $current->right_side_points += 1;
+                    $current->total_right_points += 1;
+                }
+
+                $current->save();
+            }
+
+            // 4. Add point to invite placer on requested side
+            if ($customer->status == 1) {
+                $customer->left_side_points += 1;
+                $customer->total_left_points += 1;
+                $customer->save();
+            }
+        } else if ($request->side === 'right') {
+            $inviteeId = $invitee->user_id;
+
+            // 1. Find path from HEAD to $customer
+            $head = Customer::where('sponsor_id', null)->first(); // Assuming single root
+            $path = [];
+
+            $found = false;
+            $stack = [[$head, [$head]]];
+
+            while (!empty($stack)) {
+                [$node, $currentPath] = array_pop($stack);
+
+                if ($node->user_id === $customer->user_id) {
+                    $path = $currentPath;
+                    $found = true;
+                    break;
+                }
+
+                if ($node->left_child_id) {
+                    $left = Customer::where('user_id', $node->left_child_id)->first();
+                    if ($left) {
+                        $stack[] = [$left, array_merge($currentPath, [$left])];
+                    }
+                }
+
+                if ($node->right_child_id) {
+                    $right = Customer::where('user_id', $node->right_child_id)->first();
+                    if ($right) {
+                        $stack[] = [$right, array_merge($currentPath, [$right])];
+                    }
+                }
+            }
+
+            Log::info('Path from head to current customer (tree-based): ' . json_encode($path));
+
+            // 2. Assign invitee to last available right
+            $lastRight = $customer;
+            while ($lastRight->right_child_id) {
+                $lastRight = Customer::where('user_id', $lastRight->right_child_id)->first();
+            }
+            $lastRight->right_child_id = $inviteeId;
+            $lastRight->save();
+
+            // 3. Award points on correct sides
+            for ($i = 0; $i < count($path) - 1; $i++) {
+                $current = $path[$i];
+                $next = $path[$i + 1];
+
+                if ($current->status != 1) continue;
+
+                if ($current->left_child_id == $next->user_id) {
+                    $current->left_side_points += 1;
+                    $current->total_left_points += 1;
+                } elseif ($current->right_child_id == $next->user_id) {
+                    $current->right_side_points += 1;
+                    $current->total_right_points += 1;
+                }
+
+                $current->save();
+            }
+
+            // 4. Add point to invite placer on requested side
+            if ($customer->status == 1) {
+                $customer->right_side_points += 1;
+                $customer->total_right_points += 1;
+                $customer->save();
+            }
         }
 
 
@@ -466,9 +560,15 @@ class StudentDashboardController extends Controller
         $invitee->save();
 
         if ($request->side === 'delete') {
-            $invitee->status = 2;
-            $invitee->is_side_selected = 0;
-            $invitee->save();
+            // Remove the invitee from the tree
+            $inviteeId = $invitee->user_id;
+            $inviteeDelete = Customer::where('user_id', $inviteeId)->first();
+            if (!$inviteeDelete) {
+                return redirect()->back()->with('error', 'Invitee not found.');
+            }
+            $inviteeDelete->status = 2;
+            $inviteeDelete->is_side_selected = 0;
+            $inviteeDelete->save();
         }
 
         return redirect()->back()->with('success', 'Profile updated successfully!');
