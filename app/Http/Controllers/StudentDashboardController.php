@@ -451,7 +451,7 @@ class StudentDashboardController extends Controller
                 }
             }
 
-            Log::info('Path from head to current customer (tree-based): ' . json_encode($path));
+            // Log::info('Path from head to current customer (tree-based): ' . json_encode($path));
 
             // 2. Assign invitee to last available left
             $lastLeft = $customer;
@@ -519,7 +519,7 @@ class StudentDashboardController extends Controller
                 }
             }
 
-            Log::info('Path from head to current customer (tree-based): ' . json_encode($path));
+            // Log::info('Path from head to current customer (tree-based): ' . json_encode($path));
 
             // 2. Assign invitee to last available right
             $lastRight = $customer;
